@@ -273,42 +273,53 @@ def answer(query, k=DEFAULT_TOP_K, audience=None, session_id=None, log=True):
     Pass log=False from an eval harness - a benchmark run should not be mixed
     into the record of what real users asked.
     """
-    session_id = session_id or uuid.uuid4().hex[:12]
-
-    started = time.perf_counter()
-    chunks = retrieve(query, k=k, audience=audience)
-    retrieval_ms = int((time.perf_counter() - started) * 1000)
-
     result = AnswerResult(
         query=query,
         text="",
-        chunks=chunks,
-        session_id=session_id,
-        retrieval_ms=retrieval_ms,
+        session_id=session_id or uuid.uuid4().hex[:12],
     )
 
-    if not chunks:
+    # Both stages call Gemini, so both are guarded the same way. Embedding the
+    # question is an upstream call too: leaving it outside the guard turned an
+    # outage (or a request Gemini rejects, like an empty string) into an
+    # uncaught exception with no log row, exactly when the row matters most.
+    started = time.perf_counter()
+    try:
+        result.chunks = retrieve(query, k=k, audience=audience)
+    except Exception as error:  # noqa: BLE001 - surface, log, do not crash
+        record_failure(result, "retrieval", error)
+    result.retrieval_ms = int((time.perf_counter() - started) * 1000)
+
+    if result.error is not None:
+        pass
+    elif not result.chunks:
         result.text = "I don't have any material to answer that from."
     else:
         started = time.perf_counter()
         try:
             interaction = get_client().interactions.create(
                 model=GENERATION_MODEL,
-                input=SYSTEM_PROMPT + build_prompt(query, chunks),
+                input=SYSTEM_PROMPT + build_prompt(query, result.chunks),
             )
             result.text = interaction.output_text
         except Exception as error:  # noqa: BLE001 - surface, log, do not crash
-            # A user-facing process should not die because one upstream call
-            # failed, and the failure is worth having in the log.
-            result.error = f"{type(error).__name__}: {error}"
-            result.text = (
-                "Something went wrong reaching the model. Please try again."
-            )
+            record_failure(result, "generation", error)
         result.generation_ms = int((time.perf_counter() - started) * 1000)
 
     if log:
         log_interaction(result)
     return result
+
+
+def record_failure(result, stage, error):
+    """Mark an AnswerResult as failed at `stage`, keeping the cause for the log.
+
+    A user-facing process should not die because one upstream call failed.
+    The stage prefix says which call it was, since the student sees the same
+    message either way.
+    """
+    result.error = f"{stage}: {type(error).__name__}: {error}"
+    result.text = "Something went wrong reaching the model. Please try again."
 
 
 def log_interaction(result):
