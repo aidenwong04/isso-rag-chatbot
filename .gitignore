@@ -3,7 +3,11 @@ __pycache__/
 .venv/
 venv/
 .env
+env/
 data/raw/
 data/processed/
+# user queries - international students asking about their immigration status.
+# Never commit these; retention and anonymization are undecided.
+data/logs/
 *.db
 .DS_Store

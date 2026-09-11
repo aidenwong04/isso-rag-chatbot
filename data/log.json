@@ -1,0 +1,56 @@
+[
+    {
+        "query": "what do i do if i can't retrieve my I-94 record",
+        "query-type": "in-corpus",
+        "intended-section": "HOW TO REPORT > What to do if you have a problem retrieving your I-94 record",
+        "top-chunk": "HOW TO REPORT > What to do if you have a problem retrieving your I-94 record",
+        "top-score": 0.79
+    },
+    {
+        "query": "what did I need to do again after arriving at columbia?",
+        "query-type": "in-corpus",
+        "intended-section": "WHEN TO REPORT",
+        "top-chunk": "WHEN TO REPORT",
+        "top-score": 0.79
+    },
+    {
+        "query": "what badges does glass offer?",
+        "query-type": "in-corpus",
+        "intended-section": "Badges & Credentials",
+        "top-chunk": "Badges & Credentials",
+        "top-score": 0.78,
+        "notes": "This chunk was split into three different chunks for three different tiers. the top 3 included one of the three tiers, but not all three. The third best chunk was the one that included the tier that was in the query."
+    },
+    {
+        "query": "what is a J-1 visa",
+        "query-type": "out-of-corpus",
+        "intended-section": "N/A",
+        "top-chunk": "Eligibility > F-1 Status or J-1 Status",
+        "top-score": 0.66,
+        "notes": "returned a good answer: The provided text does not contain a definition of what a J-1 visa is. It specifies that you may be eligible for J-1 status if at least 51% of your total expenses are covered by a scholarship, or if your sponsor requires it. It also notes that you should review the Comparison Chart to understand the benefits and restrictions of J-1 status. "
+    },
+    {
+        "query": "what is the difference between a J-1 and F-1 visa",
+        "query-type": "out-of-corpus",
+        "intended-section": "N/A",
+        "top-chunk": "Eligibility > F-1 Status or J-1 Status",
+        "top-score": 0.66,
+        "notes": "returned a good answer: The provided text does not contain a direct comparison of the differences between J-1 and F-1 visas. It specifies that you may be eligible for J-1 status if at least 51% of your total expenses are covered by a scholarship, or if your sponsor requires it. It also notes that you should review the Comparison Chart to understand the benefits and restrictions of J-1 status. "
+    },
+    {
+        "query": "am i a resident alien?",
+        "query-type": "out-of-corpus",
+        "intended-section": "N/A",
+        "top-chunk": "Before You Apply",
+        "top-score": 0.62,
+        "notes": "returned a good answer: The provided context chunks do not contain information regarding whether or not you are a resident alien. More info: N/A"
+    },
+    {
+        "query": "I'm continuing at columbia for another program, how should I proceed?",
+        "query-type": "out-of-corpus",
+        "intended-section": "N/A",
+        "top-chunk": "ELIGIBILITY > Enrolled at Another School",
+        "top-score": 0.76,
+        "notes": "returned a good answer: The provided context does not contain information regarding the process for a current student continuing at Columbia for a new or subsequent program. It only provides information for students transferring *to* Columbia from another school or transferring *out* of Columbia to another U.S. school. More info: RELATED INFORMATION (applying-your-transfer-i-20)"
+    }
+]
