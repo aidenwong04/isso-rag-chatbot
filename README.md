@@ -35,10 +35,13 @@ baseline. Re-embedding is never automatic.
 
 `query.py` is importable: `retrieve(query, k, audience)` and `answer(query)`
 return structured results, and every answer appends a row to
-`data/logs/queries.jsonl` recording the full retrieved set with scores, both
-model ids, latency and the corpus commit. Pass `log=False` from an eval
-harness so benchmark runs stay out of the record of what real users asked.
-Query logs are gitignored.
+model ids, latency, token spend and the corpus commit. `answer()` itself logs
+nothing: `POST /chat` in `main.py` writes one row per answered request when
+`LOGGING_ENABLED` is on, so eval runs and CLI use stay out of the record of
+what real users asked. Query logs are gitignored.
+
+`Dockerfile` builds the `/chat` API for Cloud Run, with `chunks.json` baked
+into the image so code and corpus deploy and roll back together.
 
 Next: a small web front end over `answer()`, then an eval set built from real
 queries. See `docs/evaluation-plan.md`.

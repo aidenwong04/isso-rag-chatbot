@@ -23,15 +23,15 @@ QUERIES_LOG_PATH = DATA_DIR / "logs" / "queries.jsonl"
 REJECTIONS_LOG_PATH = DATA_DIR / "logs" / "rejections.jsonl"
 
 # The Gemini free tier has a fixed daily quota shared by every user of this
-# app, so one person in a loop is an outage for everyone. The limit is per
-# client IP, which means uvicorn has to be told which proxy to believe:
+# app, so one person in a loop is an outage for everyone.
 #
-#   uvicorn main:app --host 0.0.0.0 --port $PORT --forwarded-allow-ips='100.0.0.0/8'
+# These counters live in process memory: on Cloud Run they reset whenever an
+# instance scales to zero and are not shared between instances. They are a
+# placeholder until the counters move to Firestore.
 #
-# 100.0.0.0/8 is Railway's internal proxy range. Without it every request
-# looks like it came from the proxy and shares one bucket; with '*' instead,
-# uvicorn takes the leftmost X-Forwarded-For entry, which the caller can set
-# to anything and so can bypass the limit.
+# Keyed on client IP, but behind Firebase Hosting and Cloud Run that is the
+# proxy's address unless uvicorn is told which X-Forwarded-For entry to trust.
+# Verify request.client.host against a known IP after the first deploy.
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 

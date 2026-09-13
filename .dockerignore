@@ -1,0 +1,19 @@
+# Keep secrets, user data and the 286 MB local virtualenv out of the build
+# context. The Dockerfile copies only src/ and chunks.json, but anything in
+# the context is still sent to the builder.
+.git
+.env
+env/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+notebooks/
+docs/
+
+# data/ holds raw pages, monitor state and user query logs. Only the embedded
+# corpus is served.
+data/
+!data/embeddings/
+!data/embeddings/chunks.json
