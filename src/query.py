@@ -11,7 +11,12 @@ attached.
     result = answer("what do i need for my visa interview")
     result.text                 # the answer
     result.chunks               # what it was built from, with scores
-    result.to_log_record()      # the row written to data/logs/queries.jsonl
+    result.to_log_record()      # pipeline fields for the caller to log
+
+answer() does not write anything. The caller decides whether and where to
+log, because only the caller knows what else belongs on the row (the web app
+adds end-to-end latency) and whether the query is real traffic at all (an
+eval run is not).
 
 The index loads once per process and is reused, so a server does not re-parse
 182 x 768 floats on every request. Call load_index() once at startup to pay
@@ -21,7 +26,7 @@ Imports here are flat (`from config import ...`), so a caller needs src/ on
 the path - simplest is to put the app in src/ alongside this and run it from
 there.
 
-CLI, unchanged in behaviour:  python src/query.py
+CLI (prints, never logs):  python src/query.py
 Also accepts the question as arguments:  python src/query.py how do i report my arrival
 """
 
@@ -32,7 +37,6 @@ import sys
 import time
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 
 import numpy as np
 from dotenv import load_dotenv
@@ -49,7 +53,6 @@ from config import (
 )
 
 EMBEDDING_PATH = DATA_DIR / "embeddings" / "chunks.json"
-LOG_PATH = DATA_DIR / "logs" / "queries.jsonl"
 
 SYSTEM_PROMPT = """You are a helpful assistant answering questions from international students about Columbia's International Students and Scholars Office (ISSO), using only the ISSO source material provided below.
 
@@ -92,6 +95,11 @@ ABSTENTION_HINTS = (
     "doesn't contain",
     "not enough information",
     "no information",
+    "i don't have information",
+    "i do not have information",
+    "i don't have any information",
+    "i do not have any information",
+    "i don't have any material"
 )
 
 _index_cache = None
@@ -125,9 +133,14 @@ class AnswerResult:
     text: str
     chunks: list = field(default_factory=list)
     session_id: str = ""
-    retrieval_ms: int = 0
-    generation_ms: int = 0
+    retrieval_ms: int | None = None
+    generation_ms: int | None = None
     error: str | None = None
+    total_input_tokens: int | None = None
+    total_output_tokens: int | None = None
+    total_thought_tokens: int | None = None
+    total_cached_tokens: int | None = None
+    total_tokens: int | None = None
 
     @property
     def looks_like_abstention(self):
@@ -135,8 +148,15 @@ class AnswerResult:
         return any(hint in lowered for hint in ABSTENTION_HINTS)
 
     def to_log_record(self):
+        """The pipeline's half of a log row.
+
+        No timestamp: the caller stamps the row with when the request
+        arrived, which answer() cannot see.
+
+        The whole retrieved set is recorded with scores, not just the top
+        hit. Recall@k cannot be computed from a log that only kept the winner.
+        """
         return {
-            "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "session_id": self.session_id,
             "query": self.query,
             "answer": self.text,
@@ -147,6 +167,11 @@ class AnswerResult:
             "embedding_model": EMBEDDING_MODEL,
             "embedding_dimensions": EMBEDDING_DIMENSIONS,
             "generation_model": GENERATION_MODEL,
+            "total_input_tokens": self.total_input_tokens,
+            "total_output_tokens": self.total_output_tokens,
+            "total_thought_tokens": self.total_thought_tokens,
+            "total_cached_tokens": self.total_cached_tokens,
+            "total_tokens": self.total_tokens,
             "corpus_commit": corpus_commit(),
             "corpus_chunks": len(load_index()[0]),
             "error": self.error,
@@ -267,11 +292,11 @@ def build_prompt(query, chunks):
     return "Context chunks:\n\n" + "\n\n".join(blocks) + f"\n\nQuestion: {query}"
 
 
-def answer(query, k=DEFAULT_TOP_K, audience=None, session_id=None, log=True):
-    """Retrieve, generate, and (by default) log the interaction.
+def answer(query, k=DEFAULT_TOP_K, audience=None, session_id=None):
+    """Retrieve and generate. Returns an AnswerResult and logs nothing.
 
-    Pass log=False from an eval harness - a benchmark run should not be mixed
-    into the record of what real users asked.
+    Never raises for an upstream failure: the error is kept on the result
+    so the caller's log row records it.
     """
     result = AnswerResult(
         query=query,
@@ -302,12 +327,16 @@ def answer(query, k=DEFAULT_TOP_K, audience=None, session_id=None, log=True):
                 input=SYSTEM_PROMPT + build_prompt(query, result.chunks),
             )
             result.text = interaction.output_text
+            if interaction.usage is not None:
+                result.total_input_tokens = interaction.usage.total_input_tokens
+                result.total_output_tokens = interaction.usage.total_output_tokens
+                result.total_thought_tokens = interaction.usage.total_thought_tokens
+                result.total_cached_tokens = interaction.usage.total_cached_tokens
+                result.total_tokens = interaction.usage.total_tokens
         except Exception as error:  # noqa: BLE001 - surface, log, do not crash
             record_failure(result, "generation", error)
         result.generation_ms = int((time.perf_counter() - started) * 1000)
 
-    if log:
-        log_interaction(result)
     return result
 
 
@@ -322,21 +351,6 @@ def record_failure(result, stage, error):
     result.text = "Something went wrong reaching the model. Please try again."
 
 
-def log_interaction(result):
-    """Append one JSON object per line to data/logs/queries.jsonl.
-
-    JSONL rather than a JSON array so that appending never rewrites the file
-    and a crashed process cannot corrupt what came before - the failure mode
-    that put a syntax error in data/log.json.
-
-    The whole retrieved set is recorded with scores, not just the top hit.
-    Recall@k cannot be computed from a log that only kept the winner.
-    """
-    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with LOG_PATH.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(result.to_log_record(), ensure_ascii=False) + "\n")
-
-
 def main():
     query = " ".join(sys.argv[1:]) or input("Enter your prompt: ")
     result = answer(query)
@@ -346,10 +360,17 @@ def main():
     )
     print(f"\nTop {len(result.chunks)} chunks for '{query}': {summary}\n")
     print(result.text)
-    print(
-        f"\n[{result.retrieval_ms}ms retrieval, {result.generation_ms}ms generation"
-        f" -> {LOG_PATH.name}]"
-    )
+
+    # None means the stage never ran, which is different from a stage that
+    # took 0ms, so say so rather than printing a number.
+    timings = [
+        f"{ms}ms {stage}" if ms is not None else f"{stage} skipped"
+        for stage, ms in (
+            ("retrieval", result.retrieval_ms),
+            ("generation", result.generation_ms),
+        )
+    ]
+    print(f"\n[{', '.join(timings)}]")
 
 
 if __name__ == "__main__":

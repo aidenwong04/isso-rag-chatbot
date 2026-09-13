@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from datetime import datetime, timezone
 
 from dotenv import load_dotenv
@@ -18,6 +19,7 @@ load_dotenv()
 
 app = FastAPI()
 
+QUERIES_LOG_PATH = DATA_DIR / "logs" / "queries.jsonl"
 REJECTIONS_LOG_PATH = DATA_DIR / "logs" / "rejections.jsonl"
 
 # The Gemini free tier has a fixed daily quota shared by every user of this
@@ -52,9 +54,23 @@ logging_enabled = os.getenv("LOGGING_ENABLED", "False").lower() == "true"
 # The body parameter cannot be called `request`: slowapi looks up a parameter
 # of that name and requires it to be the starlette Request.
 @app.post("/chat")
-@limiter.limit("10/minute;100/day")
+@limiter.limit("5/minute;50/day")
 def read_query(request: Request, body: ChatRequest):
-    result = answer(body.message, log=logging_enabled)
+    received_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    started = time.perf_counter()
+    result = answer(body.message)
+    total_ms = int((time.perf_counter() - started) * 1000)
+
+    # One row per answered request: the pipeline's fields plus what only the
+    # endpoint can see. total_ms starts inside the handler, so it includes
+    # the first request's index load but not time spent waiting for a
+    # threadpool worker.
+    if logging_enabled:
+        append_jsonl(
+            QUERIES_LOG_PATH,
+            [{"timestamp": received_at, **result.to_log_record(), 
+            "total_ms": total_ms}],
+        )
     return {"response": result.text}
 
 # def, not async def: Starlette runs a sync handler in the threadpool, so the
@@ -114,10 +130,17 @@ def log_rejections(rows):
     is too tight would be invisible.
     """
     timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    REJECTIONS_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with REJECTIONS_LOG_PATH.open("a", encoding="utf-8") as handle:
+    append_jsonl(REJECTIONS_LOG_PATH, [{"timestamp": timestamp, **row} for row in rows])
+
+def append_jsonl(path, rows):
+    """Append one JSON object per line.
+
+    JSONL rather than a JSON array so that appending never rewrites the file
+    and a crashed process cannot corrupt what came before - the failure mode
+    that put a syntax error in data/log.json.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
         handle.write(
-            "".join(
-                json.dumps({"timestamp": timestamp, **row}) + "\n" for row in rows
-            )
+            "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
         )
