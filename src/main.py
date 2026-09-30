@@ -12,15 +12,11 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
-from config import DATA_DIR
 from query import answer
 
 load_dotenv()
 
 app = FastAPI()
-
-QUERIES_LOG_PATH = DATA_DIR / "logs" / "queries.jsonl"
-REJECTIONS_LOG_PATH = DATA_DIR / "logs" / "rejections.jsonl"
 
 # The Gemini free tier has a fixed daily quota shared by every user of this
 # app, so one person in a loop is an outage for everyone.
@@ -66,15 +62,13 @@ def read_query(request: Request, body: ChatRequest):
     # the first request's index load but not time spent waiting for a
     # threadpool worker.
     if logging_enabled:
-        append_jsonl(
-            QUERIES_LOG_PATH,
-            [{"timestamp": received_at, **result.to_log_record(), 
+        log_rows(
+            "query",
+            [{"timestamp": received_at, **result.to_log_record(),
             "total_ms": total_ms}],
         )
     return {"response": result.text}
 
-# def, not async def: Starlette runs a sync handler in the threadpool, so the
-# file write does not block the event loop.
 @app.exception_handler(RequestValidationError)
 def handle_validation_error(request: Request, exc: RequestValidationError):
     log_rejections(
@@ -122,25 +116,23 @@ def handle_rate_limit(request: Request, exc: RateLimitExceeded):
     )
 
 def log_rejections(rows):
-    """Append one row per refused request to data/logs/rejections.jsonl.
+    """Log one row per refused request.
 
     Always on, regardless of LOGGING_ENABLED, because a row never holds the
     message text - only why the request was refused and how long it was.
-    Refused requests never reach answer(), so without this file a limit that
+    Refused requests never reach answer(), so without these rows a limit that
     is too tight would be invisible.
     """
     timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    append_jsonl(REJECTIONS_LOG_PATH, [{"timestamp": timestamp, **row} for row in rows])
+    log_rows("rejection", [{"timestamp": timestamp, **row} for row in rows])
 
-def append_jsonl(path, rows):
-    """Append one JSON object per line.
+def log_rows(stream, rows):
+    """Print one JSON object per row to stdout, tagged with its stream.
 
-    JSONL rather than a JSON array so that appending never rewrites the file
-    and a crashed process cannot corrupt what came before - the failure mode
-    that put a syntax error in data/log.json.
+    Cloud Run forwards stdout to Cloud Logging, which parses each JSON line
+    into a searchable entry (filter on jsonPayload.log="rejection"). Files are
+    not an option there: the container runs as a user that cannot write under
+    /app, and the filesystem is gone when the instance stops.
     """
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8") as handle:
-        handle.write(
-            "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
-        )
+    for row in rows:
+        print(json.dumps({"log": stream, **row}, ensure_ascii=False), flush=True)

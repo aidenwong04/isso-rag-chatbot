@@ -34,11 +34,13 @@ coverage. Read-only by default; `--apply` refreshes `data/raw/` and the
 baseline. Re-embedding is never automatic.
 
 `query.py` is importable: `retrieve(query, k, audience)` and `answer(query)`
-return structured results, and every answer appends a row to
+return structured results, and each result carries a log record with the
 model ids, latency, token spend and the corpus commit. `answer()` itself logs
-nothing: `POST /chat` in `main.py` writes one row per answered request when
-`LOGGING_ENABLED` is on, so eval runs and CLI use stay out of the record of
-what real users asked. Query logs are gitignored.
+nothing: `POST /chat` in `main.py` prints one JSON row per answered request to
+stdout when `LOGGING_ENABLED` is on, so eval runs and CLI use stay out of the
+record of what real users asked. Refused requests (bad input, rate limited)
+are always logged, without the message text. On Cloud Run, stdout lands in
+Cloud Logging.
 
 `Dockerfile` builds the `/chat` API for Cloud Run, with `chunks.json` baked
 into the image so code and corpus deploy and roll back together.
