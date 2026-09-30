@@ -5,6 +5,8 @@ A RAG (retrieval-augmented generation) chatbot for Columbia's International Stud
 Learning project focused on RAG techniques - chunking, embeddings, retrieval, and LLM integration.
 If it works out, may reach out to ISSO about actual use.
 
+live at: https://isso-rag.vercel.app/#ask
+
 ## Structure
 
 - `data/` - raw and processed ISSO source content, embeddings, and monitor state
