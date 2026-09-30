@@ -25,13 +25,14 @@ app = FastAPI()
 # instance scales to zero and are not shared between instances. They are a
 # placeholder until the counters move to Firestore.
 #
-# Keyed on client IP, but behind Firebase Hosting and Cloud Run that is the
-# proxy's address unless uvicorn is told which X-Forwarded-For entry to trust.
-# Verify request.client.host against a known IP after the first deploy.
+# Keyed on client IP. Behind Cloud Run that is the proxy's address unless
+# uvicorn is told which X-Forwarded-For entry to trust - see the Dockerfile.
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 
-@app.get("/healthz")
+# Not /healthz: Cloud Run's front end answers some paths ending in "z" with
+# its own 404, so the request never reaches the app.
+@app.get("/health")
 async def read_health():
     return {"Health": "alive"}
 

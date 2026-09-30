@@ -33,4 +33,12 @@ WORKDIR /app/src
 
 # Cloud Run sets PORT (8080 unless configured). exec makes uvicorn PID 1 so
 # it receives SIGTERM directly and shuts down cleanly when an instance stops.
-CMD exec uvicorn main:app --host 0.0.0.0 --port "${PORT:-8080}"
+#
+# On Cloud Run every request arrives from a proxy at a 169.254.x.x link-local
+# address, with the real client appended to X-Forwarded-For. Trusting only
+# that range makes uvicorn take the rightmost address that is not the proxy,
+# so request.client.host (and the per-IP rate limit) is the real client. "*"
+# would take the leftmost entry instead, which any client can forge. Outside
+# Cloud Run no peer is in that range, so the header is ignored.
+CMD exec uvicorn main:app --host 0.0.0.0 --port "${PORT:-8080}" \
+    --forwarded-allow-ips 169.254.0.0/16
