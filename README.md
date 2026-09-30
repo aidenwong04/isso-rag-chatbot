@@ -47,8 +47,9 @@ Cloud Logging.
 `Dockerfile` builds the `/chat` API for Cloud Run, with `chunks.json` baked
 into the image so code and corpus deploy and roll back together.
 
-Next: a small web front end over `answer()`, then an eval set built from real
-queries. See `docs/evaluation-plan.md`.
+`web/` is the front end over `/chat`, live at https://isso-rag.vercel.app.
+
+Next: an eval set built from real queries. See `docs/evaluation-plan.md`.
 
 ## Deploys
 
