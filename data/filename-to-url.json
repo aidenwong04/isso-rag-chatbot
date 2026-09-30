@@ -1,12 +1,12 @@
 {
-    "applying-visa-students.html": "https://isso.columbia.edu/content/applying-visa-students",
-    "applying-your-i-20ds-2019.html": "https://isso.columbia.edu/content/applying-your-i-20ds-2019",
-    "applying-your-transfer-i-20.html": "https://isso.columbia.edu/content/applying-your-transfer-i-20",
-    "entering-us-f-j-students.html": "https://isso.columbia.edu/content/entering-us-f-j-students",
-    "frequently-asked-questions-newly-admitted-students.html": "https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students",
-    "glass.html": "https://isso.columbia.edu/glass",
-    "incoming-student-programs.html": "https://isso.columbia.edu/content/incoming-student-programs",
-    "reporting-your-arrival-students.html": "https://isso.columbia.edu/content/reporting-your-arrival-students",
-    "resources-students.html": "https://isso.columbia.edu/content/resources-students",
-    "your-first-weeks-students.html": "https://isso.columbia.edu/content/your-first-weeks-students"
+    "applying-visa-students.html": {"url": "https://isso.columbia.edu/content/applying-visa-students", "archived": false},
+    "applying-your-i-20ds-2019.html": {"url": "https://isso.columbia.edu/content/applying-your-i-20ds-2019", "archived": false},
+    "applying-your-transfer-i-20.html": {"url": "https://isso.columbia.edu/content/applying-your-transfer-i-20", "archived": false},
+    "entering-us-f-j-students.html": {"url": "https://isso.columbia.edu/content/entering-us-f-j-students", "archived": false},
+    "frequently-asked-questions-newly-admitted-students.html": {"url": "https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students", "archived": false},
+    "glass.html": {"url": "https://isso.columbia.edu/glass", "archived": false},
+    "incoming-student-programs.html": {"url": "https://isso.columbia.edu/content/incoming-student-programs", "archived": false},
+    "reporting-your-arrival-students.html": {"url": "https://isso.columbia.edu/content/reporting-your-arrival-students", "archived": false},
+    "resources-students.html": {"url": "https://isso.columbia.edu/content/resources-students", "archived": false},
+    "your-first-weeks-students.html": {"url": "https://isso.columbia.edu/content/your-first-weeks-students", "archived": false}
 }

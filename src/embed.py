@@ -1,7 +1,7 @@
 """Embed every chunk in data/processed/*.json with Gemini and write a single
 local index file: data/embeddings/chunks.json.
 
-Each record: {id, source, url, heading, text, breadcrumb, audience, embedding}.
+Each record: {id, source, url, heading, text, breadcrumb, audience, archived, embedding}.
 Only heading and text are embedded; the rest is metadata for filtering and citation.
 
 Requires GEMINI_API_KEY (get one at https://aistudio.google.com/apikey),
@@ -50,14 +50,14 @@ def load_records():
                 f"{key} has no entry in {URL_MAP_PATH.name} - "
                 f"every chunk must carry a citable source URL"
             )
-        url = url_map[key]
+        entry = url_map[key]
 
         for i, chunk in enumerate(chunks):
             records.append(
                 {
                     "id": f"{chunk_path.stem}::{i}",
                     "source": chunk_path.stem,
-                    "url": url,
+                    "url": entry["url"],
                     "heading": chunk["heading"],
                     "text": chunk["text"],
                     # Carried for filtering and citation, never embedded -
@@ -66,6 +66,9 @@ def load_records():
                     # would dilute the vector without helping retrieval.
                     "breadcrumb": chunk.get("breadcrumb", []),
                     "audience": chunk.get("audience"),
+                    # A page that left the sitemap stays indexed but is never
+                    # retrieved - see retrieve() in query.py.
+                    "archived": entry["archived"],
                 }
             )
 

@@ -239,6 +239,8 @@ def retrieve(query, k=DEFAULT_TOP_K, audience=None):
     absence of a stated audience is not evidence of a mismatch. Nothing calls
     this with an audience yet - which corpus a version serves is a per-version
     decision, and this is only the hook.
+
+    Chunks from archived pages (gone from the sitemap) are never candidates.
     """
     records, matrix = load_index()
     query_vector = embed_query(query)
@@ -247,15 +249,15 @@ def retrieve(query, k=DEFAULT_TOP_K, audience=None):
         np.linalg.norm(query_vector) * np.linalg.norm(matrix, axis=1)
     )
 
-    candidates = range(len(records))
+    candidates = [i for i in range(len(records)) if not records[i].get("archived")]
     if audience is not None:
         candidates = [
             i
             for i in candidates
             if records[i].get("audience") in (audience, None)
         ]
-        if not candidates:
-            return []
+    if not candidates:
+        return []
 
     ranked = sorted(candidates, key=lambda i: scores[i], reverse=True)[:k]
     return [

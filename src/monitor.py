@@ -337,7 +337,7 @@ def print_report(reports):
 
 
 def report_new_pages(sitemap_lastmod, url_map):
-    known = {url.rstrip("/") for url in url_map.values()}
+    known = {entry["url"].rstrip("/") for entry in url_map.values()}
     candidates = sorted(
         url
         for url in sitemap_lastmod
@@ -363,7 +363,8 @@ def seed_baseline(url_map, baseline):
     disk is correct", which is a claim about the parser, not about ISSO.
     """
     print("seeding baseline from data/raw/ (no network)...")
-    for filename, url in sorted(url_map.items()):
+    for filename, entry in sorted(url_map.items()):
+        url = entry["url"]
         stem = Path(filename).stem
         raw_path = RAW_DIR / filename
         if not raw_path.exists():
@@ -430,7 +431,11 @@ def main():
         return
 
     targets = []
-    for filename, url in sorted(url_map.items()):
+    for filename, entry in sorted(url_map.items()):
+        # An archived page left the sitemap, so there is nothing to fetch.
+        if entry["archived"]:
+            continue
+        url = entry["url"]
         stem = Path(filename).stem
         recorded = baseline["pages"].get(stem, {}).get("lastmod")
         current = sitemap_lastmod.get(url.rstrip("/"))
@@ -454,7 +459,13 @@ def main():
             print(f"    FAILED: {error}", file=sys.stderr)
             continue
 
-        report = check_page(stem, url, html, baseline, sitemap_lastmod)
+        # A page without #main-block (a login wall, an error page served as
+        # 200) raises here. Skip it like a failed fetch rather than end the run.
+        try:
+            report = check_page(stem, url, html, baseline, sitemap_lastmod)
+        except Exception as error:  # noqa: BLE001 - report and keep going
+            print(f"    SKIPPED: {error}", file=sys.stderr)
+            continue
         reports.append(report)
 
         if args.apply:
