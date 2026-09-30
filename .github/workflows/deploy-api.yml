@@ -1,0 +1,114 @@
+# Deploy the /chat API to Cloud Run on every push to main that changes it.
+#
+# The new revision starts with no traffic, is smoke-tested at its own tagged
+# URL, and only then takes 100% of traffic. A failed check leaves the current
+# revision serving.
+#
+# Auth is Workload Identity Federation: GitHub's OIDC token is exchanged for
+# short-lived credentials of github-deployer@, and only for pushes to main of
+# this repository. There is no service account key anywhere.
+
+name: Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/**
+      - Dockerfile
+      - requirements.txt
+      - data/embeddings/chunks.json
+      - .github/workflows/deploy-api.yml
+  workflow_dispatch:
+
+# One deploy at a time, and never cancel one halfway through a traffic switch.
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  PROJECT_ID: isso-rag-chatbot
+  REGION: us-central1
+  SERVICE: isso-rag-chatbot
+  IMAGE: us-central1-docker.pkg.dev/isso-rag-chatbot/cloud-run-source-deploy/isso-rag-chatbot
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/215864209187/locations/global/workloadIdentityPools/github/providers/github-oidc
+          service_account: github-deployer@isso-rag-chatbot.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build and push the image
+        run: |
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+          docker build -t "${IMAGE}:${GITHUB_SHA}" .
+          docker push "${IMAGE}:${GITHUB_SHA}"
+
+      # Only the image changes. The service account, secret, env vars and
+      # scaling settings stay as they are on the service.
+      - name: Deploy a revision with no traffic
+        id: deploy
+        run: |
+          TAG="sha-${GITHUB_SHA::7}"
+          gcloud run deploy "$SERVICE" \
+            --project "$PROJECT_ID" --region "$REGION" \
+            --image "${IMAGE}:${GITHUB_SHA}" \
+            --no-traffic --tag "$TAG" --quiet
+          STATUS=$(gcloud run services describe "$SERVICE" \
+            --project "$PROJECT_ID" --region "$REGION" --format=json)
+          {
+            echo "tag=$TAG"
+            echo "url=$(jq -r --arg t "$TAG" '.status.traffic[] | select(.tag == $t) | .url' <<< "$STATUS")"
+            echo "revision=$(jq -r --arg t "$TAG" '.status.traffic[] | select(.tag == $t) | .revisionName' <<< "$STATUS")"
+          } >> "$GITHUB_OUTPUT"
+
+      # Health, input validation, and one real question through Gemini. The
+      # first request may pay for a cold start, hence the long timeouts.
+      - name: Smoke test the new revision
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set -euo pipefail
+          test "$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 "$URL/health")" = 200
+
+          test "$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -X POST "$URL/chat" \
+            -H 'Content-Type: application/json' -d '{"message": ""}')" = 422
+
+          BODY=$(curl -sf --max-time 120 -X POST "$URL/chat" \
+            -H 'Content-Type: application/json' \
+            -d '{"message": "How do I report my arrival?"}')
+          ANSWER=$(jq -r '.response' <<< "$BODY")
+          echo "$ANSWER"
+          # answer() turns model or retrieval failures into this fixed text
+          # with a 200, so the status code alone would not catch them.
+          if [[ -z "$ANSWER" || "$ANSWER" == "Something went wrong reaching the model."* ]]; then
+            echo "::error::The new revision did not produce an answer."
+            exit 1
+          fi
+
+      - name: Send all traffic to the new revision
+        run: |
+          gcloud run services update-traffic "$SERVICE" \
+            --project "$PROJECT_ID" --region "$REGION" \
+            --to-revisions "${{ steps.deploy.outputs.revision }}=100" --quiet
+
+      # Tags are only for the smoke test; left behind they pile up as
+      # permanently reachable URLs to old revisions.
+      - name: Remove the test tag
+        if: always() && steps.deploy.outputs.tag != ''
+        run: |
+          gcloud run services update-traffic "$SERVICE" \
+            --project "$PROJECT_ID" --region "$REGION" \
+            --remove-tags "${{ steps.deploy.outputs.tag }}" --quiet

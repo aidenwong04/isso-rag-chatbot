@@ -11,6 +11,8 @@ If it works out, may reach out to ISSO about actual use.
 - `docs/` - design and planning documents
 - `src/` - RAG pipeline code (ingestion, embedding, retrieval, chat)
 - `notebooks/` - exploration and experimentation
+- `web/` - static front end for `/chat`, deployed to Vercel
+- `agent/` - coursework agents built on the corpus; not part of the deployed API
 
 ## Pipeline
 
@@ -47,3 +49,12 @@ into the image so code and corpus deploy and roll back together.
 
 Next: a small web front end over `answer()`, then an eval set built from real
 queries. See `docs/evaluation-plan.md`.
+
+## Deploys
+
+The API deploys to Cloud Run from `.github/workflows/deploy-api.yml` on every push to `main` that touches `src/`, `Dockerfile`, `requirements.txt` or `data/embeddings/chunks.json`.
+Each new revision starts with no traffic, is smoke-tested at its own URL (health check, a rejected empty message, one real question), and takes traffic only if all three pass.
+GitHub authenticates through Workload Identity Federation, so no service account key exists.
+
+The front end in `web/` is deployed separately with `npx vercel deploy --prod` from that folder.
+The API only accepts browser requests from the origins in the service's `ALLOWED_ORIGINS` env var.
