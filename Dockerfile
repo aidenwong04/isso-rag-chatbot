@@ -25,6 +25,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ src/
 COPY data/embeddings/chunks.json data/embeddings/chunks.json
 
+# The commit the image was built from, recorded on every request log row.
+# The deploy workflow passes it; a local build leaves it empty.
+ARG APP_COMMIT=""
+ENV APP_COMMIT=${APP_COMMIT}
+
 RUN useradd --system --no-create-home app
 USER app
 

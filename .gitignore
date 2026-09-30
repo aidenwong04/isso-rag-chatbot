@@ -14,3 +14,7 @@ data/logs/
 
 # Vercel project link, created by `vercel deploy`
 .vercel/
+
+# Firestore emulator output
+firestore-debug.log
+firebase-debug.log

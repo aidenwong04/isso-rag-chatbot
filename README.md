@@ -39,12 +39,18 @@ baseline. Re-embedding is never automatic.
 
 `query.py` is importable: `retrieve(query, k, audience)` and `answer(query)`
 return structured results, and each result carries a log record with the
-model ids, latency, token spend and the corpus commit. `answer()` itself logs
-nothing: `POST /chat` in `main.py` prints one JSON row per answered request to
-stdout when `LOGGING_ENABLED` is on, so eval runs and CLI use stay out of the
-record of what real users asked. Refused requests (bad input, rate limited)
-are always logged, without the message text. On Cloud Run, stdout lands in
-Cloud Logging.
+model ids, per-stage latency, token spend, the retrieved chunk ids and scores,
+and a hash of the corpus. `answer()` itself logs nothing, so eval runs and CLI
+use stay out of the record of real traffic.
+
+`POST /chat` in `main.py` writes one row per answered request to the Firestore
+`requests` collection, stamped with the commit that built the image. The
+student's question and the answer text are included only when `LOG_QUERY_TEXT`
+is on, which it is not in production. Firestore rules deny all client access;
+only the backend's service account can read or write. Refused requests (bad
+input, rate limited) are printed to stdout, without the message text, and land
+in Cloud Logging. Locally, set `FIRESTORE_EMULATOR_HOST` to log to the
+emulator (`firebase emulators:start --only firestore`).
 
 `Dockerfile` builds the `/chat` API for Cloud Run, with `chunks.json` baked
 into the image so code and corpus deploy and roll back together.

@@ -62,7 +62,7 @@ jobs:
 
       - name: Build and push the image
         run: |
-          docker build -t "${IMAGE}:${GITHUB_SHA}" .
+          docker build --build-arg "APP_COMMIT=${GITHUB_SHA}" -t "${IMAGE}:${GITHUB_SHA}" .
           docker push "${IMAGE}:${GITHUB_SHA}"
 
       # Only the image changes. The service account, secret, env vars and

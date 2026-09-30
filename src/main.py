@@ -13,6 +13,7 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
+from firestore_client import log_request
 from query import answer
 
 load_dotenv()
@@ -65,14 +66,21 @@ class ChatRequest(BaseModel):
 
     message: str = Field(min_length = 1, max_length = 1000, description = "The user's query message.")
 
-logging_enabled = os.getenv("LOGGING_ENABLED", "False").lower() == "true"
+# Every answered request is logged to Firestore, but the student's question
+# and the answer text only when this is set. Everything else on the row
+# (latency, tokens, retrieved chunk ids and scores, versions) carries no text.
+log_query_text = os.getenv("LOG_QUERY_TEXT", "false").lower() == "true"
+
+# Which code produced a row. The deploy workflow bakes the commit into the
+# image; a local run has none.
+app_commit = os.getenv("APP_COMMIT") or None
 
 # The body parameter cannot be called `request`: slowapi looks up a parameter
 # of that name and requires it to be the starlette Request.
 @app.post("/chat")
 @limiter.limit("5/minute;50/day")
 def read_query(request: Request, body: ChatRequest):
-    received_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    received_at = datetime.now(timezone.utc)
     started = time.perf_counter()
     result = answer(body.message)
     total_ms = int((time.perf_counter() - started) * 1000)
@@ -80,13 +88,14 @@ def read_query(request: Request, body: ChatRequest):
     # One row per answered request: the pipeline's fields plus what only the
     # endpoint can see. total_ms starts inside the handler, so it includes
     # the first request's index load but not time spent waiting for a
-    # threadpool worker.
-    if logging_enabled:
-        log_rows(
-            "query",
-            [{"timestamp": received_at, **result.to_log_record(),
-            "total_ms": total_ms}],
-        )
+    # threadpool worker. A datetime (not a string) is stored as a native
+    # Firestore timestamp, so rows can be ordered and filtered by time.
+    log_request({
+        "timestamp": received_at,
+        **result.to_log_record(include_text=log_query_text),
+        "total_ms": total_ms,
+        "app_commit": app_commit,
+    })
     return {"response": result.text}
 
 @app.exception_handler(RequestValidationError)
@@ -138,7 +147,7 @@ def handle_rate_limit(request: Request, exc: RateLimitExceeded):
 def log_rejections(rows):
     """Log one row per refused request.
 
-    Always on, regardless of LOGGING_ENABLED, because a row never holds the
+    Always on, regardless of LOG_QUERY_TEXT, because a row never holds the
     message text - only why the request was refused and how long it was.
     Refused requests never reach answer(), so without these rows a limit that
     is too tight would be invisible.

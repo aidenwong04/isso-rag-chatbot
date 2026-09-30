@@ -30,9 +30,9 @@ CLI (prints, never logs):  python src/query.py
 Also accepts the question as arguments:  python src/query.py how do i report my arrival
 """
 
+import hashlib
 import json
 import os
-import subprocess
 import sys
 import time
 import uuid
@@ -103,6 +103,7 @@ ABSTENTION_HINTS = (
 )
 
 _index_cache = None
+_corpus_sha256 = None
 _client_cache = None
 
 
@@ -147,7 +148,7 @@ class AnswerResult:
         lowered = self.text.lower()
         return any(hint in lowered for hint in ABSTENTION_HINTS)
 
-    def to_log_record(self):
+    def to_log_record(self, include_text=False):
         """The pipeline's half of a log row.
 
         No timestamp: the caller stamps the row with when the request
@@ -155,11 +156,13 @@ class AnswerResult:
 
         The whole retrieved set is recorded with scores, not just the top
         hit. Recall@k cannot be computed from a log that only kept the winner.
+
+        The question and answer text are left out unless include_text is set:
+        they are students' immigration questions, and everything else on the
+        row is enough to see latency, cost and retrieval behaviour.
         """
-        return {
+        record = {
             "session_id": self.session_id,
-            "query": self.query,
-            "answer": self.text,
             "looks_like_abstention": self.looks_like_abstention,
             "retrieved": [chunk.to_log_record() for chunk in self.chunks],
             "retrieval_ms": self.retrieval_ms,
@@ -172,29 +175,25 @@ class AnswerResult:
             "total_thought_tokens": self.total_thought_tokens,
             "total_cached_tokens": self.total_cached_tokens,
             "total_tokens": self.total_tokens,
-            "corpus_commit": corpus_commit(),
+            "corpus_sha256": corpus_version(),
             "corpus_chunks": len(load_index()[0]),
             "error": self.error,
         }
+        if include_text:
+            record["query"] = self.query
+            record["answer"] = self.text
+        return record
 
 
-def corpus_commit():
-    """Short git commit of the working tree, or None outside a repo.
+def corpus_version():
+    """First 12 hex digits of the SHA-256 of chunks.json.
 
     A logged interaction that cannot be tied back to the corpus that produced
-    it is not usable as evidence later.
+    it is not usable as evidence later. Hashing the file itself identifies the
+    corpus exactly, and works inside the container, where there is no git.
     """
-    try:
-        result = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            cwd=DATA_DIR.parent,
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-    except (OSError, subprocess.SubprocessError):
-        return None
-    return result.stdout.strip() or None if result.returncode == 0 else None
+    load_index()
+    return _corpus_sha256
 
 
 def get_client():
@@ -210,10 +209,12 @@ def get_client():
 
 def load_index():
     """Return (records, embedding matrix), loaded once per process."""
-    global _index_cache
+    global _index_cache, _corpus_sha256
     if _index_cache is None:
-        records = json.loads(EMBEDDING_PATH.read_text(encoding="utf-8"))
+        raw = EMBEDDING_PATH.read_bytes()
+        records = json.loads(raw)
         matrix = np.array([record["embedding"] for record in records])
+        _corpus_sha256 = hashlib.sha256(raw).hexdigest()[:12]
         _index_cache = (records, matrix)
     return _index_cache
 
