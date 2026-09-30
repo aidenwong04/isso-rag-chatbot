@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>isso-rag · Answers from ISSO pages for incoming students</title>
+  <meta name="description" content="An unofficial Q&amp;A assistant for Columbia international students. Answers come only from ten ISSO pages and link to their source.">
+  <meta name="theme-color" content="#f5f1e8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <a class="wordmark" href="#ask" aria-label="isso-rag, home">isso-rag</a>
+    <nav aria-label="Views">
+      <ul class="tabs">
+        <li><a class="tabs__link" href="#ask" data-view-link="ask">Ask</a></li>
+        <li><a class="tabs__link" href="#how" data-view-link="how">How it works</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Ask: the tool itself. -->
+    <section class="view ask" id="ask" data-view="ask" aria-labelledby="ask-title">
+      <div class="ask__main">
+        <h1 class="display" id="ask-title">Ask about your visa, I-20, or arrival.</h1>
+        <p class="lede">Answers come only from ten ISSO pages for incoming students, and each one links to the page it came from.</p>
+
+        <ol class="thread" id="thread" aria-live="polite"></ol>
+
+        <div class="starters" id="starters">
+          <p class="starters__label" id="starters-label">Try one of these</p>
+          <ul class="starters__list" aria-labelledby="starters-label">
+            <li><button class="starter" type="button">Do I need a visa if I’m Canadian?</button></li>
+            <li><button class="starter" type="button">How do I report my arrival?</button></li>
+            <li><button class="starter" type="button">How do I transfer my I-20 to Columbia?</button></li>
+          </ul>
+        </div>
+
+        <form class="composer" id="composer" novalidate>
+          <label class="composer__label" for="question">Your question</label>
+          <div class="composer__row">
+            <textarea class="composer__input" id="question" name="message" rows="1"
+              aria-describedby="question-help" autocomplete="off" spellcheck="true"></textarea>
+            <button class="btn" id="send" type="submit" data-state="idle" disabled>
+              <span class="btn__spinner" aria-hidden="true"></span>
+              <span class="btn__label">Ask</span>
+            </button>
+          </div>
+          <div class="composer__meta">
+            <p class="composer__help" id="question-help">Enter to send, Shift + Enter for a new line.</p>
+            <p class="composer__count" id="count" aria-live="polite"><span id="count-value">0</span> / 1,000</p>
+          </div>
+        </form>
+      </div>
+
+      <aside class="scope" aria-labelledby="scope-title">
+        <h2 class="scope__title" id="scope-title">What it has read</h2>
+        <ul class="scope__list">
+          <li><a href="https://isso.columbia.edu/content/applying-visa-students">Applying for a Visa</a></li>
+          <li><a href="https://isso.columbia.edu/content/applying-your-i-20ds-2019">Applying for Your I-20 or DS-2019</a></li>
+          <li><a href="https://isso.columbia.edu/content/applying-your-transfer-i-20">Applying for Your Transfer I-20</a></li>
+          <li><a href="https://isso.columbia.edu/content/entering-us-f-j-students">Entering the U.S.</a></li>
+          <li><a href="https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students">Newly Admitted Student FAQs</a></li>
+          <li><a href="https://isso.columbia.edu/glass">GLASS</a></li>
+          <li><a href="https://isso.columbia.edu/content/incoming-student-programs">Incoming International Student Programs</a></li>
+          <li><a href="https://isso.columbia.edu/content/reporting-your-arrival-students">Reporting Your Arrival</a></li>
+          <li><a href="https://isso.columbia.edu/content/resources-students">Resources for Students</a></li>
+          <li><a href="https://isso.columbia.edu/content/your-first-weeks-students">Your First Weeks</a></li>
+        </ul>
+        <p class="scope__note">If the answer isn’t on these pages, it says so instead of guessing. For anything about your own case, contact ISSO.</p>
+      </aside>
+    </section>
+
+    <!-- How it works: the pipeline, for anyone curious how the answers are made. -->
+    <section class="view how" id="how" data-view="how" aria-labelledby="how-title" hidden>
+      <h1 class="display" id="how-title">From your question to a cited answer.</h1>
+      <p class="lede">A retrieval-augmented pipeline over a saved copy of ten ISSO pages. The model only sees the passages retrieval hands it, and must cite one of them.</p>
+
+      <ol class="pipeline">
+        <li class="node">
+          <code class="node__code">POST /chat</code>
+          <h2 class="node__title">Your question</h2>
+          <p>Trimmed and capped at 1,000 characters. Each visitor gets 5 questions a minute and 50 a day.</p>
+        </li>
+        <li class="node">
+          <code class="node__code">embed_query()</code>
+          <h2 class="node__title">Embed</h2>
+          <p>The question becomes a 768-number vector with <span class="nowrap">gemini-embedding-001</span>, the same model that embedded the pages.</p>
+        </li>
+        <li class="node">
+          <code class="node__code">retrieve()</code>
+          <h2 class="node__title">Retrieve</h2>
+          <p>Cosine similarity against 182 passages cut from the ten pages. The closest 3 go forward.</p>
+        </li>
+        <li class="node">
+          <code class="node__code">answer()</code>
+          <h2 class="node__title">Generate</h2>
+          <p><span class="nowrap">gemini-3.1-flash-lite</span> answers using only those 3 passages, and says so when they don’t cover the question.</p>
+        </li>
+        <li class="node">
+          <code class="node__code">More info</code>
+          <h2 class="node__title">Cite</h2>
+          <p>The answer ends with the heading and link of the passage it used, copied from the source, never invented.</p>
+        </li>
+      </ol>
+
+      <div class="notes">
+        <section class="note" aria-labelledby="note-current">
+          <h2 class="note__title" id="note-current">Keeping it current</h2>
+          <p>A monitor script compares the saved pages with the live site: the sitemap’s last-modified date first, then a hash of the page body, then its layout blocks and how much text the parser captured. Pages that leave the sitemap are archived and never retrieved again.</p>
+        </section>
+        <section class="note" aria-labelledby="note-stack">
+          <h2 class="note__title" id="note-stack">Stack</h2>
+          <p>Python and FastAPI on Google Cloud Run, Gemini for embeddings and answers, brute-force cosine search in NumPy. This page is plain HTML, CSS and JavaScript.</p>
+          <p><a class="link" href="https://github.com/aidenwong04/isso-rag-chatbot">Read the source on GitHub</a></p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot-line">
+    <p>An unofficial student project, not affiliated with Columbia University or ISSO, and not legal advice. For your own situation, contact <a href="https://isso.columbia.edu">ISSO</a> directly.</p>
+  </footer>
+
+  <template id="entry-template">
+    <li class="entry">
+      <p class="entry__q"></p>
+      <div class="entry__a"></div>
+    </li>
+  </template>
+</body>
+</html>

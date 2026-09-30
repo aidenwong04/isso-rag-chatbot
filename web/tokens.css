@@ -1,0 +1,72 @@
+/* Hallmark · tokens · theme: Almanac · paper-band: light · display: roman-serif · accent: chromatic-other (green, hue 165) */
+
+:root {
+  /* Paper and ink, tinted toward a warm oat anchor (hue 85). */
+  --color-paper:    oklch(96.5% 0.012 85);
+  --color-paper-2:  oklch(93.5% 0.014 85);
+  --color-paper-3:  oklch(90.5% 0.016 85);
+  --color-rule:     oklch(84%   0.012 85);
+  --color-rule-strong: oklch(62% 0.012 80);
+  --color-neutral:  oklch(50%   0.010 80);
+  --color-muted:    oklch(38%   0.010 75);
+  --color-ink:      oklch(21%   0.012 70);
+
+  /* One accent: a deep reading-room green. Links, focus, the primary button. */
+  --color-accent:       oklch(45% 0.095 165);
+  --color-accent-hover: oklch(38% 0.090 165);
+  --color-accent-wash:  oklch(92% 0.030 165);
+  --color-on-accent:    oklch(97% 0.010 85);
+  --color-focus:        oklch(50% 0.130 165);
+
+  /* Status. Error pairs with a glyph and text, never colour alone. */
+  --color-error:      oklch(47% 0.150 32);
+  --color-error-wash: oklch(94% 0.025 40);
+
+  /* Type: Newsreader display, IBM Plex Sans body, IBM Plex Mono outlier
+     (wordmark + pipeline labels only). */
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-body:    "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-outlier: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  /* Major-third scale from a 17px body. */
+  --text-xs:   0.8rem;
+  --text-sm:   0.9rem;
+  --text-base: 1.0625rem;
+  --text-md:   1.3125rem;
+  --text-lg:   1.625rem;
+  --text-xl:   2.0625rem;
+  --text-display: clamp(2.125rem, 3.2vw + 1.1rem, 3.5rem);
+
+  --leading-display: 1.08;
+  --leading-body: 1.6;
+
+  /* 4pt spacing scale. */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --rule-hair: 1px solid var(--color-rule);
+  --rule-strong: 1px solid var(--color-rule-strong);
+
+  --control-height: 2.75rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+
+  --z-base: 1;
+  --z-raised: 10;
+  --z-sticky: 200;
+}

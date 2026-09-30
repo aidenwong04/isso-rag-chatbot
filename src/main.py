@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, ConfigDict
 from slowapi import Limiter
@@ -17,6 +18,24 @@ from query import answer
 load_dotenv()
 
 app = FastAPI()
+
+# The web front end is served from another origin (Vercel) and calls /chat
+# straight from the browser. A proxy on that origin would avoid CORS, but then
+# every request would reach Cloud Run from the proxy's IPs and all visitors
+# would share one rate-limit bucket. Origins are comma-separated, e.g.
+# ALLOWED_ORIGINS=https://isso-rag.vercel.app,http://localhost:5173
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"],
+    max_age=600,
+)
 
 # The Gemini free tier has a fixed daily quota shared by every user of this
 # app, so one person in a loop is an outage for everyone.

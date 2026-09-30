@@ -11,3 +11,6 @@ data/processed/
 data/logs/
 *.db
 .DS_Store
+
+# Vercel project link, created by `vercel deploy`
+.vercel/
