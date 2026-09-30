@@ -59,5 +59,5 @@ The API deploys to Cloud Run from `.github/workflows/deploy-api.yml` on every pu
 Each new revision starts with no traffic, is smoke-tested at its own URL (health check, a rejected empty message, one real question), and takes traffic only if all three pass.
 GitHub authenticates through Workload Identity Federation, so no service account key exists.
 
-The front end in `web/` is deployed separately with `npx vercel deploy --prod` from that folder.
+The front end in `web/` deploys to Vercel on every push to `main`: the Vercel project is connected to this repo with its Root Directory set to `web`.
 The API only accepts browser requests from the origins in the service's `ALLOWED_ORIGINS` env var.
