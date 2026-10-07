@@ -28,7 +28,8 @@ monitor.py     the live site         -> drift report vs data/state/baseline.json
 
 ## Status
 
-Working end to end over a 10-page corpus (182 chunks), embedded with
+Working end to end over a 36-page corpus (595 chunks: 19 student pages, 16
+scholar pages and 1 with no stated audience), embedded with
 `gemini-embedding-001` at 768 dimensions, retrieved by brute-force cosine.
 
 `monitor.py` detects when the corpus has drifted from the live site, in four

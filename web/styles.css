@@ -419,7 +419,14 @@ a:hover { color: var(--color-accent-hover); text-decoration-thickness: 2px; }
   font-size: var(--text-sm);
 }
 @media (min-width: 60rem) {
-  .scope { position: sticky; top: var(--space-lg); }
+  /* The list is long enough to exceed a short laptop viewport, and a sticky
+     box taller than the viewport hides its own tail, so it scrolls inside. */
+  .scope {
+    position: sticky;
+    top: var(--space-lg);
+    max-height: calc(100dvh - 2 * var(--space-lg));
+    overflow-y: auto;
+  }
 }
 
 .scope__title {

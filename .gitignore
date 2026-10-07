@@ -18,3 +18,6 @@ data/logs/
 # Firestore emulator output
 firestore-debug.log
 firebase-debug.log
+
+# Pages fetched for review, not yet in the corpus
+data/staging/

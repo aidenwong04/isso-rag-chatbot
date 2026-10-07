@@ -226,7 +226,481 @@
         "paragraph--type--text"
       ],
       "checked": "2026-09-10T21:12:08+00:00"
+    },
+    "about-your-visa": {
+      "url": "https://isso.columbia.edu/content/about-your-visa",
+      "lastmod": "2026-01-29T17:43Z",
+      "hash": "938395f4e6e2765f1960f06e039e9cf57b2e80038930baa71c1d26c076c75253",
+      "coverage": 1.0,
+      "chunks": 8,
+      "blocks": 17,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "campus-work-f-and-j-students": {
+      "url": "https://isso.columbia.edu/content/campus-work-f-and-j-students",
+      "lastmod": "2026-08-04T13:35Z",
+      "hash": "d12e2751279c46dbff5e1bfad8966e79113aa68409723f46bf5296a38173c6bb",
+      "coverage": 1.0,
+      "chunks": 12,
+      "blocks": 22,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text",
+        "paragraph--type--video"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "cap-gap-opt-extension": {
+      "url": "https://isso.columbia.edu/content/cap-gap-opt-extension",
+      "lastmod": "2026-08-04T13:36Z",
+      "hash": "677f050287d94f35457da12bf2e8f70f66006789fcb2166bccdd27c3fc291c19",
+      "coverage": 1.0,
+      "chunks": 20,
+      "blocks": 32,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "changing-f-1-student-status-us": {
+      "url": "https://isso.columbia.edu/content/changing-f-1-student-status-us",
+      "lastmod": "2024-12-20T18:21Z",
+      "hash": "47535dba15327f64aefa32604e2fbc119e593e8afa53441f4322a9ddd2ecd22b",
+      "coverage": 1.0,
+      "chunks": 13,
+      "blocks": 27,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "j-1-academic-training": {
+      "url": "https://isso.columbia.edu/content/j-1-academic-training",
+      "lastmod": "2026-06-22T13:33Z",
+      "hash": "b1506755ea0dd3d540c9822a0d04b3365aa793b92570123604ba54352dee237b",
+      "coverage": 1.0,
+      "chunks": 21,
+      "blocks": 48,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "documents-needed-travel-student": {
+      "url": "https://isso.columbia.edu/content/documents-needed-travel-student",
+      "lastmod": "2026-04-27T20:49Z",
+      "hash": "03757244f684df02b5d8845af5bfae195a10b1976d8c8d6a66ea5587de011150",
+      "coverage": 1.0,
+      "chunks": 20,
+      "blocks": 47,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text",
+        "paragraph--type--video"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "extending-begin-new-program-f-j-students": {
+      "url": "https://isso.columbia.edu/content/extending-begin-new-program-f-j-students",
+      "lastmod": "2026-07-22T14:02Z",
+      "hash": "cb539f35c145b1135e4c94ea9c37a8b93d6bbdffb23ab16bc6cc3af0888bc31d",
+      "coverage": 1.0,
+      "chunks": 9,
+      "blocks": 24,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "extending-your-current-program-f-and-j-students": {
+      "url": "https://isso.columbia.edu/content/extending-your-current-program-f-and-j-students",
+      "lastmod": "2026-08-18T13:30Z",
+      "hash": "828350f473a0980fdc95bc5a075e4d77ce26c460afdfc60f11b9efb355aa198c",
+      "coverage": 1.0,
+      "chunks": 10,
+      "blocks": 19,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "f-1-cpt-curricular-practical-training": {
+      "url": "https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training",
+      "lastmod": "2026-09-27T19:44Z",
+      "hash": "9aebc3e026578bdd114102763e7143fa1bc1583f48fe4d8976e7011ccbb70fbb",
+      "coverage": 1.0,
+      "chunks": 45,
+      "blocks": 83,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-card-group-media",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-media-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--image",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "f-1-opt-optional-practical-training-after-your-degree-program": {
+      "url": "https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program",
+      "lastmod": "2026-09-28T14:55Z",
+      "hash": "d3796970ad12879f8cc421943ee6bc3e516d5ef95f23063479643879a5e0d084",
+      "coverage": 1.0,
+      "chunks": 53,
+      "blocks": 113,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-card-group-media",
+        "paragraph--type--cu-events-feed",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-media-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--image",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text",
+        "paragraph--type--video"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "applying-visa-scholars": {
+      "url": "https://isso.columbia.edu/content/applying-visa-scholars",
+      "lastmod": "2026-03-06T16:05Z",
+      "hash": "2599119e79c94d5e317dd1dcb5a72898490df415d1efd62097aae31ffa5e8043",
+      "coverage": 1.0,
+      "chunks": 15,
+      "blocks": 40,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text",
+        "paragraph--type--video"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "documents-needed-travel-scholar": {
+      "url": "https://isso.columbia.edu/content/documents-needed-travel-scholar",
+      "lastmod": "2026-08-14T16:50Z",
+      "hash": "f94a799429827ce06e9e6e9c39b95a9eff3f56fa5020d83e3bb0d7325a878055",
+      "coverage": 1.0,
+      "chunks": 17,
+      "blocks": 40,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:41+00:00"
+    },
+    "entering-us-scholars": {
+      "url": "https://isso.columbia.edu/content/entering-us-scholars",
+      "lastmod": "2026-01-29T16:48Z",
+      "hash": "b3d6151cb8cefea84057790935239197552adc032d54c59a3fb8b650c6fba825",
+      "coverage": 1.0,
+      "chunks": 20,
+      "blocks": 48,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-card-group-media",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-media-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--image",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "extending-your-status-scholars": {
+      "url": "https://isso.columbia.edu/content/extending-your-status-scholars",
+      "lastmod": "2026-02-12T14:56Z",
+      "hash": "21fa5a67725c0b73ce6c56ffda497215b12930ba73f3516020414bb1bfe5e064",
+      "coverage": 1.0,
+      "chunks": 3,
+      "blocks": 13,
+      "components": [
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "guidelines-maintaining-status-scholars": {
+      "url": "https://isso.columbia.edu/content/guidelines-maintaining-status-scholars",
+      "lastmod": "2026-02-11T20:25Z",
+      "hash": "c81bdcf04872e368189b7d43dbc5edfc7a66d84850862c956bff5c46e1cb5a48",
+      "coverage": 1.0,
+      "chunks": 23,
+      "blocks": 31,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "j-1-scholar-health-insurance": {
+      "url": "https://isso.columbia.edu/content/j-1-scholar-health-insurance",
+      "lastmod": "2026-02-11T20:41Z",
+      "hash": "b90289f6feab39373604d4fe44753cbf51a291316b847b5738aabffb5969f8b8",
+      "coverage": 1.0,
+      "chunks": 13,
+      "blocks": 28,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "leaving-columbia-scholars": {
+      "url": "https://isso.columbia.edu/content/leaving-columbia-scholars",
+      "lastmod": "2026-02-12T15:01Z",
+      "hash": "b016f6808f6ba4804216f34bb93e2d9db4d373192dacb5a6c0cd00b363f8040d",
+      "coverage": 1.0,
+      "chunks": 6,
+      "blocks": 11,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "permission-j-1-scholar-lectures-or-consultations": {
+      "url": "https://isso.columbia.edu/content/permission-j-1-scholar-lectures-or-consultations",
+      "lastmod": "2025-10-21T15:24Z",
+      "hash": "1ce70d12bb352847b82cb1b072aaa41418086cea7d6ef977d5da2d26ce2dc039",
+      "coverage": 1.0,
+      "chunks": 4,
+      "blocks": 6,
+      "components": [
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "reporting-your-arrival-j-scholars": {
+      "url": "https://isso.columbia.edu/content/reporting-your-arrival-j-scholars",
+      "lastmod": "2026-01-29T17:35Z",
+      "hash": "982af80c8447757ddd6a2ca6720f79c2f8b802a8a22ca81e7b49da3b3e3c203a",
+      "coverage": 1.0,
+      "chunks": 12,
+      "blocks": 33,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-card-group-media",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-media-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--image",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "resources-scholars": {
+      "url": "https://isso.columbia.edu/content/resources-scholars",
+      "lastmod": "2026-09-29T16:35Z",
+      "hash": "a23de2e02ea0c215c1f4970a75afffd4aa0cf1e79181f99121bf7626bae3da17",
+      "coverage": 1.0,
+      "chunks": 33,
+      "blocks": 64,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-card-group-media",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-media-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--image",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "scholar-employment-overview": {
+      "url": "https://isso.columbia.edu/content/scholar-employment-overview",
+      "lastmod": "2021-03-15T16:12Z",
+      "hash": "f8593e1067a75f46e9efa5c409fc2ffee4c3a65a8b32e02b7f6d0b3a0e65cb1d",
+      "coverage": 1.0,
+      "chunks": 14,
+      "blocks": 23,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "transferring-columbia-h-1-o-1-tn-e-3-scholar": {
+      "url": "https://isso.columbia.edu/content/transferring-columbia-h-1-o-1-tn-e-3-scholar",
+      "lastmod": "2026-01-29T16:40Z",
+      "hash": "4dd4d95257dddda3ce2d9f317a80aaa1b2d45d6ea87b78e47c5716309371f9cf",
+      "coverage": 1.0,
+      "chunks": 6,
+      "blocks": 13,
+      "components": [
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "transferring-your-sevis-record-columbia-j-1-scholar": {
+      "url": "https://isso.columbia.edu/content/transferring-your-sevis-record-columbia-j-1-scholar",
+      "lastmod": "2026-07-24T18:15Z",
+      "hash": "c409519552ce90137e698110ac4fe3f1bd48b1e7a38d078f966768820fb25a2b",
+      "coverage": 1.0,
+      "chunks": 6,
+      "blocks": 21,
+      "components": [
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "travel-signatures-and-ds-2019-reprints-j-scholar": {
+      "url": "https://isso.columbia.edu/content/travel-signatures-and-ds-2019-reprints-j-scholar",
+      "lastmod": "2026-02-09T15:49Z",
+      "hash": "a2b0fa97f8059049e87257ccad83932c5dc2dbdfca2b97dcbd84bf7531bd4084",
+      "coverage": 1.0,
+      "chunks": 8,
+      "blocks": 16,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "visa-sponsorship-policy-scholars-professors-researchers": {
+      "url": "https://isso.columbia.edu/content/visa-sponsorship-policy-scholars-professors-researchers",
+      "lastmod": "2026-01-29T16:31Z",
+      "hash": "b6ecf7d6aaa0fc47aa55f23de3010be3425ebd4af77f814ee894c93f9b69426f",
+      "coverage": 1.0,
+      "chunks": 10,
+      "blocks": 13,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--single-image",
+        "paragraph--type--table",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
+    },
+    "your-first-weeks-scholars": {
+      "url": "https://isso.columbia.edu/content/your-first-weeks-scholars",
+      "lastmod": "2025-04-16T18:09Z",
+      "hash": "c4ec93aeceb5ceadab49cceffc695f36e4ae625755cde70640ccc3fb4e6ba4d7",
+      "coverage": 1.0,
+      "chunks": 12,
+      "blocks": 20,
+      "components": [
+        "paragraph--type--cu-accordion",
+        "paragraph--type--cu-accordion-item",
+        "paragraph--type--cu-card-group",
+        "paragraph--type--cu-info-card",
+        "paragraph--type--cu-page-slice",
+        "paragraph--type--cu-page-slice-item",
+        "paragraph--type--cu-paragraph-hero",
+        "paragraph--type--single-image",
+        "paragraph--type--text"
+      ],
+      "checked": "2026-10-07T23:14:42+00:00"
     }
   },
-  "updated": "2026-09-10T21:12:08+00:00"
+  "updated": "2026-10-07T23:14:42+00:00"
 }

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>isso-rag · Answers from ISSO pages for incoming students</title>
-  <meta name="description" content="An unofficial Q&amp;A assistant for Columbia international students. Answers come only from ten ISSO pages and link to their source.">
+  <meta name="description" content="An unofficial Q&amp;A assistant for Columbia international students. Answers come only from ISSO's pages for students and link to their source.">
   <meta name="theme-color" content="#f5f1e8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +31,7 @@
     <section class="view ask" id="ask" data-view="ask" aria-labelledby="ask-title">
       <div class="ask__main">
         <h1 class="display" id="ask-title">Ask about your visa, I-20, or arrival.</h1>
-        <p class="lede">Answers come only from ten ISSO pages for incoming students, and each one links to the page it came from.</p>
+        <p class="lede">Answers come only from ISSO’s pages for students, and each one links to the page it came from.</p>
 
         <ol class="thread" id="thread" aria-live="polite"></ol>
 
@@ -64,13 +64,23 @@
       <aside class="scope" aria-labelledby="scope-title">
         <h2 class="scope__title" id="scope-title">What it has read</h2>
         <ul class="scope__list">
-          <li><a href="https://isso.columbia.edu/content/applying-visa-students">Applying for a Visa</a></li>
+          <li><a href="https://isso.columbia.edu/content/about-your-visa">About Your Visa</a></li>
           <li><a href="https://isso.columbia.edu/content/applying-your-i-20ds-2019">Applying for Your I-20 or DS-2019</a></li>
           <li><a href="https://isso.columbia.edu/content/applying-your-transfer-i-20">Applying for Your Transfer I-20</a></li>
+          <li><a href="https://isso.columbia.edu/content/applying-visa-students">Applying for a Visa</a></li>
+          <li><a href="https://isso.columbia.edu/content/extending-begin-new-program-f-j-students">Beginning a New Program</a></li>
+          <li><a href="https://isso.columbia.edu/content/cap-gap-opt-extension">Cap-Gap OPT Extension</a></li>
+          <li><a href="https://isso.columbia.edu/content/changing-f-1-student-status-us">Change Your Status in the U.S.</a></li>
+          <li><a href="https://isso.columbia.edu/content/documents-needed-travel-student">Documents Needed to Travel (Students)</a></li>
           <li><a href="https://isso.columbia.edu/content/entering-us-f-j-students">Entering the U.S.</a></li>
-          <li><a href="https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students">Newly Admitted Student FAQs</a></li>
+          <li><a href="https://isso.columbia.edu/content/extending-your-current-program-f-and-j-students">Extending Your Current Program</a></li>
+          <li><a href="https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training">F-1 CPT (Curricular Practical Training)</a></li>
+          <li><a href="https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program">F-1 OPT After Your Program</a></li>
           <li><a href="https://isso.columbia.edu/glass">GLASS</a></li>
           <li><a href="https://isso.columbia.edu/content/incoming-student-programs">Incoming International Student Programs</a></li>
+          <li><a href="https://isso.columbia.edu/content/j-1-academic-training">J-1 Academic Training (AT)</a></li>
+          <li><a href="https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students">Newly Admitted Student FAQs</a></li>
+          <li><a href="https://isso.columbia.edu/content/campus-work-f-and-j-students">On-Campus Work (F and J Students)</a></li>
           <li><a href="https://isso.columbia.edu/content/reporting-your-arrival-students">Reporting Your Arrival</a></li>
           <li><a href="https://isso.columbia.edu/content/resources-students">Resources for Students</a></li>
           <li><a href="https://isso.columbia.edu/content/your-first-weeks-students">Your First Weeks</a></li>
@@ -82,7 +92,7 @@
     <!-- How it works: the pipeline, for anyone curious how the answers are made. -->
     <section class="view how" id="how" data-view="how" aria-labelledby="how-title" hidden>
       <h1 class="display" id="how-title">From your question to a cited answer.</h1>
-      <p class="lede">A retrieval-augmented pipeline over a saved copy of ten ISSO pages. The model only sees the passages retrieval hands it, and must cite one of them.</p>
+      <p class="lede">A retrieval-augmented pipeline over a saved copy of 36 ISSO pages. The model only sees the passages retrieval hands it, and must cite one of them.</p>
 
       <ol class="pipeline">
         <li class="node">
@@ -98,7 +108,7 @@
         <li class="node">
           <code class="node__code">retrieve()</code>
           <h2 class="node__title">Retrieve</h2>
-          <p>Cosine similarity against 182 passages cut from the ten pages. The closest 3 go forward.</p>
+          <p>Cosine similarity against the passages cut from those pages. The corpus holds 595, for students and scholars; this assistant searches the 393 for students. The closest 3 go forward.</p>
         </li>
         <li class="node">
           <code class="node__code">answer()</code>

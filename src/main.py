@@ -71,6 +71,11 @@ class ChatRequest(BaseModel):
 # (latency, tokens, retrieved chunk ids and scores, versions) carries no text.
 log_query_text = os.getenv("LOG_QUERY_TEXT", "false").lower() == "true"
 
+# The corpus also holds guidance for scholars, and the same question has a
+# different right answer for them. The page this API serves is for students,
+# so retrieval is limited to student pages and pages that state no audience.
+CHAT_AUDIENCE = "students"
+
 # Which code produced a row. The deploy workflow bakes the commit into the
 # image; a local run has none.
 app_commit = os.getenv("APP_COMMIT") or None
@@ -82,7 +87,7 @@ app_commit = os.getenv("APP_COMMIT") or None
 def read_query(request: Request, body: ChatRequest):
     received_at = datetime.now(timezone.utc)
     started = time.perf_counter()
-    result = answer(body.message)
+    result = answer(body.message, audience=CHAT_AUDIENCE)
     total_ms = int((time.perf_counter() - started) * 1000)
 
     # One row per answered request: the pipeline's fields plus what only the
@@ -94,6 +99,7 @@ def read_query(request: Request, body: ChatRequest):
         "timestamp": received_at,
         **result.to_log_record(include_text=log_query_text),
         "total_ms": total_ms,
+        "audience": CHAT_AUDIENCE,
         "app_commit": app_commit,
     })
     return {"response": result.text}
