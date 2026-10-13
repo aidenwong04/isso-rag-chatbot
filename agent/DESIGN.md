@@ -67,7 +67,7 @@ agent/
     heldout-a/queries.json
     heldout-b/queries.json
   labels/
-    dev.json                 <- the answer key, outside every --input folder
+    dev.worksheet.json                 <- the answer key, outside every --input folder
 ```
 
 A query set is one target.
