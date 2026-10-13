@@ -1,0 +1,53 @@
+[
+    { 
+        "id": "dev-q01",
+        "text": "what is the difference between an I-20 and an F-1 again?", 
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q02",
+        "text": "what's going on with the latest OPT/CPT regulations and how does that affect me as an F-1 student?", 
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q03",
+        "text": "are there any upcoming social events for F-1 students?",
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q04",
+        "text": "what do I do with my I-20 if i wanna transfer schools?", 
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q05",
+        "text": "what are the steps for my work authorization if i got employed on campus?", 
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q06",
+        "text": "what is a travel signature? if I'm outside the US without one can I get back in?", 
+        "audience": "scholars" 
+    },
+    {
+        "id": "dev-q07",
+        "text": "what are the key points for me to maintain my student status.. what even is status?",
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q08",
+        "text": "why do I need to report my arrival? and what do I need to do to do that?",
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q09",
+        "text": "wheres the best pizzzaaaa",
+        "audience": "students" 
+    },
+    {
+        "id": "dev-q10",
+        "text": "whats a good resource for me to find housing or roomates in new york",
+        "audience": "scholars" 
+    }
+
+]
