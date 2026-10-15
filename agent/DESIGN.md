@@ -71,6 +71,10 @@ agent/
 ```
 
 A query set is one target.
+The scan settings, the `[scan]` config keys, are the corpus version and `k` (decided 2026-09-30).
+The embedding model belongs to the corpus version and is not a key of its own.
+There is no similarity threshold, so an off-topic query still sends `k` alerts to the agent.
+Audience is not a scan key: it is per query, in the query file. Excluding archived chunks is a fixed runtime rule, not a key.
 Each entry has an `id` (`dev-q01`, `heldout-a-q01`: set name plus a zero-padded number), the query `text`, and an `audience`.
 An `alert_id` is the query ID plus the chunk ID, for example `dev-q03::applying-visa-students::0`.
 Report rows are ordered by query ID, then page, then chunk index as an integer.
@@ -111,6 +115,7 @@ flowchart TD
 ```
 
 A crash is not drawn: an unexpected exception in any node jumps to `finalize` through the `finally` block, with terminal status `crashed`.
+In code, `finalize` is not a LangGraph node. The routing functions send planned endings to `END`, and the runner (`agent/src/run.py`) calls `finalize` in its `finally` block, so the same code finishes planned and crashed runs. The `crashed` default lives in the runner, not in the graph state, so a set `terminal_status` in the state always means a planned ending.
 
 ## A3. Nodes and edges
 
@@ -119,8 +124,8 @@ A crash is not drawn: an unexpected exception in any node jumps to `finalize` th
 | Node | What it does | Writes state? |
 |---|---|---|
 | `discovery` | Runs once. Retrieves the top `k` chunks for every query, builds the alert list, and prefills every report row as `pending` | Yes: the alert list and the rows |
-| `next_alert` | Picks the next `pending` alert and resets the per-alert state, or finds none left | Yes: resets per-alert state |
-| `guard` | Runs before every model call. Checks the token budget, `max_steps` and the no-progress streak | No: it only reads and routes |
+| `next_alert` | Picks the next `pending` alert and resets the per-alert state, or finds none left | Yes: resets per-alert state, or sets `terminal_status` to `completed` when none is left |
+| `guard` | Runs before every model call. Checks the token budget, `max_steps` and the no-progress streak | Only `terminal_status`, and only when a limit is hit. A routing function after it sends the run to `finalize` when a status is set, otherwise to `model` |
 | `model` | Sends the alert's prompt and message history to the model, with a tool call required | Yes: appends the reply, adds the reported token usage |
 | `dispatcher` | Validates the model's reply and routes it to the tool it named. Refuses a reply with no usable tool call | Yes: the refusal, when it refuses |
 | `read`, `read_neighbors`, `classify` | Run the tool (contracts in A5) and write its result | Yes: shown set, no-growth streak, `classify` refusal count, the settled row |
@@ -132,7 +137,7 @@ A crash is not drawn: an unexpected exception in any node jumps to `finalize` th
 |---|---|---|---|
 | `discovery` → `next_alert` | Fixed | Runtime | Nothing |
 | `next_alert` → `guard` or `finalize` | Conditional | Runtime | Whether a `pending` alert is left |
-| `guard` → `model` or `finalize` | Conditional | Runtime | The budget, the step count, the no-progress streak |
+| `guard` → `model` or `finalize` | Conditional | Runtime | Whether the guard set `terminal_status` (it checks the budget, the step count and the no-progress streak) |
 | `model` → `dispatcher` | Fixed | Runtime | Nothing: every reply goes to the dispatcher |
 | `dispatcher` → `read`, `read_neighbors` or `classify` | Conditional | Model | Which tool the model named. Recorded as a `routing` event with `by: "model"` |
 | `dispatcher` → `guard` (refusal) | Conditional | Runtime | The reply has no usable tool call. Recorded as a `routing` event with `by: "runtime"` |
@@ -149,9 +154,9 @@ A crash is not drawn: an unexpected exception in any node jumps to `finalize` th
 | Step count | Per run | Sum. One step is one model call | `model` | No |
 | Trace | Per run | Append | Every node | No |
 | Message history sent to the model | Per alert (a fresh context for each alert) | Append | `model`, the tool nodes | Yes: it is the model's input |
-| Shown chunk set | Per alert. Starts with the alert's own chunk | Union | `read`, `read_neighbors`; reset by `next_alert` | No (it sees the chunks themselves, in its message history) |
-| No-growth streak | Per alert | Custom: add one on a step that shows nothing new, reset to zero when the set grows | The tool nodes and the dispatcher's refusal; reset by `next_alert` | No |
-| `classify` refusal count | Per alert | Sum | `classify`; reset by `next_alert` | Yes: each refusal message says which attempt it was, out of 3 |
+| Shown chunk set | Per alert. Starts with the alert's own chunk | None (overwrite): the tool node returns the whole new set | `read`, `read_neighbors`; reset by `next_alert` | No (it sees the chunks themselves, in its message history) |
+| No-growth streak | Per alert | None (overwrite). The tool node compares the shown set before the step with the ids it returned, and writes the old streak plus one when nothing new was shown, or zero when the set grew | The tool nodes and the dispatcher's refusal; reset to zero by `next_alert` | No |
+| `classify` refusal count | Per alert | None (overwrite): the tool node writes the new count | `classify`; reset by `next_alert` | Yes: each refusal message says which attempt it was, out of 3 |
 
 ## A5. Tool contracts
 
@@ -196,7 +201,7 @@ An `error` row has `label: null`, `evidence: []`, and a rationale written by the
 ## A6. Terminal statuses
 
 `terminal_status` is set to `crashed` before the `try`, and each planned ending overwrites it.
-The `finally` block (the `finalize` node) settles leftover `pending` rows, writes the terminal event, then writes `report.json`.
+The `finally` block in the runner calls `finalize`, which settles leftover `pending` rows, writes the terminal event, then writes `report.json`.
 
 | Terminal status | Trigger | Alert in progress | Unstarted alerts |
 |---|---|---|---|

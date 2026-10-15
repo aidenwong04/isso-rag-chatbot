@@ -35,6 +35,17 @@ class Alert:
         # both join on it.
         return f"{self.query_id}::{self.chunk.chunk_id}"
 
+    @property
+    def page(self):
+        return self.chunk.source
+
+    @property
+    def chunk_index(self):
+        # The part of the chunk id after the last "::", as an int so that 2
+        # sorts before 14.
+        return int(self.chunk.chunk_id.rsplit("::", 1)[1])
+
+
 def discover(file_path, k):
     """ 
     returns a list of alerts [alert1, alert2, alert3]

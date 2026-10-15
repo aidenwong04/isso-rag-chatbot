@@ -242,3 +242,84 @@ def classify(label: int, rationale: str, evidence: list, shown_set: set):
 
 # -------------------------------
 
+
+
+# ----- TOOL DEFINITIONS -------
+# What the model is told about each tool, in the OpenAI Chat Completions
+# format. Kept next to the tools so a tool and its description cannot drift
+# apart. The schemas describe the arguments; they do not enforce them (no
+# "strict" mode), so a bad call still reaches the tool and is refused there,
+# where the refusal is counted and traced.
+
+CHUNK_ID_SCHEMA = {
+    "type": "string",
+    "description": "A chunk id of the form page::index, for example about-your-visa::3.",
+}
+
+TOOL_DEFINITIONS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "read",
+            "description": "Show one chunk: its text, heading, breadcrumb and audience.",
+            "parameters": {
+                "type": "object",
+                "properties": {"chunk_id": CHUNK_ID_SCHEMA},
+                "required": ["chunk_id"],
+                "additionalProperties": False,
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "read_neighbors",
+            "description": (
+                "Show the chunks just before and after a chunk on the same page, "
+                "for context that was cut off. Returns fewer at the start or end of a page. "
+                "To see further, call it again on a neighbor's id."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {"chunk_id": CHUNK_ID_SCHEMA},
+                "required": ["chunk_id"],
+                "additionalProperties": False,
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "classify",
+            "description": (
+                "Hand in your judgment for the passage you are working on. "
+                "This ends your work on it once it is accepted."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "type": "integer",
+                        "enum": [0, 1],
+                        "description": "1 if the passage is relevant to the question, 0 if not.",
+                    },
+                    "rationale": {
+                        "type": "string",
+                        "maxLength": 600,
+                        "description": "Why, in at most 600 characters, pointing to what the chunk does or does not say.",
+                    },
+                    "evidence": {
+                        "type": "array",
+                        "items": CHUNK_ID_SCHEMA,
+                        "minItems": 1,
+                        "description": "Ids of the chunks your judgment relies on. Only chunks you have been shown for this passage.",
+                    },
+                },
+                "required": ["label", "rationale", "evidence"],
+                "additionalProperties": False,
+            },
+        },
+    },
+]
+
+# -------------------------------

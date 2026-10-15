@@ -1,0 +1,6 @@
+# The HW1 agent's dependencies, on top of the API's.
+# Kept out of the root requirements.txt, which builds the deployed API image.
+#   env/bin/pip install -r requirements.txt -r agent/requirements.txt
+-r ../requirements.txt
+langgraph==1.2.15
+openai==3.31.0
