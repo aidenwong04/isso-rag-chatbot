@@ -192,6 +192,11 @@ The run continues.
 
 An `error` row has `label: null`, `evidence: []`, and a rationale written by the runtime that says what went wrong.
 
+In `report.json`, evidence is a list of `{path, line}` pairs, the same way the row itself points at its chunk (decided 2026-10-15).
+The model cites chunk IDs, which `classify` validates against the shown set; the runtime converts them to pairs when it builds the row, with `line` an integer.
+
+After the dispatcher, the run goes to `next_alert` when the current alert's row is no longer `pending` (accepted, or settled as `error` on the third refused `classify`), and to `guard` otherwise.
+
 | Cause | Rationale the runtime writes |
 |---|---|
 | 3 refused `classify` attempts | "classify was refused 3 times; last reason: <the last refusal message>." |

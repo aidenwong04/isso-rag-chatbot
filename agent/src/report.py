@@ -19,6 +19,42 @@ def build_row(alert):
         "evidence": [],
     }
 
+def chunk_pair(chunk_id):
+    """A chunk id ("page::3") as the report points at chunks: {"path": "page", "line": 3}."""
+    page, index = chunk_id.rsplit("::", 1)
+    return {"path": page, "line": int(index)}
+
+
+def classified_row(pending, label, rationale, evidence):
+    """
+    The alert's pending row, settled with the model's accepted judgment.
+
+    pending  - the row discovery wrote; it is copied, never changed.
+    evidence - chunk ids that classify has already validated against the
+               shown set, converted here to {path, line} pairs.
+    """
+    return {
+        **pending,
+        "status": "classified",
+        "label": label,
+        "rationale": rationale,
+        "evidence": [chunk_pair(chunk_id) for chunk_id in evidence],
+    }
+
+
+def error_row(pending, rationale):
+    """
+    The alert's pending row, settled as error. The rationale is written by the
+    runtime and says what went wrong (A5, "Error rows").
+    """
+    return {
+        **pending,
+        "status": "error",
+        "label": None,
+        "rationale": rationale,
+        "evidence": [],
+    }
+
 
 def finalize(state, terminal_status, error=None):
     """
@@ -41,6 +77,6 @@ def finalize(state, terminal_status, error=None):
     for alert_id, row in state["report_rows"].items():
         if row["status"] == "pending":
             row["status"] = terminal_status
-            
+
     # todos 2 and 3...
     raise NotImplementedError
