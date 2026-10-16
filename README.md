@@ -7,7 +7,7 @@ If it works out, may reach out to ISSO about actual use.
 
 live at: https://isso-rag.vercel.app/#ask
 
-**COMS E6998 HW1 graders:** the agent's setup, run command and configs are in [`agent/README.md`](agent/README.md).
+**COMS E6998 HW1 graders:** the agent's setup, run command and configs are in [`agent/README.md`](agent/README.md), and the design report is [`agent/REPORT.md`](agent/REPORT.md).
 
 ## Structure
 

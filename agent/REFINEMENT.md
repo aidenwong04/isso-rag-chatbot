@@ -10,7 +10,7 @@ Precision and recall are over classified rows only.
 ## v1 baseline: `agent/runs/dev-full-v1/`
 
 - Code: commit `fdccb6b` (the opening message gives only the chunk id; the shown set starts empty).
-- Config: `configs/full.toml` (gpt-4.1-mini-2025-04-14, k = 3, max_tokens 600000, temperature not set, so the API default of 1).
+- Config: `agent/configs/full.toml` (gpt-4.1-mini-2025-04-14, k = 3, max_tokens 600000, temperature not set, so the API default of 1).
 - Terminal status `completed`; used_tokens 82686 (input 78900, output 3786, cache_read 16128).
 - Tool calls: 38 `read`, 30 `classify`, 0 `read_neighbors`.
 
@@ -109,7 +109,7 @@ The v2 prompt has to say both.
 ## v2 run: `agent/runs/dev-full-v2/`
 
 - Code: commit `dbf647f` (the v2 changes above).
-- Config: `configs/full.toml`, now with `temperature = 0`.
+- Config: `agent/configs/full.toml`, now with `temperature = 0`.
 - Terminal status `completed`; used_tokens 74319 (input 70818, output 3501, cache_read 2176), against 82686 for v1.
 - Tool calls: 30 `read`, 30 `classify`, 0 `read_neighbors`, no refusals; every alert took exactly two model calls (read the passage, then classify).
 

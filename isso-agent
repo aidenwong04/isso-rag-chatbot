@@ -1,6 +1,0 @@
-#!/bin/sh
-# The agent's command (handout section 5). Runs agent/src/cli.py with the
-# repo's virtualenv, from wherever it is called.
-#   ./isso-agent --input agent/queries/dev --output agent/runs/dev-full --config configs/full.toml
-here="$(cd "$(dirname "$0")" && pwd)"
-exec "$here/env/bin/python" "$here/agent/src/cli.py" "$@"

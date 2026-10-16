@@ -11,7 +11,8 @@ The mechanisms the handout asks for are the same; only the domain changes.
 | Label 1 / 0 | The chunk is / is not relevant to the query, for the asker (`agent/DESIGN.md`, "Relevance") |
 | `.git/`, the answer key, safe twins | Archived pages, embeddings, the answer key, other alerts' conversations (A7) |
 
-The design report notes are in `agent/DESIGN.md`, and the record of how the dev labels were used to refine the agent is in `agent/REFINEMENT.md`.
+The design report is [`agent/REPORT.md`](REPORT.md).
+Its working notes are in `agent/DESIGN.md`, and the record of how the dev labels were used to refine the agent is in `agent/REFINEMENT.md`.
 
 ## Setup from a fresh clone
 
@@ -40,12 +41,13 @@ The agent reads two environment variables, from the shell or from a `.env` file 
 ## Running the agent
 
 ```bash
-./isso-agent --input <query set folder> --output <out dir> --config <config.toml>
+agent/isso-agent --input <query set folder> --output <out dir> --config <config.toml>
 ```
 
-`./isso-agent` is a shell script at the repository root that runs `agent/src/cli.py` with the `env/` virtualenv.
+`agent/isso-agent` is a shell script that runs `agent/src/cli.py` with the `env/` virtualenv at the repository root.
+Run the commands below from the repository root: `--input`, `--output` and `--config` are paths relative to where you run it.
 It writes `report.json` and `trace.jsonl` into `<out dir>`, creating the folder if needed.
-`--output` may be left out: the run then goes to `agent/runs/<query set>-<config name>`, for example `agent/runs/dev-full` for `--input agent/queries/dev --config configs/full.toml`.
+`--output` may be left out: the run then goes to `agent/runs/<query set>-<config name>`, for example `agent/runs/dev-full` for `--input agent/queries/dev --config agent/configs/full.toml`.
 A second run into the same folder replaces both files.
 
 The three targets:
@@ -59,12 +61,12 @@ The three targets:
 For example, the six runs (three targets, two configs):
 
 ```bash
-./isso-agent --input agent/queries/dev --output agent/runs/dev-full --config configs/full.toml
-./isso-agent --input agent/queries/dev --output agent/runs/dev-low --config configs/low.toml
-./isso-agent --input agent/queries/heldout-a --output agent/runs/heldout-a-full --config configs/full.toml
-./isso-agent --input agent/queries/heldout-a --output agent/runs/heldout-a-low --config configs/low.toml
-./isso-agent --input agent/queries/heldout-b --output agent/runs/heldout-b-full --config configs/full.toml
-./isso-agent --input agent/queries/heldout-b --output agent/runs/heldout-b-low --config configs/low.toml
+agent/isso-agent --input agent/queries/dev --output agent/runs/dev-full --config agent/configs/full.toml
+agent/isso-agent --input agent/queries/dev --output agent/runs/dev-low --config agent/configs/low.toml
+agent/isso-agent --input agent/queries/heldout-a --output agent/runs/heldout-a-full --config agent/configs/full.toml
+agent/isso-agent --input agent/queries/heldout-a --output agent/runs/heldout-a-low --config agent/configs/low.toml
+agent/isso-agent --input agent/queries/heldout-b --output agent/runs/heldout-b-full --config agent/configs/full.toml
+agent/isso-agent --input agent/queries/heldout-b --output agent/runs/heldout-b-low --config agent/configs/low.toml
 ```
 
 The command prints the run's terminal status and exits 0 for every planned ending (`completed`, `budget_exhausted`, `max_steps`, `no_progress`).
@@ -75,8 +77,8 @@ A crash during a run still writes both files, with the terminal status `crashed`
 
 Two configs are committed:
 
-- `configs/full.toml`: the full budget, enough for a complete run of any of the three targets.
-- `configs/low.toml`: `max_tokens = 20000`, which runs out partway through every target, so some rows end `budget_exhausted` (B7).
+- `agent/configs/full.toml`: the full budget, enough for a complete run of any of the three targets.
+- `agent/configs/low.toml`: `max_tokens = 20000`, which runs out partway through every target, so some rows end `budget_exhausted` (B7).
 
 Both configs share one `[scan]` block, because all three targets are query sets over the same pinned corpus:
 
@@ -127,8 +129,10 @@ Every run cited in the report is committed unedited under `agent/runs/`, with th
 ## Layout
 
 ```
-isso-agent              the command (shell script)
-configs/                full.toml, low.toml
+agent/isso-agent        the command (shell script)
+agent/configs/          full.toml, low.toml
+agent/README.md         this file
+agent/REPORT.md         the design report (A1-A7, C2, C3)
 agent/DESIGN.md         design notes: behaviours, graph, state, tools, termination, withholding
 agent/REFINEMENT.md     how the dev labels were used to refine the agent
 agent/queries/          the three targets (one folder each, holding queries.json)

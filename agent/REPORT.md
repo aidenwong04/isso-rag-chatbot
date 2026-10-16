@@ -2,7 +2,7 @@
 
 COMS E6998-019, Fall 2026.
 This assignment substitutes the Bandit alert classifier with relevance classification over the ISSO RAG corpus.
-Setup and run instructions are in [`agent/README.md`](agent/README.md); the working design notes are in [`agent/DESIGN.md`](agent/DESIGN.md).
+Setup and run instructions are in [`agent/README.md`](README.md); the working design notes are in [`agent/DESIGN.md`](DESIGN.md).
 
 ## The task, mapped onto the handout
 
@@ -196,7 +196,7 @@ Restoring needs nothing: the original corpus is only ever read.
 
 ### Label counts per target
 
-From the final full and low runs of the submitted code (`agent/runs/`, all with `configs/full.toml` or `configs/low.toml`):
+From the final full and low runs of the submitted code (`agent/runs/`, all with `agent/configs/full.toml` or `agent/configs/low.toml`):
 
 | Target | Alerts | Full: label 1 / 0 / null | Low: label 1 / 0 / null | Low: terminal status |
 |---|---|---|---|---|
@@ -216,7 +216,7 @@ Against the hand labels, over classified rows (`agent/src/score.py`):
 
 ### How the labels were used to refine the agent
 
-The full log is in [`agent/REFINEMENT.md`](agent/REFINEMENT.md).
+The full log is in [`agent/REFINEMENT.md`](REFINEMENT.md).
 In short:
 
 - **v1 misses were all false positives.**
@@ -270,8 +270,6 @@ sequenceDiagram
 
 ## C3. Limitations and alternatives
 
-<!-- DRAFT: rewrite in your own words and check every claim against your own understanding before submitting. -->
-
 ### Limitations of this design
 
 - **Labels depend on one model's reading of the rules.**
@@ -287,20 +285,24 @@ sequenceDiagram
 
 ### Alternatives
 
-| | This agent (bounded tool loop per alert) | Fixed workflow | Plan-and-execute | Supervisor / worker |
-|---|---|---|---|---|
-| **Shape** | One model loops over read / read_neighbors / classify until it classifies; the runtime bounds it | One model call per alert with the chunk and fixed context (e.g. the chunk plus both neighbours) already in the prompt | A planner decides up front which chunks to read for the alert; an executor reads them; a final call classifies | A supervisor assigns alerts to worker agents (possibly in parallel) and reviews or aggregates their labels |
-| **Cost** | Variable: 2 calls per alert in v2 (about 2.5k tokens), up to 10 when it reads a page; the history is resent on every call | Lowest and predictable: 1 call per alert, but always pays for the context, needed or not | At least 2 calls per alert (plan, classify), plus the plan's tokens; avoids resending a growing history | Highest: worker calls plus supervisor calls; a review pass roughly doubles it |
-| **Latency** | Sequential calls per alert, alerts one after another | Lowest; alerts are independent, so trivially parallel | Plan then execute; little room to adapt mid-alert | Parallel workers cut wall time; the supervisor is a serial bottleneck |
-| **Coordination** | None between alerts; within an alert, all in one message history | None | The plan must be right before any evidence is seen; re-planning adds calls | The most: assignment, shared rules, merging and resolving disagreements |
-| **Failure behaviour** | Bounded by the guard (budget, steps, no progress) and the 3-attempt cap; failures stay inside one alert | Simple: a bad reply is one error row; cannot recover by reading more | A bad plan reads the wrong chunks and nothing corrects it | A worker failure can be retried or reassigned, but a supervisor failure stalls the run; more places to fail |
+This agent is a ReAct-style loop without the reasoning step: per alert, the model acts (calls a tool), observes the runtime's result, and repeats until it classifies, but with a tool call required on every reply it never writes down its reasoning between steps (the "act-only" variant in the ReAct paper, Yao et al., 2022).
+The three alternatives below keep the same tools, budget, failsafes and trace format, and change how the work is organised.
 
-For this task, a fixed workflow is a strong baseline: v2's agent already behaves almost like one (read, then classify), so the loop's value is in the few alerts that need more context, which v2 rarely uses.
-Plan-and-execute fits poorly, because whether more context is needed is only known after reading the chunk.
-A supervisor/worker design would mainly buy parallelism and a second opinion on gray-area labels, at the highest cost and coordination burden.
+| | This agent (act-only loop per alert) | ReAct (reasoning traces) | Plan-and-execute | Parallel subagents (supervisor / worker) |
+|---|---|---|---|---|
+| **Shape** | One model loops over read / read_neighbors / classify until it classifies; the runtime bounds the loop | The same loop, but before each tool call the model writes a short thought (what it knows, what it still needs), kept in its history | Per alert, a planner call decides up front which chunks to read; the runtime reads them; a final call classifies from what was read | A supervisor hands alerts to worker agents that run at the same time, each one an act-only loop on one alert, and collects their rows |
+| **Cost** | 2 calls per alert in v2 (about 2.5k tokens per alert); up to 10 when it reads a page; the history is resent on every call | Same number of calls, more output tokens per call for the thoughts, and those thoughts are resent as input on every later call | 2 calls per alert minimum (plan, classify); the reads cost no model call, so a plan that reads three chunks is still 2 calls | About the same tokens as this agent, plus the supervisor's own calls if it reviews or reassigns work |
+| **Latency** | Calls in sequence within an alert, and alerts one after another | Slower per call (longer outputs), same structure | Fixed: plan, reads, classify; never more than 2 model round trips per alert | Lowest wall time: alerts are independent, so N workers finish roughly N times sooner |
+| **Coordination** | None between alerts; within an alert, one message history | None | The plan is made before any evidence is seen; adapting to what a read shows needs a re-plan, which is another call | The most: the run-wide token budget and `max_steps` are shared, so workers must check and charge one counter; trace steps must stay strictly increasing across workers; rows are already keyed per alert and insert-once, so settling is safe in parallel |
+| **Failure behaviour** | Bounded by the guard (budget, steps, no progress) and the 3-attempt cap; a failure stays inside one alert | The same bounds; thoughts make a wrong decision visible in the trace (Finding 1 would have been diagnosable from the thoughts instead of reconstructed from the reads) | A bad plan reads the wrong chunks and nothing corrects it within the alert; the no-progress detector has little to watch, since reads are not model steps | One worker's failure is one alert's error row; at the budget cutoff, several alerts are in progress at once and all become `budget_exhausted`, so a cutoff wastes more partly-done work; a supervisor failure stalls the whole run |
+
+What each would change for this task:
+
+- **ReAct with thoughts** is the smallest change and the most useful for refining the agent: the dev misses were diagnosed by reading traces, and thoughts would say why the model read or labeled as it did.
+  It costs output tokens on every call, and the budget in `agent/configs/low.toml` would need retuning.
+- **Plan-and-execute** fits poorly: whether a chunk needs context is only known after reading it, and v2's agent reads the chunk and classifies, so a planner would mostly plan "read the chunk", one extra call for nothing.
+- **Parallel subagents** buy wall time, not quality: the alerts are already independent (each has a fresh context), so the main work is making the shared budget, step count and trace safe under concurrency.
 
 ## Contribution statement
-
-<!-- DRAFT: state accurately who did what. -->
 
 Solo submission.

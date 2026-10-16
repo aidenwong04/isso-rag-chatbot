@@ -1,7 +1,7 @@
 """
 cli - the agent's command line (handout section 5).
 
-    ./isso-agent --input agent/queries/dev --output agent/runs/dev-full --config configs/full.toml
+    agent/isso-agent --input agent/queries/dev --output agent/runs/dev-full --config agent/configs/full.toml
 
 Reads the TOML config, checks it, builds the tracer and the run context, and
 runs the graph once. Writes report.json and trace.jsonl into --output.
@@ -91,7 +91,7 @@ def main():
     parser.add_argument("--config", type=Path, required=True, help="TOML config file")
     args = parser.parse_args()
     if args.output is None:
-        # agent/runs/dev-full for --input agent/queries/dev --config configs/full.toml.
+        # agent/runs/dev-full for --input agent/queries/dev --config agent/configs/full.toml.
         args.output = RUNS_DIR / f"{args.input.name}-{args.config.stem}"
 
     config = load_config(args.config)
