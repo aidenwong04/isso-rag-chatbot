@@ -24,6 +24,11 @@ SUPERSTEPS_PER_MODEL_CALL = 10
 
 
 def run(app, context: RunContext):
+    """
+    context must already hold the run's Tracer: RunContext is frozen, so the
+    caller builds Tracer(output_dir / "trace.jsonl") first and passes it in.
+    run() owns closing it.
+    """
     terminal_status = "crashed"
     last_state = {}
     error = None
@@ -38,5 +43,9 @@ def run(app, context: RunContext):
         error = exc
         raise
     finally:
-        finalize(last_state, terminal_status, error)
+        # Nested, so the trace file is closed even when finalize itself raises.
+        try:
+            finalize(last_state, terminal_status, context, error)
+        finally:
+            context.tracer.close()
     return terminal_status

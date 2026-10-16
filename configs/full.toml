@@ -1,0 +1,16 @@
+# Full budget: enough for a complete run over a 30-alert query set.
+# Calibrate max_tokens from the usage in a real run's trace.
+
+[scan]
+corpus_version = "f186563d6a1e"
+k = 3
+
+[model]
+provider = "openai"
+name = "gpt-4.1-mini-2025-04-14"
+
+[budget]
+max_tokens = 600000
+output_allowance = 1024
+max_steps = 300
+no_progress_limit = 3

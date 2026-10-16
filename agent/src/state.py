@@ -17,22 +17,28 @@ from typing import Annotated, Literal
 from typing_extensions import TypedDict
 
 from discovery import Alert
+from tracer import Tracer
 
 
 @dataclass(frozen=True)
 class RunContext:
     """
     Settings fixed for the whole run, decided by the CLI and config before the
-    graph starts. Nodes read them as runtime.context; they are not state, so
-    no node can change them.
+    graph starts. Nodes and routers read them as runtime.context; they are not
+    state, so no node can replace them. The tracer is the one mutable object
+    here: every node appends to the same instance for the whole run.
     """
 
     input_dir: Path  # the target: a query set folder holding queries.json
+    output_dir: Path  # where report.json and trace.jsonl are written
+    corpus_version: str  # [scan] the pinned corpus (SHA-256 prefix of chunks.json)
     k: int           # [scan] chunks retrieved per query
     model: str       # the OpenAI model id the agent calls
     token_budget : int
+    output_allowance: int  # max output tokens per model call, sent to the provider
     max_steps : int
     no_progress_limit : int
+    tracer: Tracer  # writes trace.jsonl; built by the caller before the run
 
 
 TerminalStatus = Literal["completed", "budget_exhausted", "max_steps", "no_progress", "crashed"]

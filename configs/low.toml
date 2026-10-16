@@ -1,0 +1,16 @@
+# Low budget: runs out partway through a run, so some rows end budget_exhausted (B7).
+# At about 1.2k tokens per one-call alert, this classifies about 17 of the 30 dev alerts.
+
+[scan]
+corpus_version = "f186563d6a1e"
+k = 3
+
+[model]
+provider = "openai"
+name = "gpt-4.1-mini-2025-04-14"
+
+[budget]
+max_tokens = 20000
+output_allowance = 1024
+max_steps = 300
+no_progress_limit = 3

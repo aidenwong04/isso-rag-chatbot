@@ -1,5 +1,6 @@
-from discovery import Alert
+import json
 
+from discovery import Alert
 
 def build_row(alert):
     """The pending row discovery writes for an alert, before the agent sees it."""
@@ -55,8 +56,61 @@ def error_row(pending, rationale):
         "evidence": [],
     }
 
+def budget_exhausted_row(pending):
+    """
+    The alert's pending row, settled because the run stopped before the alert
+    was classified, whichever limit stopped it (A6).
+    """
+    return {
+        **pending,
+        "status": "budget_exhausted",
+        "label": None,
+        "rationale": "",
+        "evidence": [],
+    }
 
-def finalize(state, terminal_status, error=None):
+
+CRASH_RATIONALE = "The run crashed before this alert was classified."
+NO_PROGRESS_RATIONALE = "No new chunk was shown in {n} consecutive steps."
+
+
+def settle_leftover(pending, terminal_status, in_progress, context):
+    """
+    The settled row for an alert still pending when the run ended, by the A6
+    table: the alert in progress and the unstarted alerts can differ.
+    """
+    if terminal_status == "crashed":
+        return error_row(pending, CRASH_RATIONALE)
+    if terminal_status == "no_progress" and in_progress:
+        return error_row(pending, NO_PROGRESS_RATIONALE.format(n=context.no_progress_limit))
+    if terminal_status in ("budget_exhausted", "max_steps", "no_progress"):
+        return budget_exhausted_row(pending)
+    # completed means next_alert found no pending row, so one here is a bug.
+    raise ValueError(f"row {pending['alert_id']} is pending at terminal status {terminal_status}")
+
+
+def row_order(row):
+    """Section 6 order: path as a plain string, then line as an int, then test_id."""
+    return (row["path"], row["line"], row["test_id"])
+
+
+def write_report(rows, used_tokens, terminal_status, context):
+    alerts = sorted(rows.values(), key=row_order)
+    report = {
+        "target": {"input": str(context.input_dir)},
+        "scan": {"corpus_version": context.corpus_version, "k": context.k, "alert_count": len(alerts)},
+        "budget": {
+            "max_tokens": context.token_budget,
+            "used_tokens": used_tokens,
+            "exhausted": terminal_status == "budget_exhausted",
+        },
+        "alerts": alerts,
+    }
+    with open(context.output_dir / "report.json", "w") as f:
+        json.dump(report, f, indent=2)
+
+
+def finalize(state, terminal_status, context, error=None):
     """
     The end of every run, planned or not (A6). Called once, from the runner's
     finally block, never as a graph node, so it also runs after a crash.
@@ -66,17 +120,37 @@ def finalize(state, terminal_status, error=None):
                       run failed before discovery finished.
     terminal_status - completed, budget_exhausted, max_steps, no_progress or
                       crashed.
+    context         - the RunContext: output_dir, the tracer, and the settings
+                      the report echoes.
     error           - the exception, when terminal_status is crashed.
 
-    To do, in this order (A6):
-    1. settle every row still pending, by terminal_status (the A6 table:
-       the alert in progress and the unstarted alerts can differ)
-    2. write the terminal event to the trace
-    3. write report.json, rows sorted by test_id, path, then line
+    In this order (A6):
+    1. settle every row still pending, each with its state_change event
+    2. write report.json
+    3. write the terminal event, always last. If writing report.json fails,
+       the run is crashed after all, and the terminal event says so.
     """
-    for alert_id, row in state["report_rows"].items():
-        if row["status"] == "pending":
-            row["status"] = terminal_status
+    tracer = context.tracer
+    rows = dict(state.get("report_rows", {}))
+    current = state.get("current_alert_id")
 
-    # todos 2 and 3...
-    raise NotImplementedError
+    for alert_id, row in rows.items():
+        if row["status"] != "pending":
+            continue
+        settled = settle_leftover(row, terminal_status, alert_id == current, context)
+        rows[alert_id] = settled
+        tracer.emit(
+            "state_change",
+            alert_id=alert_id,
+            node="finalize",
+            alert_status=settled["status"],
+            label=settled["label"],
+        )
+
+    try:
+        write_report(rows, state.get("used_tokens", 0), terminal_status, context)
+    except BaseException:
+        terminal_status = "crashed"
+        raise
+    finally:
+        tracer.emit("terminal", status=terminal_status)
