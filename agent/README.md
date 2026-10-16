@@ -45,6 +45,7 @@ The agent reads two environment variables, from the shell or from a `.env` file 
 
 `./isso-agent` is a shell script at the repository root that runs `agent/src/cli.py` with the `env/` virtualenv.
 It writes `report.json` and `trace.jsonl` into `<out dir>`, creating the folder if needed.
+`--output` may be left out: the run then goes to `agent/runs/<query set>-<config name>`, for example `agent/runs/dev-full` for `--input agent/queries/dev --config configs/full.toml`.
 A second run into the same folder replaces both files.
 
 The three targets:
@@ -58,12 +59,12 @@ The three targets:
 For example, the six runs (three targets, two configs):
 
 ```bash
-./isso-agent --input agent/queries/dev --output runs/dev-full --config configs/full.toml
-./isso-agent --input agent/queries/dev --output runs/dev-low --config configs/low.toml
-./isso-agent --input agent/queries/heldout-a --output runs/heldout-a-full --config configs/full.toml
-./isso-agent --input agent/queries/heldout-a --output runs/heldout-a-low --config configs/low.toml
-./isso-agent --input agent/queries/heldout-b --output runs/heldout-b-full --config configs/full.toml
-./isso-agent --input agent/queries/heldout-b --output runs/heldout-b-low --config configs/low.toml
+./isso-agent --input agent/queries/dev --output agent/runs/dev-full --config configs/full.toml
+./isso-agent --input agent/queries/dev --output agent/runs/dev-low --config configs/low.toml
+./isso-agent --input agent/queries/heldout-a --output agent/runs/heldout-a-full --config configs/full.toml
+./isso-agent --input agent/queries/heldout-a --output agent/runs/heldout-a-low --config configs/low.toml
+./isso-agent --input agent/queries/heldout-b --output agent/runs/heldout-b-full --config configs/full.toml
+./isso-agent --input agent/queries/heldout-b --output agent/runs/heldout-b-low --config configs/low.toml
 ```
 
 The command prints the run's terminal status and exits 0 for every planned ending (`completed`, `budget_exhausted`, `max_steps`, `no_progress`).
@@ -93,7 +94,7 @@ Both configs share one `[scan]` block, because all three targets are query sets 
 ## Scoring a dev run
 
 ```bash
-env/bin/python agent/src/score.py runs/dev-full/report.json agent/labels/dev.worksheet.json
+env/bin/python agent/src/score.py agent/runs/dev-full/report.json agent/labels/dev.worksheet.json
 ```
 
 It prints the counts of label 1, label 0 and null, then precision, recall and accuracy over the classified rows, and every miss with its rationale.
@@ -107,21 +108,21 @@ env/bin/python -m unittest discover -s agent/tests -v
 
 ## Recorded runs
 
-Every run cited in the report is committed unedited under `runs/`, with the config it used.
+Every run cited in the report is committed unedited under `agent/runs/`, with the config it used.
 
 | Folder | Target | Config | Terminal status | used_tokens | Label 1 / 0 / null |
 |---|---|---|---|---|---|
-| `runs/dev-full-v1` | dev | full (before v2; no temperature set) | completed | 82686 | 20 / 10 / 0 |
-| `runs/dev-full-v2` | dev | full | completed | 74319 | 18 / 12 / 0 |
-| `runs/dev-full` | dev | full | completed | 74298 | 18 / 12 / 0 |
-| `runs/dev-low` | dev | low | budget_exhausted | 20961 | 4 / 4 / 22 |
-| `runs/heldout-a-full` | held out A | full | completed | 59935 | 13 / 11 / 0 |
-| `runs/heldout-a-low` | held out A | low | budget_exhausted | 21070 | 5 / 3 / 16 |
-| `runs/heldout-b-full` | held out B | full | completed | 60384 | 16 / 8 / 0 |
-| `runs/heldout-b-low` | held out B | low | budget_exhausted | 21063 | 7 / 1 / 16 |
+| `agent/runs/dev-full-v1` | dev | full (before v2; no temperature set) | completed | 82686 | 20 / 10 / 0 |
+| `agent/runs/dev-full-v2` | dev | full | completed | 74319 | 18 / 12 / 0 |
+| `agent/runs/dev-full` | dev | full | completed | 74298 | 18 / 12 / 0 |
+| `agent/runs/dev-low` | dev | low | budget_exhausted | 20961 | 4 / 4 / 22 |
+| `agent/runs/heldout-a-full` | held out A | full | completed | 59935 | 13 / 11 / 0 |
+| `agent/runs/heldout-a-low` | held out A | low | budget_exhausted | 21070 | 5 / 3 / 16 |
+| `agent/runs/heldout-b-full` | held out B | full | completed | 60384 | 16 / 8 / 0 |
+| `agent/runs/heldout-b-low` | held out B | low | budget_exhausted | 21063 | 7 / 1 / 16 |
 
-`runs/dev-full-v1` ran an earlier prompt and is the baseline in `agent/REFINEMENT.md`.
-`runs/dev-full` is a rerun of the v2 code and gives the same 30 labels as `runs/dev-full-v2`.
+`agent/runs/dev-full-v1` ran an earlier prompt and is the baseline in `agent/REFINEMENT.md`.
+`agent/runs/dev-full` is a rerun of the v2 code and gives the same 30 labels as `agent/runs/dev-full-v2`.
 
 ## Layout
 
@@ -146,5 +147,5 @@ agent/src/
   discovery.py          retrieval: query set -> alerts
   score.py              compares a dev report with the answer key
 agent/tests/            unit tests for the tools and the workspace copy
-runs/                   the recorded runs
+agent/runs/             the recorded runs (the default --output)
 ```

@@ -1,7 +1,7 @@
 """
 score - compare one run's report.json with the dev answer key (C2).
 
-    env/bin/python agent/src/score.py runs/dev-full/report.json agent/labels/dev.worksheet.json
+    env/bin/python agent/src/score.py agent/runs/dev-full/report.json agent/labels/dev.worksheet.json
 
 A separate script, never imported by the agent: the agent process never opens
 the answer key (A7).

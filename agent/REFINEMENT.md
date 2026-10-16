@@ -7,7 +7,7 @@ Each entry names the run, the code it ran, its scores, and what the misses showe
 Scores come from `agent/src/score.py <report.json> agent/labels/dev.worksheet.json`.
 Precision and recall are over classified rows only.
 
-## v1 baseline: `runs/dev-full-v1/`
+## v1 baseline: `agent/runs/dev-full-v1/`
 
 - Code: commit `fdccb6b` (the opening message gives only the chunk id; the shown set starts empty).
 - Config: `configs/full.toml` (gpt-4.1-mini-2025-04-14, k = 3, max_tokens 600000, temperature not set, so the API default of 1).
@@ -38,7 +38,7 @@ The chunk is a three-line outline of the page ("Overview for both F and J studen
 The rationale describes hour limits, affiliated schools and mandatory authorization, none of which is in the chunk.
 
 This is not a hallucination.
-The trace (`runs/dev-full-v1/trace.jsonl`, steps 182 to 244) shows the model read the passage, then guessed the `page::index` id pattern and read chunks 1 to 8 of the same page one at a time with `read` (not `read_neighbors`), 10 model calls in all.
+The trace (`agent/runs/dev-full-v1/trace.jsonl`, steps 182 to 244) shows the model read the passage, then guessed the `page::index` id pattern and read chunks 1 to 8 of the same page one at a time with `read` (not `read_neighbors`), 10 model calls in all.
 It then classified 1 with evidence `[::1, ::6, ::7]`: the passage itself is not in its own evidence.
 Every read grew the shown set, so the no-progress detector never fired.
 
@@ -106,7 +106,7 @@ The v2 prompt has to say both.
 - For the other four misses: which relevance rule should have made each one 0 ("related topic but does not answer", "pointer", or another), and whether the model read beyond the passage for them too.
 - The rationales keep saying "addresses" and "relates to"; which word in the rules is being read too loosely.
 
-## v2 run: `runs/dev-full-v2/`
+## v2 run: `agent/runs/dev-full-v2/`
 
 - Code: commit `dbf647f` (the v2 changes above).
 - Config: `configs/full.toml`, now with `temperature = 0`.
@@ -141,7 +141,7 @@ Still missed (all false positives):
 Caveat on the comparison: v1 ran at the API's default temperature and v2 at 0, so part of the difference may be sampling rather than the prompt.
 The two misses v2 fixed are explained by the changes themselves (the model stopped reading the page, and rationales now point to what the chunk lacks), which is stronger evidence than the score alone.
 
-A second full dev run of the same code at temperature 0 (`runs/dev-full`) gave the same 30 labels as `runs/dev-full-v2`.
+A second full dev run of the same code at temperature 0 (`agent/runs/dev-full`) gave the same 30 labels as `agent/runs/dev-full-v2`.
 
 The two gray-area misses (q03 and q08) are judgment calls the labels made before any agent run.
 Relabeling them now, after seeing the agent disagree, would tune the key to the agent, so the labels stay as they are.

@@ -1,7 +1,7 @@
 """
 cli - the agent's command line (handout section 5).
 
-    ./isso-agent --input agent/queries/dev --output runs/dev-full --config configs/full.toml
+    ./isso-agent --input agent/queries/dev --output agent/runs/dev-full --config configs/full.toml
 
 Reads the TOML config, checks it, builds the tracer and the run context, and
 runs the graph once. Writes report.json and trace.jsonl into --output.
@@ -29,6 +29,9 @@ from run import run
 from state import RunContext
 from tracer import Tracer
 from workspace import write_copy
+
+# Where a run goes when --output is not given.
+RUNS_DIR = Path(__file__).resolve().parents[1] / "runs"
 
 # section -> key -> type. Every key is required; other keys are allowed (section 5).
 REQUIRED = {
@@ -80,9 +83,16 @@ def load_config(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--input", type=Path, required=True, help="query set folder, holding queries.json")
-    parser.add_argument("--output", type=Path, required=True, help="folder for report.json and trace.jsonl")
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="folder for report.json and trace.jsonl (default: agent/runs/<query set>-<config name>)",
+    )
     parser.add_argument("--config", type=Path, required=True, help="TOML config file")
     args = parser.parse_args()
+    if args.output is None:
+        # agent/runs/dev-full for --input agent/queries/dev --config configs/full.toml.
+        args.output = RUNS_DIR / f"{args.input.name}-{args.config.stem}"
 
     config = load_config(args.config)
     scan, budget = config["scan"], config["budget"]
