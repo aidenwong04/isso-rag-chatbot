@@ -70,9 +70,10 @@ def next_alert(state: AgentState, runtime: Runtime[RunContext]):
             return {
                 "current_alert_id": alert.alert_id,
                 # Overwrite bypasses the append reducer: a fresh conversation.
-                "message_history": Overwrite(opening_messages(alert, runtime.context.workspace)),
-                # The alert's own chunk is shown from the start (A4).
-                "shown_chunks": {alert.chunk.chunk_id},
+                "message_history": Overwrite(opening_messages(alert)),
+                # Empty: the opening message gives only the chunk's id, so even
+                # the alert's own chunk must be read before it can be cited (A4).
+                "shown_chunks": set(),
                 "no_growth_streak": 0,
                 "classify_refusal_count": 0,
             }

@@ -1,5 +1,5 @@
 # Low budget: runs out partway through a run, so some rows end budget_exhausted (B7).
-# At about 1.2k tokens per one-call alert, this classifies about 17 of the 30 dev alerts.
+# At about 2.2k tokens per alert (read, then classify), this classifies about 9 of the 30 dev alerts.
 
 [scan]
 corpus_version = "f186563d6a1e"

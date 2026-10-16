@@ -154,7 +154,7 @@ In code, `finalize` is not a LangGraph node. The routing functions send planned 
 | Step count | Per run | Sum. One step is one model call | `model` | No |
 | Trace | Per run | Append | Every node | No |
 | Message history sent to the model | Per alert (a fresh context for each alert) | Append | `model`, the tool nodes | Yes: it is the model's input |
-| Shown chunk set | Per alert. Starts with the alert's own chunk | None (overwrite): the tool node returns the whole new set | `read`, `read_neighbors`; reset by `next_alert` | No (it sees the chunks themselves, in its message history) |
+| Shown chunk set | Per alert. Starts empty: the opening message gives only the alert's chunk id, so the model reads even that chunk with `read` | None (overwrite): the tool node returns the whole new set | `read`, `read_neighbors`; reset by `next_alert` | No (it sees the chunks themselves, in its message history) |
 | No-growth streak | Per alert | None (overwrite). The tool node compares the shown set before the step with the ids it returned, and writes the old streak plus one when nothing new was shown, or zero when the set grew | The tool nodes and the dispatcher's refusal; reset to zero by `next_alert` | No |
 | `classify` refusal count | Per alert | None (overwrite): the tool node writes the new count | `classify`; reset by `next_alert` | Yes: each refusal message says which attempt it was, out of 3 |
 

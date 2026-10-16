@@ -10,11 +10,7 @@ Not shown to the model, on purpose: the cosine score and rank (still open in
 A7), other alerts, labels, budgets and step counts (A7 withholding table).
 """
 
-import json
-from pathlib import Path
-
 from discovery import Alert
-from tools import read
 
 
 SYSTEM_PROMPT = """\
@@ -48,31 +44,33 @@ Every reply must be exactly one tool call. Never reply with plain text.
 - read_neighbors(chunk_id): shows you the chunks just before and after a chunk on the same page.
 - classify(label, rationale, evidence): hands in your judgment and ends your work on this passage.
 
-Read only as much as you need: if the chunk is clear on its own, classify it straight away.
+You are given only the id of the passage. Start by reading it with read, then read as much context as you need before you classify.
 In classify:
 - label is the integer 1 or 0.
 - rationale says in at most 600 characters why, pointing to what the chunk does or does not say.
-- evidence lists the ids of the chunks your judgment relies on. You may only cite chunks you have been shown while working on this passage, which always includes the passage itself.
+- evidence lists the ids of the chunks your judgment relies on. You may only cite chunks a tool has shown you while working on this passage.
 
 If a tool result has "ok": false, read its message and correct your next call.
 """
 
 
-def alert_message(alert: Alert, workspace: Path) -> str:
-    """The first user message of an alert: the question, the asker, and the chunk to judge."""
-    # Through the same tool the model uses, so the passage reads from the corpus copy (A7).
-    chunk = read(alert.chunk.chunk_id, workspace)["chunks"][0]
+def alert_message(alert: Alert) -> str:
+    """
+    The first user message of an alert: the question, the asker, and the id of
+    the chunk to judge. Only the id: the model reads the chunk itself with
+    read, so everything it judges from came through a tool and is in its
+    shown set (A4).
+    """
     return (
         f"Question: {alert.query}\n"
         f"Asked by: {alert.audience}\n\n"
-        "Passage to judge:\n"
-        f"{json.dumps(chunk, indent=2, ensure_ascii=False)}"
+        f"Passage to judge: {alert.chunk.chunk_id}"
     )
 
 
-def opening_messages(alert: Alert, workspace: Path) -> list[dict]:
+def opening_messages(alert: Alert) -> list[dict]:
     """The system and user messages that start a fresh conversation for this alert."""
     return [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": alert_message(alert, workspace)},
+        {"role": "user", "content": alert_message(alert)},
     ]
