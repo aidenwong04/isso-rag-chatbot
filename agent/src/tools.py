@@ -149,7 +149,7 @@ def read_neighbors(chunk_id, workspace: Path):
 
 # ----- THE CLASSIFy TOOL -------
 
-def classify(label: int, rationale: str, evidence: list, shown_set: set, workspace: Path):
+def classify(label: int, rationale: str, evidence: list, shown_set: set, passage_id: str, workspace: Path):
     '''
     evidence is list of chunk IDs to back up the label.
 
@@ -160,6 +160,8 @@ def classify(label: int, rationale: str, evidence: list, shown_set: set, workspa
     - label is not the integer 0 or 1 (the string "1" is refused). 
     - rationale is empty or over 600 characters. 
     - evidence is empty, is not a list of chunk IDs, or cites a chunk that is not in this alert's shown set
+    - evidence does not include passage_id, the chunk being judged: the label is
+      about that chunk, so other chunks may support it but not replace it
     '''
     if type(label) != int:
         return {
@@ -217,6 +219,12 @@ def classify(label: int, rationale: str, evidence: list, shown_set: set, workspa
                 "ok": False,
                 "msg": "Evidence not in shown_set"
             }
+
+    if passage_id not in evidence:
+        return {
+            "ok": False,
+            "msg": f"evidence must include the passage you are judging, {passage_id}"
+        }
     
     return {
         "ok": True,
@@ -295,7 +303,7 @@ TOOL_DEFINITIONS = [
                         "type": "array",
                         "items": CHUNK_ID_SCHEMA,
                         "minItems": 1,
-                        "description": "Ids of the chunks your judgment relies on. Only chunks you have been shown for this passage.",
+                        "description": "Ids of the chunks your judgment relies on, always including the passage you are judging. Only chunks you have been shown for this passage.",
                     },
                 },
                 "required": ["label", "rationale", "evidence"],

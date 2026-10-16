@@ -33,7 +33,8 @@ from workspace import write_copy
 # section -> key -> type. Every key is required; other keys are allowed (section 5).
 REQUIRED = {
     "scan": {"corpus_version": str, "k": int},
-    "model": {"provider": str, "name": str},
+    # temperature is fixed so that two runs of one prompt can be compared (REFINEMENT.md).
+    "model": {"provider": str, "name": str, "temperature": (int, float)},
     "budget": {
         "max_tokens": int,
         "output_allowance": int,
@@ -41,9 +42,9 @@ REQUIRED = {
         "no_progress_limit": int,
     },
 }
-TYPE_NAMES = {str: "string", int: "integer"}
-# The smallest value each integer key may take (section 5).
-MINIMUM = {"k": 1, "max_tokens": 0, "output_allowance": 1, "max_steps": 1, "no_progress_limit": 1}
+TYPE_NAMES = {str: "string", int: "integer", (int, float): "number"}
+# The smallest value each numeric key may take (section 5).
+MINIMUM = {"k": 1, "temperature": 0, "max_tokens": 0, "output_allowance": 1, "max_steps": 1, "no_progress_limit": 1}
 
 
 def load_config(path):
@@ -65,7 +66,7 @@ def load_config(path):
             # bool is a subclass of int in Python, so true would pass as 1.
             if not isinstance(value, kind) or isinstance(value, bool):
                 problems.append(f"[{section}] {key} must be a {TYPE_NAMES[kind]}")
-            elif kind is int and value < MINIMUM[key]:
+            elif key in MINIMUM and value < MINIMUM[key]:
                 problems.append(f"[{section}] {key} must be >= {MINIMUM[key]}")
 
     if config.get("model", {}).get("provider") not in (None, "openai"):
@@ -108,6 +109,7 @@ def main():
             corpus_version=actual,
             k=scan["k"],
             model=config["model"]["name"],
+            temperature=config["model"]["temperature"],
             token_budget=budget["max_tokens"],
             output_allowance=budget["output_allowance"],
             max_steps=budget["max_steps"],

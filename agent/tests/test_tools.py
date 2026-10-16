@@ -156,7 +156,7 @@ class ClassifyTest(ToolsTestCase):
     def classify(self, label=1, rationale="because", evidence=("page::0",)):
         if isinstance(evidence, tuple):
             evidence = list(evidence)
-        return tools.classify(label, rationale, evidence, self.SHOWN, self.ws)
+        return tools.classify(label, rationale, evidence, self.SHOWN, "page::0", self.ws)
 
     def test_accepts_a_valid_judgment(self):
         for label in [0, 1]:
@@ -185,6 +185,7 @@ class ClassifyTest(ToolsTestCase):
             "malformed id": ["page"],
             "not shown": ["page::2"],
             "one shown, one not": ["page::0", "page::2"],
+            "shown but without the passage": ["page::1"],
         }
         for name, evidence in cases.items():
             with self.subTest(name):

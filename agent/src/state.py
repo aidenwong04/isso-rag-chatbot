@@ -35,6 +35,7 @@ class RunContext:
     corpus_version: str  # [scan] the pinned corpus (SHA-256 prefix of chunks.json)
     k: int           # [scan] chunks retrieved per query
     model: str       # the OpenAI model id the agent calls
+    temperature: float  # sent on every model call; 0 so runs of one prompt are comparable
     token_budget : int
     output_allowance: int  # max output tokens per model call, sent to the provider
     max_steps : int

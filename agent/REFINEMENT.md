@@ -67,6 +67,40 @@ Consequences for comparing prompt versions on 30 alerts:
 - One flipped label moves precision by several points, so a small difference between two runs may be noise.
 - Before trusting a change, either fix the sampling (set temperature in the config and the model call) or run each version more than once and compare the spread.
 
+### Finding 3: right audience, wrong situation (`dev-q04::extending-begin-new-program-f-j-students::6`)
+
+The question asks what to do with an I-20 when transferring schools.
+The chunk ("Review, sign, and date your new I-20/DS-2019") gives the start date of a new I-20 and travel instructions for it.
+It is from the page on extending or beginning a new program at Columbia, not on transferring to another school.
+The key labels it 0: it is about the new I-20 after a change of program, not the transfer process.
+
+The model read only the passage (trace steps 157 to 163) and cited it, so the rationale matches the chunk; unlike Finding 1, nothing came from elsewhere.
+It took "new I-20" and "new program" to be the transfer scenario.
+The asker's audience matches (an F-1 student either way); their situation does not.
+
+Decision: no rule about this scenario in the prompt.
+That would tune the agent to one dev alert, which the held-out sets exist to catch.
+Instead, a general working habit for v2: before labeling 1, check that the page the chunk comes from is about the situation in the question (from its page id, heading and breadcrumb, or by reading around the chunk).
+
+This pulls the other way from Finding 1, where reading the rest of the page led to a wrong 1.
+The two fit together only if context is used to understand which situation the chunk is about, never as answer content in place of the chunk's own text.
+The v2 prompt has to say both.
+
+## v2 changes
+
+- `classify` refuses evidence that does not include the passage being judged (Finding 1).
+  Other chunks may support a label but not replace the passage.
+- `[model] temperature = 0` in both configs, sent on every model call (Finding 2), so runs of one prompt can be compared.
+- Relevance is judged as the chatbot's generator sees a chunk: its text, heading and page.
+  `src/query.py` sends exactly source, heading, URL and text per chunk, with no neighbours.
+  Context may explain what the chunk means, never add to what it says.
+  Before labeling 1, the model checks that the chunk's page is about the asker's situation (Finding 3).
+  The prompt and the relevance definition in DESIGN.md say this.
+- `read_neighbors` stays, for interpreting a chunk's own words (a referent, a list cut off from its lead-in), not for answer content.
+- Considered and not built: a `page_outline(chunk_id)` tool returning the page id, URL, breadcrumb, audience and section headings, with no chunk text.
+  It would show what a page is about without supplying answer content, and would replace `read_neighbors` under the generator's-view definition.
+  Left out for time.
+
 ### Still to check
 
 - For the other four misses: which relevance rule should have made each one 0 ("related topic but does not answer", "pointer", or another), and whether the model read beyond the passage for them too.

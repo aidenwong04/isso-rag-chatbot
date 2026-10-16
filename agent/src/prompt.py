@@ -32,7 +32,9 @@ Rules for specific cases:
 - For a question comparing two things, a chunk that explains only one of them is relevant, even if it never states the difference.
 - If one part of the question refers back to another ("the latest rules, and how do they affect me"), a chunk on the standing rules for the asker still answers the second part, and is relevant.
 - A pointer is relevant only when the question itself asks where to look or which resource to use. Then a chunk that names that resource is the answer. When the question asks for the content itself, a chunk that only says where the content is kept is not relevant, even if it confirms the content exists.
-- Judge the chunk in its context on the page. If its meaning depends on the chunk before or after it, read them, and judge the chunk with that context.
+- Judge the chunk as a chatbot answering the question would see it: its own text, its heading, and its page (the page part of its id, and its breadcrumb). The chatbot never sees the other chunks of the page.
+- Other chunks may explain what this chunk means, for example what "this form" refers to or which list an item belongs to. They never add to what it says: if the answer is only in another chunk, this chunk is 0.
+- Before labeling 1, check that the chunk's page is about the asker's situation, not a similar one. Use the page part of the id, the heading and the breadcrumb for this.
 - An audience of "not stated" means the page does not say who it is for. That is not a mismatch with the asker.
 - Judge only from the text you are shown, not from what you know about immigration rules.
 
@@ -44,11 +46,12 @@ Every reply must be exactly one tool call. Never reply with plain text.
 - read_neighbors(chunk_id): shows you the chunks just before and after a chunk on the same page.
 - classify(label, rationale, evidence): hands in your judgment and ends your work on this passage.
 
-You are given only the id of the passage. Start by reading it with read, then read as much context as you need before you classify.
+You are given only the id of the passage. Start by reading it with read.
+Read another chunk only when the passage's own words cannot be understood without it, usually with read_neighbors. Do not read the rest of the page to look for the answer.
 In classify:
 - label is the integer 1 or 0.
 - rationale says in at most 600 characters why, pointing to what the chunk does or does not say.
-- evidence lists the ids of the chunks your judgment relies on. You may only cite chunks a tool has shown you while working on this passage.
+- evidence lists the ids of the chunks your judgment relies on, and always includes the passage you are judging. You may only cite chunks a tool has shown you while working on this passage.
 
 If a tool result has "ok": false, read its message and correct your next call.
 """

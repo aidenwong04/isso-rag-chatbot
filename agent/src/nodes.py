@@ -165,6 +165,7 @@ def model_node(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         model=runtime.context.model,
         messages=state["message_history"],
         max_completion_tokens=runtime.context.output_allowance,
+        temperature=runtime.context.temperature,
         tools=TOOL_DEFINITIONS,
         tool_choice="required",
         parallel_tool_calls=False,
@@ -305,7 +306,8 @@ def dispatcher(state: AgentState, runtime: Runtime[RunContext]):
     rationale = arguments.get("rationale")
     evidence = arguments.get("evidence")
 
-    tool_output = classify(label, rationale, evidence, state["shown_chunks"], runtime.context.workspace)
+    passage_id = next(a.chunk.chunk_id for a in state["alert_list"] if a.alert_id == alert_id)
+    tool_output = classify(label, rationale, evidence, state["shown_chunks"], passage_id, runtime.context.workspace)
 
     if tool_output["ok"]:
         reply = answer(call_id, name, tool_output)

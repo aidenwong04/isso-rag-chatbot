@@ -28,7 +28,9 @@ The agent must never:
 This definition is used both for hand-labeling the query sets and in the agent's prompt.
 
 A chunk is **relevant (1)** to a query when it contains information that answers the query, in whole or in part, for the person asking.
-The chunk is judged in its context on the page: if its meaning depends on a neighbouring chunk, that context counts.
+The chunk is judged as the chatbot's generator sees it: its own text, heading and page (`src/query.py` sends each retrieved chunk with its source, heading and URL, and never its neighbours).
+Other chunks may explain what the chunk means (what "this form" refers to, which list an item belongs to), but never add to what it says: if the answer is only in another chunk, this chunk is a 0 (decided 2026-10-16, `agent/REFINEMENT.md` Finding 1).
+A chunk whose page is about a different situation from the asker's is a 0, even when the audience matches (Finding 3).
 A chunk is **not relevant (0)** when it only points to where the answer is, when it answers the question for a different audience, or when it is on a related topic but does not answer what was asked.
 The pointer rule has one exception: when the query itself asks where to look or which resource to use, a chunk that names that resource is the answer, and is a 1 (`dev-q10` asks for a housing resource, and a chunk naming Columbia's off-campus housing resources is relevant).
 When the query asks for the content itself, a chunk that only says where that content is kept stays a 0, even if it confirms the content exists (`dev-q03` asks whether there are upcoming events, and a chunk that sends the reader to the events calendar is not relevant).
@@ -40,7 +42,9 @@ When the query asks for the content itself, a chunk that only says where that co
 | Only says where the answer can be found | 0 |
 | Names a resource, and the query asked for a resource | 1 |
 | Answers the question for a different audience | 0 |
-| Answers part of the question once a neighbouring chunk is read | 1 |
+| Answers part of the question once a neighbouring chunk explains its own words | 1 |
+| The answer is only in another chunk of the page | 0 |
+| Right audience, but the page is about a different situation | 0 |
 | Related topic, does not answer what was asked | 0 |
 | Archived (stale) content | Never reaches the agent |
 
@@ -169,7 +173,7 @@ It only requests a call: the dispatcher validates the request, runs it, and writ
 | **Arguments** | `chunk_id`: string, `{page}::{index}` | `chunk_id`: string, `{page}::{index}` | `label`: integer, 0 or 1. `rationale`: string. `evidence`: list of chunk IDs |
 | **Returns on success** | The chunk's text and its metadata: `heading`, `breadcrumb`, `audience` | The previous and next chunk on the same page, each with its chunk ID and text. One chunk at the edge of a page. An empty list for a single-chunk page | Confirmation. The runtime settles the alert's row and the alert ends |
 | **Limits** | One chunk per call | Fixed at one chunk each side. To see further, call it on a neighbor's ID | `rationale` is at most 600 characters. At most 3 refused attempts per alert |
-| **Refuses when** | `chunk_id` fails the shared check: malformed, or nonexistent (archived pages are not in the copy, A7) | `chunk_id` fails the shared check: malformed, or nonexistent (archived pages are not in the copy, A7) | `label` is not the integer 0 or 1 (the string `"1"` is refused). `rationale` is empty or over 600 characters. `evidence` is empty, is not a list of chunk IDs, or cites a chunk that is not in this alert's shown set |
+| **Refuses when** | `chunk_id` fails the shared check: malformed, or nonexistent (archived pages are not in the copy, A7) | `chunk_id` fails the shared check: malformed, or nonexistent (archived pages are not in the copy, A7) | `label` is not the integer 0 or 1 (the string `"1"` is refused). `rationale` is empty or over 600 characters. `evidence` is empty, is not a list of chunk IDs, cites a chunk that is not in this alert's shown set, or does not include the passage being judged (other chunks may support the label, not replace the passage; added for v2, see `agent/REFINEMENT.md` Finding 1) |
 | **Effect on state** | Adds the chunk to the alert's shown set | Adds each returned chunk to the alert's shown set | On success, settles the row (insert-once) and emits its `state_change` event |
 | **Counts toward the no-progress streak** | Yes, when it shows nothing new or is refused | Yes, when it shows nothing new or is refused | No. Refusals are bounded by the 3-attempt cap instead |
 
