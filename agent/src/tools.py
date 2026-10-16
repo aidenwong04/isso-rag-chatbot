@@ -9,36 +9,24 @@ This file defines those tools that the agent can call.
 
 """
 
-from dataclasses import dataclass
-from pathlib import Path 
-import json
-import sys
+from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(REPO_ROOT / "src"))
+from workspace import load_copy
 
-from query import load_index
+# id -> record, one lookup per workspace, loaded on first use.
+_lookups: dict[Path, dict[str, dict]] = {}
 
-# need a lookup structure to get from id to record..
-
-_id_to_record = None
-
-def record_lookup():
-    global _id_to_record
-    if _id_to_record is None:
-        _id_to_record = {}
-        # need to load index..
-        records, _ = load_index()
-        for record in records:
-            # A copy without the embedding, so no tool can hand it to the model
-            # and no caller can change the cached corpus through it.
-            _id_to_record[record["id"]] = {
-                key: value for key, value in record.items() if key != "embedding"
-            }
-    return _id_to_record
+def record_lookup(workspace: Path):
+    """
+    The run's corpus copy (see workspace.py), keyed by chunk id. The tools
+    read only this: archived pages and embeddings are not in it at all.
+    """
+    if workspace not in _lookups:
+        _lookups[workspace] = {record["id"]: record for record in load_copy(workspace)}
+    return _lookups[workspace]
 
 
-def validate_id(chunk_id):
+def validate_id(chunk_id, workspace: Path):
     ''' 
     id should be in the form of 'source_page::chunk_num'
 
@@ -52,6 +40,7 @@ def validate_id(chunk_id):
 
     nonexistent ones:
     "about-your-visa::999"
+    an archived page's chunks, which are not in the workspace copy
     '''
 
     if not isinstance(chunk_id, str):
@@ -70,14 +59,8 @@ def validate_id(chunk_id):
             "chunk": None
         }
 
-    id_to_record = record_lookup()
+    id_to_record = record_lookup(workspace)
     if chunk_id in id_to_record:
-        if id_to_record[chunk_id]["archived"]:
-            return {
-                "ok": False,
-                "msg": "Attempted to view an archived page",
-                "chunk": None
-            }
         return {
             "ok": True,
             "msg": "success",
@@ -117,12 +100,12 @@ def refuse(msg):
 
 # ----- THE READ TOOL -------
 
-def read(chunk_id):
+def read(chunk_id, workspace: Path):
     '''
     takes in a chunk_id, and returns the chunk's text, heading, breadcrumb, audience if valid.
     else, returns the error message, doesn't crash the program.    
     '''
-    id_validation = validate_id(chunk_id)
+    id_validation = validate_id(chunk_id, workspace)
     if not id_validation["ok"]:
         return refuse(id_validation["msg"])
 
@@ -137,11 +120,11 @@ def read(chunk_id):
 
 # ----- THE READ NEIGHBORS TOOL -------
 
-def read_neighbors(chunk_id):
+def read_neighbors(chunk_id, workspace: Path):
     '''
     this one shows the model the chunks that are next to chunk_id.
     '''
-    id_validation = validate_id(chunk_id)
+    id_validation = validate_id(chunk_id, workspace)
     if not id_validation["ok"]:
         return refuse(id_validation["msg"])
     
@@ -152,7 +135,7 @@ def read_neighbors(chunk_id):
     page, number = chunk_id.split("::")
     neighbors = []
     for neighbor_id in (f"{page}::{int(number) - 1}", f"{page}::{int(number) + 1}"):
-        neighbor_validation = validate_id(neighbor_id)
+        neighbor_validation = validate_id(neighbor_id, workspace)
         if neighbor_validation["ok"]:
             neighbors.append(neighbor_validation["chunk"])
 
@@ -166,7 +149,7 @@ def read_neighbors(chunk_id):
 
 # ----- THE CLASSIFy TOOL -------
 
-def classify(label: int, rationale: str, evidence: list, shown_set: set):
+def classify(label: int, rationale: str, evidence: list, shown_set: set, workspace: Path):
     '''
     evidence is list of chunk IDs to back up the label.
 
@@ -223,7 +206,7 @@ def classify(label: int, rationale: str, evidence: list, shown_set: set):
         }
 
     for ev in evidence:
-        validated = validate_id(ev)
+        validated = validate_id(ev, workspace)
         if not validated["ok"]:
             return {
                 "ok": False,

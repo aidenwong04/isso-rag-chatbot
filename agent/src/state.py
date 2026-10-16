@@ -31,6 +31,7 @@ class RunContext:
 
     input_dir: Path  # the target: a query set folder holding queries.json
     output_dir: Path  # where report.json and trace.jsonl are written
+    workspace: Path  # the temporary folder holding the corpus copy the tools read (A7)
     corpus_version: str  # [scan] the pinned corpus (SHA-256 prefix of chunks.json)
     k: int           # [scan] chunks retrieved per query
     model: str       # the OpenAI model id the agent calls

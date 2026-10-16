@@ -70,7 +70,7 @@ def next_alert(state: AgentState, runtime: Runtime[RunContext]):
             return {
                 "current_alert_id": alert.alert_id,
                 # Overwrite bypasses the append reducer: a fresh conversation.
-                "message_history": Overwrite(opening_messages(alert)),
+                "message_history": Overwrite(opening_messages(alert, runtime.context.workspace)),
                 # The alert's own chunk is shown from the start (A4).
                 "shown_chunks": {alert.chunk.chunk_id},
                 "no_growth_streak": 0,
@@ -282,7 +282,7 @@ def dispatcher(state: AgentState, runtime: Runtime[RunContext]):
             return refuse([answer(call_id, name, {"ok": False, "msg": f"{name} needs a chunk_id argument."})])
 
         tool = read if name == "read" else read_neighbors
-        tool_output = tool(arguments["chunk_id"])
+        tool_output = tool(arguments["chunk_id"], runtime.context.workspace)
         if not tool_output["ok"]:
             return refuse([answer(call_id, name, tool_output)])
 
@@ -304,7 +304,7 @@ def dispatcher(state: AgentState, runtime: Runtime[RunContext]):
     rationale = arguments.get("rationale")
     evidence = arguments.get("evidence")
 
-    tool_output = classify(label, rationale, evidence, state["shown_chunks"])
+    tool_output = classify(label, rationale, evidence, state["shown_chunks"], runtime.context.workspace)
 
     if tool_output["ok"]:
         reply = answer(call_id, name, tool_output)

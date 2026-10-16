@@ -19,7 +19,7 @@ The agent must never:
 - **carry anything from one alert to the next.** Each alert has its own context and its own shown set.
 - **write to the corpus or the query set.** Both are read-only inputs.
 - **fetch the live ISSO site,** or reach anything outside the pinned corpus. The tools are the only way it can read.
-- **read archived pages.** They are stale guidance and are refused by the shared ID check.
+- **read archived pages.** They are stale guidance, left out of the corpus copy the tools read (A7), so every tool refuses them.
 - **see the answer key,** its own budget counters, or other alerts' results.
 - **decide anything that needs no judgment.** Budget, step and progress limits, validation, and which alert comes next belong to the runtime.
 
@@ -169,7 +169,7 @@ It only requests a call: the dispatcher validates the request, runs it, and writ
 | **Arguments** | `chunk_id`: string, `{page}::{index}` | `chunk_id`: string, `{page}::{index}` | `label`: integer, 0 or 1. `rationale`: string. `evidence`: list of chunk IDs |
 | **Returns on success** | The chunk's text and its metadata: `heading`, `breadcrumb`, `audience` | The previous and next chunk on the same page, each with its chunk ID and text. One chunk at the edge of a page. An empty list for a single-chunk page | Confirmation. The runtime settles the alert's row and the alert ends |
 | **Limits** | One chunk per call | Fixed at one chunk each side. To see further, call it on a neighbor's ID | `rationale` is at most 600 characters. At most 3 refused attempts per alert |
-| **Refuses when** | `chunk_id` fails the shared check: malformed, nonexistent, or on an archived page | `chunk_id` fails the shared check: malformed, nonexistent, or on an archived page | `label` is not the integer 0 or 1 (the string `"1"` is refused). `rationale` is empty or over 600 characters. `evidence` is empty, is not a list of chunk IDs, or cites a chunk that is not in this alert's shown set |
+| **Refuses when** | `chunk_id` fails the shared check: malformed, or nonexistent (archived pages are not in the copy, A7) | `chunk_id` fails the shared check: malformed, or nonexistent (archived pages are not in the copy, A7) | `label` is not the integer 0 or 1 (the string `"1"` is refused). `rationale` is empty or over 600 characters. `evidence` is empty, is not a list of chunk IDs, or cites a chunk that is not in this alert's shown set |
 | **Effect on state** | Adds the chunk to the alert's shown set | Adds each returned chunk to the alert's shown set | On success, settles the row (insert-once) and emits its `state_change` event |
 | **Counts toward the no-progress streak** | Yes, when it shows nothing new or is refused | Yes, when it shows nothing new or is refused | No. Refusals are bounded by the 3-attempt cap instead |
 
@@ -178,7 +178,7 @@ It only requests a call: the dispatcher validates the request, runs it, and writ
 - A refusal goes back to the model as an observation (`ok: false` with an `error` message), never as a crash.
 - An unknown tool name is refused the same way.
 - A reply with no usable tool call is refused by the dispatcher and counts as a step that showed nothing new.
-- All chunk IDs are validated by one shared function, so the archived rule lives in one place and no tool can skip it.
+- All chunk IDs are validated by one shared function against the run's corpus copy, so no tool can reach a chunk outside it.
   This is the equivalent of the handout's single path check (section 7).
 - No tool takes a `query_id`.
   The runtime knows which alert is being worked on, and does not ask the model for something it already knows.
@@ -231,12 +231,29 @@ Every loop has exactly one bound:
 
 The model has no file access of its own.
 Every model reply goes to the dispatcher, so the only things the model can ever see are its prompt and what the three tools return.
-Withholding is therefore enforced in two places: what the runtime puts in the prompt, and the one shared chunk-ID check.
+Withholding is therefore enforced in three places: what the runtime puts in the prompt, the disposable corpus copy the tools read, and the one shared chunk-ID check.
+
+### The disposable copy
+
+The tools never read `data/embeddings/chunks.json`.
+Before the run, the CLI writes a copy of the corpus into a temporary directory, and the tools read only that copy (`agent/src/workspace.py`; its path travels in `RunContext.workspace`, the same way the tracer does).
+The copy holds only what the model may see: every chunk of a page that is not archived, with `id`, `source`, `url`, `heading`, `text`, `breadcrumb` and `audience`.
+Embeddings and archived pages are not in it at all, so withholding them does not depend on the ID check being free of bugs.
+An archived chunk ID is refused as nonexistent, because in the copy it is.
+
+The copy is built from the records `load_index()` read once at startup, the same read that is hashed into the corpus version and checked against `[scan] corpus_version`.
+Discovery is not a model tool, so it keeps reading the original through `retrieve()`, which needs the embeddings (the handout's discovery also scans the whole scope); both see the same corpus because both come from that one read.
+
+The copy is made before the tracer exists, so a failure to write it is a startup error with no trace, like a bad config.
+The directory is a `tempfile.TemporaryDirectory`, deleted when the run ends, planned or crashed.
+Restoring needs nothing: the original corpus is only ever read, and the copy is gone after the run.
+The answer key (`agent/labels/`) is outside both the corpus and the copy, and no agent code opens it.
 
 | Withheld | Why | How |
 |---|---|---|
 | The answer key (labeled query-chunk pairs) | Seeing it makes the measurement meaningless | The agent process never opens it. Scoring is a separate script |
-| Archived pages | Stale guidance that left the ISSO site; a different point in time from the pinned corpus, like `.git/` in the handout | Excluded at discovery, and refused by the shared ID check in every tool |
+| Archived pages | Stale guidance that left the ISSO site; a different point in time from the pinned corpus, like `.git/` in the handout | Excluded at discovery, and left out of the disposable copy, so every tool refuses them as nonexistent |
+| Embeddings | Not text a judge of relevance needs; they encode the retriever's view | Left out of the disposable copy |
 | Other alerts' conversations, labels and rationales | Alerts for the same query are near neighbours, the closest thing here to the handout's safe twins | A fresh context and shown set per alert |
 | Run-level counters (tokens, steps, streaks) | Irrelevant to judging relevance | Never placed in the prompt |
 
@@ -245,7 +262,6 @@ Still to decide: see Open.
 ## Open
 
 - A7: whether the prompt shows the alert's cosine score or rank.
-- A7: where the corpus the tools read from lives during a run (the handout asks for a disposable copy of the input), and so what "restoring" means here.
 - Pages with more than one audience. `audience` is a single value read from the breadcrumb, but the site's navigation lists some pages under two audiences ("About Your Visa" is under both For Students and For Scholars, and is recorded as `students` only).
 - How the corpus records its embedding model, so a mismatch is caught at startup (decided that it should; today the model is only hardcoded in `src/config.py`).
 - The dev query set: 10 queries are written (30 alerts at `k = 3`); they still need discovery run and hand labels, before any agent run. Then the two held-out sets.

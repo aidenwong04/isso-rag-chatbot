@@ -11,6 +11,7 @@ A7), other alerts, labels, budgets and step counts (A7 withholding table).
 """
 
 import json
+from pathlib import Path
 
 from discovery import Alert
 from tools import read
@@ -57,9 +58,10 @@ If a tool result has "ok": false, read its message and correct your next call.
 """
 
 
-def alert_message(alert: Alert) -> str:
+def alert_message(alert: Alert, workspace: Path) -> str:
     """The first user message of an alert: the question, the asker, and the chunk to judge."""
-    chunk = read(alert.chunk.chunk_id)["chunks"][0]
+    # Through the same tool the model uses, so the passage reads from the corpus copy (A7).
+    chunk = read(alert.chunk.chunk_id, workspace)["chunks"][0]
     return (
         f"Question: {alert.query}\n"
         f"Asked by: {alert.audience}\n\n"
@@ -68,9 +70,9 @@ def alert_message(alert: Alert) -> str:
     )
 
 
-def opening_messages(alert: Alert) -> list[dict]:
+def opening_messages(alert: Alert, workspace: Path) -> list[dict]:
     """The system and user messages that start a fresh conversation for this alert."""
     return [
         {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": alert_message(alert)},
+        {"role": "user", "content": alert_message(alert, workspace)},
     ]

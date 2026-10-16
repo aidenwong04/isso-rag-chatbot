@@ -7,8 +7,10 @@ Reads the TOML config, checks it, builds the tracer and the run context, and
 runs the graph once. Writes report.json and trace.jsonl into --output.
 
 A bad config or input stops here, before the tracer exists: no run started,
-so there is no trace or report to write. Every run that does start ends in
-finalize, planned or crashed.
+so there is no trace or report to write. The same holds for writing the
+corpus copy the tools read (workspace.py, A7): it is made before the tracer,
+in a temporary directory that is deleted when the run ends, crashed or not.
+Every run that does start ends in finalize, planned or crashed.
 
 Exit status: 0 for every planned ending (completed, budget_exhausted,
 max_steps, no_progress), since those are the agent working as designed; a
@@ -17,14 +19,16 @@ crash re-raises, so Python exits non-zero with the traceback.
 
 import argparse
 import sys
+import tempfile
 import tomllib
 from pathlib import Path
 
 from graph import build_graph
-from query import corpus_version
+from query import corpus_version, load_index
 from run import run
 from state import RunContext
 from tracer import Tracer
+from workspace import write_copy
 
 # section -> key -> type. Every key is required; other keys are allowed (section 5).
 REQUIRED = {
@@ -91,20 +95,26 @@ def main():
         sys.exit(f"[scan] corpus_version is {scan['corpus_version']}, but the corpus on disk is {actual}")
 
     args.output.mkdir(parents=True, exist_ok=True)
-    tracer = Tracer(args.output / "trace.jsonl")
-    context = RunContext(
-        input_dir=args.input,
-        output_dir=args.output,
-        corpus_version=actual,
-        k=scan["k"],
-        model=config["model"]["name"],
-        token_budget=budget["max_tokens"],
-        output_allowance=budget["output_allowance"],
-        max_steps=budget["max_steps"],
-        no_progress_limit=budget["no_progress_limit"],
-        tracer=tracer,
-    )
-    status = run(build_graph(), context)
+    with tempfile.TemporaryDirectory(prefix="isso-agent-workspace-") as workspace:
+        # The records corpus_version() just hashed, so the copy is that corpus.
+        records, _ = load_index()
+        write_copy(records, Path(workspace))
+
+        tracer = Tracer(args.output / "trace.jsonl")
+        context = RunContext(
+            input_dir=args.input,
+            output_dir=args.output,
+            workspace=Path(workspace),
+            corpus_version=actual,
+            k=scan["k"],
+            model=config["model"]["name"],
+            token_budget=budget["max_tokens"],
+            output_allowance=budget["output_allowance"],
+            max_steps=budget["max_steps"],
+            no_progress_limit=budget["no_progress_limit"],
+            tracer=tracer,
+        )
+        status = run(build_graph(), context)
     print(f"{status}: {args.output / 'report.json'}, {args.output / 'trace.jsonl'}")
 
 
