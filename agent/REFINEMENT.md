@@ -105,3 +105,41 @@ The v2 prompt has to say both.
 
 - For the other four misses: which relevance rule should have made each one 0 ("related topic but does not answer", "pointer", or another), and whether the model read beyond the passage for them too.
 - The rationales keep saying "addresses" and "relates to"; which word in the rules is being read too loosely.
+
+## v2 run: `runs/dev-full-v2/`
+
+- Code: commit `dbf647f` (the v2 changes above).
+- Config: `configs/full.toml`, now with `temperature = 0`.
+- Terminal status `completed`; used_tokens 74319 (input 70818, output 3501, cache_read 2176), against 82686 for v1.
+- Tool calls: 30 `read`, 30 `classify`, 0 `read_neighbors`, no refusals; every alert took exactly two model calls (read the passage, then classify).
+
+| | v1 | v2 |
+|---|---|---|
+| Label 1 / 0 / null | 20 / 10 / 0 | 18 / 12 / 0 |
+| tp / fp / fn / tn | 15 / 5 / 0 / 10 | 15 / 3 / 0 / 12 |
+| Precision | 0.750 | 0.833 |
+| Recall | 1.000 | 1.000 |
+| Accuracy | 0.833 | 0.900 |
+
+Fixed by v2:
+
+- `dev-q05::campus-work-f-and-j-students::0` (Finding 1) is now 0: "only provides an overview of the sections on the page".
+  The model read only the passage; it no longer reads the rest of the page.
+- `dev-q02::f-1-cpt-curricular-practical-training::14` is now 0: the chunk says guidance may change but "does not provide any specific" rule.
+
+Still missed (all false positives):
+
+- `dev-q04::extending-begin-new-program-f-j-students::6` (Finding 3).
+  The situation check did not take: the rationale says beginning a new program "includes transferring schools".
+  The page id names the situation, but the model did not treat it as different from the asker's.
+  As decided, no scenario-specific rule was added for it.
+- `dev-q03::incoming-student-programs::9`: the chunk says incoming students can take part in the events on the calendar; the question asks whether there are upcoming social events.
+  The key note calls it a gray area and a pointer to where the information is.
+- `dev-q08::reporting-your-arrival-students::1`: the chunk ("Who needs to report") lists who must report their arrival; the question asks why and how.
+  The model read "who must report" as answering "why".
+
+Caveat on the comparison: v1 ran at the API's default temperature and v2 at 0, so part of the difference may be sampling rather than the prompt.
+The two misses v2 fixed are explained by the changes themselves (the model stopped reading the page, and rationales now point to what the chunk lacks), which is stronger evidence than the score alone.
+
+The two gray-area misses (q03 and q08) are judgment calls the labels made before any agent run.
+Relabeling them now, after seeing the agent disagree, would tune the key to the agent, so the labels stay as they are.
