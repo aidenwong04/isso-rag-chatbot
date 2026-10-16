@@ -1,0 +1,429 @@
+{
+  "target": {
+    "input": "agent/queries/heldout-b"
+  },
+  "scan": {
+    "corpus_version": "f186563d6a1e",
+    "k": 3,
+    "alert_count": 24
+  },
+  "budget": {
+    "max_tokens": 600000,
+    "used_tokens": 60384,
+    "exhausted": false
+  },
+  "alerts": [
+    {
+      "alert_id": "heldout-b-q08::about-your-visa::0",
+      "test_id": "heldout-b-q08",
+      "path": "about-your-visa",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.6530700286958742,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains what a U.S. visa is and the general process of applying for an entry visa at a U.S. embassy or consulate, but it does not provide any specific information about the process of obtaining an H1-B visa. It is general information about visas for students, not specific to H1-B visa application steps or requirements.",
+      "evidence": [
+        {
+          "path": "about-your-visa",
+          "line": 0
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::2",
+      "test_id": "heldout-b-q07",
+      "path": "applying-visa-scholars",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7093215309267047,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains the general requirement for applying for a U.S. visa and exceptions for certain nationals or those with unexpired visas. It does not mention anything about applying for visas for children or dependents of scholars admitted to Columbia. Therefore, it does not answer the question about applying for children's visas.",
+      "evidence": [
+        {
+          "path": "applying-visa-scholars",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::6",
+      "test_id": "heldout-b-q07",
+      "path": "applying-visa-scholars",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.6875152781117404,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists additional documents required if a scholar's spouse or children will be applying for a J-2 dependent visa, indicating that scholars can apply for visas for their dependents (children and spouse). This directly answers the question about applying for children's visas if the scholar got into Columbia.",
+      "evidence": [
+        {
+          "path": "applying-visa-scholars",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::7",
+      "test_id": "heldout-b-q07",
+      "path": "applying-visa-scholars",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.7002983925739568,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists additional documents required if a scholar's spouse or children will be applying for an H-4 / O-3 dependent visa, which directly relates to applying for visas for children after the scholar has been admitted to Columbia. This indicates that scholars can apply for their children's visas as dependents, answering the question in part.",
+      "evidence": [
+        {
+          "path": "applying-visa-scholars",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-visa-students::10",
+      "test_id": "heldout-b-q02",
+      "path": "applying-visa-students",
+      "line": 10,
+      "severity": null,
+      "confidence": 0.7280061450856568,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists the documents needed to apply for a visa as a student accepted to Columbia, directly addressing how to apply for the visa by specifying required paperwork such as passport, DS-160 confirmation, I-20, admission letter, SEVIS fee receipt, and financial documents. This is relevant to the student's question about how to apply for their visa.",
+      "evidence": [
+        {
+          "path": "applying-visa-students",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::8",
+      "test_id": "heldout-b-q02",
+      "path": "applying-your-i-20ds-2019",
+      "line": 8,
+      "severity": null,
+      "confidence": 0.7311320901476818,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides relevant information for a student who just got accepted to Columbia and wants to apply for a visa. It explains the steps to apply for the ALP I-20, use it to apply for the F-1 visa, and instructions on transferring the SEVIS record to apply for the program I-20. This directly addresses how to apply for the visa.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::17",
+      "test_id": "heldout-b-q02",
+      "path": "applying-your-i-20ds-2019",
+      "line": 17,
+      "severity": null,
+      "confidence": 0.7478973112486127,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains the initial steps for a student who has been accepted to Columbia to apply for their visa documents (I-20 or DS-2019). It details how to use the PID received from the admissions office to request a Limited Services PIN and log in to Compass, which is part of the visa application process. This directly answers how to apply for the visa after acceptance.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q01::campus-work-f-and-j-students::9",
+      "test_id": "heldout-b-q01",
+      "path": "campus-work-f-and-j-students",
+      "line": 9,
+      "severity": null,
+      "confidence": 0.7360231056508827,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the question by stating that international students must apply in person for a Social Security Number (SSN) and provides guidance on the application process. It is relevant because it answers whether an international student needs an SSN and what to do about it.",
+      "evidence": [
+        {
+          "path": "campus-work-f-and-j-students",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q08::cap-gap-opt-extension::5",
+      "test_id": "heldout-b-q08",
+      "path": "cap-gap-opt-extension",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.6678900622681182,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only provides information about the earliest date an employer can file an H-1 petition, which is a small part of the overall process of obtaining an H1-B visa. It does not explain the full process or steps involved in obtaining the visa, so it is not sufficiently relevant to answer the question.",
+      "evidence": [
+        {
+          "path": "cap-gap-opt-extension",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q08::cap-gap-opt-extension::7",
+      "test_id": "heldout-b-q08",
+      "path": "cap-gap-opt-extension",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.698989111913971,
+      "status": "classified",
+      "label": 1,
+      "rationale": "This passage outlines specific documents involved in the H-1B visa process, such as the electronic registration lottery selection, I-797C Notice of Action, and I-94 arrival record, which are part of the process of obtaining an H-1B visa. It is relevant to students as it is from the 'For Students' section and discusses the cap-gap OPT extension related to H-1B.",
+      "evidence": [
+        {
+          "path": "cap-gap-opt-extension",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q03::documents-needed-travel-scholar::0",
+      "test_id": "heldout-b-q03",
+      "path": "documents-needed-travel-scholar",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7219100662280431,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only introduces the topic of documents needed for travel but does not list or specify any documents required to enter the US. It does not answer the question about what documents scholars need to enter the US.",
+      "evidence": [
+        {
+          "path": "documents-needed-travel-scholar",
+          "line": 0
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q03::documents-needed-travel-scholar::12",
+      "test_id": "heldout-b-q03",
+      "path": "documents-needed-travel-scholar",
+      "line": 12,
+      "severity": null,
+      "confidence": 0.7102921983787628,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers the question by listing the documents scholars need to carry for domestic travel within the U.S., including Form DS-2019 or I-797 Approval Notice, passport ID page, and U.S. visa. It is specifically for scholars, matching the asker's audience, and provides the relevant documents needed to enter or travel within the U.S.",
+      "evidence": [
+        {
+          "path": "documents-needed-travel-scholar",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q03::entering-us-scholars::2",
+      "test_id": "heldout-b-q03",
+      "path": "entering-us-scholars",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7257301827547493,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage entering-us-scholars::2 explicitly states that these documents should be in hand for the officer to review, which directly answers the question about what documents are needed to enter the US. The neighboring chunk entering-us-scholars::3 lists the specific documents required for scholars, confirming relevance to the scholar audience and the question.",
+      "evidence": [
+        {
+          "path": "entering-us-scholars",
+          "line": 2
+        },
+        {
+          "path": "entering-us-scholars",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::10",
+      "test_id": "heldout-b-q05",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 10,
+      "severity": null,
+      "confidence": 0.7522772982516822,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states a limitation about applying for CPT, saying you can apply only if your academic program meets criteria. It does not explain how to apply for CPT, which is the question asked. Therefore, it is not relevant to the question about how to apply for CPT.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::26",
+      "test_id": "heldout-b-q05",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 26,
+      "severity": null,
+      "confidence": 0.7522772982516822,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only answers a specific FAQ about whether one can apply for CPT if they don't have time to receive OPT. It states that CPT can only be applied for if the academic program meets criteria. It does not explain how to apply for CPT, which is the question asked. Therefore, it is not relevant to the question about how to apply for CPT.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::38",
+      "test_id": "heldout-b-q05",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 38,
+      "severity": null,
+      "confidence": 0.7476341318808815,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides specific steps and documents required to apply for CPT, including registering for a course, obtaining a CPT Employer Letter, completing the CPT Request Form, the Cooperative Agreement, and uploading the most recent I-94. This directly answers the question about how a student can apply for CPT.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::9",
+      "test_id": "heldout-b-q04",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 9,
+      "severity": null,
+      "confidence": 0.7220202531285531,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains the rules about unemployment days during OPT and the consequences of exceeding 90 days without employment, but it does not address whether a student on OPT who has not found a job can leave the US. It does not provide information about travel or re-entry during OPT without employment. Therefore, it is not relevant to the question about leaving the US while on OPT without a job.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::40",
+      "test_id": "heldout-b-q04",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 40,
+      "severity": null,
+      "confidence": 0.7167759235372868,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage addresses travel while OPT is pending, which is relevant to the question about leaving the US while currently on OPT but without a job. It provides a caution about travel before OPT approval and mentions risks and required documents, which partially answers the question about leaving the US during OPT status.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::49",
+      "test_id": "heldout-b-q04",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 49,
+      "severity": null,
+      "confidence": 0.7286772316495422,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage addresses travel abroad while on OPT, indicating that the student remains in F-1 status and must have the correct F-1 documents to return to the U.S. This is relevant to the question about leaving the U.S. while on OPT without a job, as it informs the student about travel considerations and maintaining status during OPT.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::0",
+      "test_id": "heldout-b-q06",
+      "path": "glass",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7578639906983863,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only provides the full form of the acronym GLASS (Global Leadership Advancing Student Success) but does not explain what the ISSO's GLASS program is or what it entails. It does not answer the question about the program's purpose or details.",
+      "evidence": [
+        {
+          "path": "glass",
+          "line": 0
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::1",
+      "test_id": "heldout-b-q06",
+      "path": "glass",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.7596290955866037,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explicitly defines the ISSO's GLASS program as the Global Leadership Advancing Student Success program, describing its purpose to advance international student professional development for U.S. and global work cultures, leadership, and success. It also mentions the program's components such as interactive sessions, networking, and projects, directly answering what the GLASS program is for students.",
+      "evidence": [
+        {
+          "path": "glass",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::5",
+      "test_id": "heldout-b-q06",
+      "path": "glass",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.7241554653403084,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly mentions the ISSO GLASS workshops and a personalized professional development journey, which answers what the ISSO's GLASS program is about for students. It provides relevant information about the program's purpose and how to get started.",
+      "evidence": [
+        {
+          "path": "glass",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q01::j-1-academic-training::13",
+      "test_id": "heldout-b-q01",
+      "path": "j-1-academic-training",
+      "line": 13,
+      "severity": null,
+      "confidence": 0.7259578555414309,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explicitly mentions applying for a Social Security Number for students under J-1 Academic Training, which directly relates to the question about needing a Social Security Number as an international student. It provides relevant information about the necessity of having one.",
+      "evidence": [
+        {
+          "path": "j-1-academic-training",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q01::your-first-weeks-students::6",
+      "test_id": "heldout-b-q01",
+      "path": "your-first-weeks-students",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.7263125317180275,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the question about needing a Social Security Number (SSN) as an international student. It specifies conditions under which an international student should apply for an SSN, such as having authorized employment at Columbia, receiving a non-work fellowship stipend as a first-year doctoral student in F-1 status with future research or teaching responsibilities, or being in J-1 student status. This information is relevant and partially answers the question.",
+      "evidence": [
+        {
+          "path": "your-first-weeks-students",
+          "line": 6
+        }
+      ]
+    }
+  ]
+}

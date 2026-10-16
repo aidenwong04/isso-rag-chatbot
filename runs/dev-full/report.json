@@ -9,7 +9,7 @@
   },
   "budget": {
     "max_tokens": 600000,
-    "used_tokens": 82686,
+    "used_tokens": 74298,
     "exhausted": false
   },
   "alerts": [
@@ -22,7 +22,7 @@
       "confidence": 0.7121398991339833,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage explains what is meant by 'status,' clarifying the difference between a visa and immigration status, and it introduces the concept of maintaining legal nonimmigrant status. This directly addresses the question's part about 'what even is status' and touches on the key points about maintaining status, which answers the question's main aspects for students.",
+      "rationale": "This passage explains what status is, distinguishing it from a visa, and mentions the importance of maintaining legal nonimmigrant status as a student. It directly addresses the question about what status is and hints at the need to know key points to maintain it, making it relevant to the student's question.",
       "evidence": [
         {
           "path": "about-your-visa",
@@ -39,7 +39,7 @@
       "confidence": 0.7449287996215666,
       "status": "classified",
       "label": 1,
-      "rationale": "The chunk directly explains the difference between an I-20 and an F-1 by stating that an I-20 is a form issued to obtain F-1 status, thereby linking the form and the status clearly. It also explains the purpose of the I-20 form in relation to obtaining F-1 status, which answers the student's question about the difference.",
+      "rationale": "The passage clearly explains the difference between an I-20 and an F-1. It states that an I-20 is a form issued for students to obtain F-1 Student status, while the F-1 is the status itself. This directly answers the question about the difference between an I-20 and an F-1 for students.",
       "evidence": [
         {
           "path": "applying-your-i-20ds-2019",
@@ -56,7 +56,7 @@
       "confidence": 0.6902810169232053,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage explains some differences between F-1 and J-1 status and mentions DS-2019 for J-1 visa applicants but does not explain what an I-20 is or contrast it with an F-1 visa, so it does not answer the question about the difference between an I-20 and an F-1 visa.",
+      "rationale": "The passage explains the eligibility for F-1 or J-1 status and mentions DS-2019 but does not explain what an I-20 is or the difference between an I-20 and an F-1 visa/status. It does not answer the question about the difference between an I-20 and an F-1.",
       "evidence": [
         {
           "path": "applying-your-i-20ds-2019",
@@ -73,7 +73,7 @@
       "confidence": 0.7287632743459691,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage directly addresses what to do with the I-20 when transferring schools. It explains that an eligible student admitted to Columbia must request the previous school to transfer their electronic F-1 SEVIS record so Columbia can issue a transfer I-20. It also clarifies the difference between SEVIS and academic transfers and details benefits of a SEVIS transfer, helping answer the student's question about handling their I-20 when transferring schools.",
+      "rationale": "The passage explains what a transfer I-20 is and what to do if admitted to Columbia, including requesting the current school to transfer the electronic F-1 SEVIS record to Columbia so they can issue a transfer I-20. This directly answers what to do with the I-20 when transferring schools for a student.",
       "evidence": [
         {
           "path": "applying-your-transfer-i-20",
@@ -89,20 +89,12 @@
       "severity": null,
       "confidence": 0.7735423053972479,
       "status": "classified",
-      "label": 1,
-      "rationale": "The passage explains the steps and conditions for work authorization for F-1 and J-1 students employed on campus. It includes that F-1 status allows immediate eligibility, J-1 students need authorization, specific hour limits, employment conditions, and procedures for employment at affiliated schools and mandatory authorization for J-1 students. This directly addresses the question about steps for work authorization.",
+      "label": 0,
+      "rationale": "This chunk only provides an overview of the page sections and does not provide any specific steps for work authorization for students employed on campus. It does not answer the question asked.",
       "evidence": [
         {
           "path": "campus-work-f-and-j-students",
-          "line": 1
-        },
-        {
-          "path": "campus-work-f-and-j-students",
-          "line": 6
-        },
-        {
-          "path": "campus-work-f-and-j-students",
-          "line": 7
+          "line": 0
         }
       ]
     },
@@ -115,7 +107,7 @@
       "confidence": 0.717796853432133,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage explains steps about work authorization for students employed on campus, including that F-1 students are eligible as soon as they have status without application, while J-1 students must submit a request for authorization. It also specifies the conditions of employment and the end date for authorization. This directly answers the question about steps for work authorization on campus for students.",
+      "rationale": "The passage explains the steps for work authorization for on-campus employment for F-1 and J-1 students. It states that F-1 students are eligible as soon as they have obtained status without an application, while J-1 students must submit a request for authorization. It also clarifies the conditions of employment and when authorization ends, directly addressing the question about steps for work authorization for students employed on campus.",
       "evidence": [
         {
           "path": "campus-work-f-and-j-students",
@@ -132,7 +124,7 @@
       "confidence": 0.7235453704600445,
       "status": "classified",
       "label": 1,
-      "rationale": "This passage explains the step required for J-1 students employed on campus: making a request for sponsor authorization of on-campus employment through the ISSO. This directly answers part of the student's question about work authorization steps if employed on campus under J-1 status. Although it pertains specifically to J-1 students, the question was asked by students in general, making this relevant at least for J-1 student employment steps.",
+      "rationale": "The passage explains the step for J-1 students to get authorization for on-campus employment, specifically that they must request authorization from ISSO if their Form DS-2019 was issued by Columbia University. This directly addresses part of the process for work authorization for on-campus employment for students, making it relevant to the question.",
       "evidence": [
         {
           "path": "campus-work-f-and-j-students",
@@ -149,7 +141,7 @@
       "confidence": 0.6982838673961389,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage explains options for changing to F-1 student status but does not explain what an I-20 is, what an F-1 visa is, or the difference between them. It partially touches on the F-1 visa but does not define it clearly or compare it to the I-20. Therefore, it does not answer the question about the difference between an I-20 and an F-1 for students.",
+      "rationale": "The passage explains options for changing to F-1 status but does not define or compare what an I-20 or an F-1 visa/status is. It does not answer the question about the difference between an I-20 and an F-1. The audience is students, which matches the asker, but the content is not relevant to the question.",
       "evidence": [
         {
           "path": "changing-f-1-student-status-us",
@@ -166,7 +158,7 @@
       "confidence": 0.7313892825480671,
       "status": "classified",
       "label": 0,
-      "rationale": "This chunk only lists related topics including \"Travel Signatures and DS-2019 Reprints\" but does not explain what a travel signature is or whether a scholar outside the US without one can reenter. It does not answer any part of the question.",
+      "rationale": "This chunk only lists related topics including 'Travel Signatures and DS-2019 Reprints' but does not provide any information about what a travel signature is or whether a scholar outside the US without one can re-enter. It does not answer the question asked.",
       "evidence": [
         {
           "path": "documents-needed-travel-scholar",
@@ -183,7 +175,7 @@
       "confidence": 0.6770443613048996,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage discusses U.S. social customs and cultural differences and offers resources for learning about them. It does not mention any upcoming social events for F-1 students or provide information about events relevant to their question.",
+      "rationale": "The passage discusses differences between the U.S. and other countries and points to resources about social customs and cultural differences. It does not mention any upcoming social events for F-1 students or provide information about such events. Therefore, it is not relevant to the question about upcoming social events for F-1 students.",
       "evidence": [
         {
           "path": "entering-us-f-j-students",
@@ -200,7 +192,7 @@
       "confidence": 0.5578352753759921,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage lists U.S. customs and etiquette including tipping, measurements, date format, and others, primarily social and practical tips. It does not provide any information about places to find the best pizza or any food location recommendations, thus it does not answer the student's question about the best pizza.",
+      "rationale": "The passage provides general information about U.S. social customs and etiquettes, such as tipping, measurement systems, date formats, and legal drinking age. It does not address the question about where to find the best pizza. Therefore, it is not relevant to the question asked by the student.",
       "evidence": [
         {
           "path": "entering-us-f-j-students",
@@ -217,7 +209,7 @@
       "confidence": 0.7050370996570922,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage discusses applying for a new Certificate of Eligibility (COE) and obtaining a new I-20 when moving from one program to another at Columbia University, which directly relates to what a student should do with their I-20 if they want to transfer schools. This answers part of the question about handling the I-20 during a school transfer.",
+      "rationale": "The passage explains that if a student is moving from one program to another at Columbia University, they must apply for a new Certificate of Eligibility (COE) and obtain a new I-20, which updates their SEVIS record. This directly addresses what a student should do with their I-20 when transferring schools, at least within Columbia University.",
       "evidence": [
         {
           "path": "extending-begin-new-program-f-j-students",
@@ -234,7 +226,7 @@
       "confidence": 0.7200835183375811,
       "status": "classified",
       "label": 1,
-      "rationale": "This passage directly addresses what to do with the new I-20 when starting a new program, which is part of the transfer process between schools. It explains the start date for the new I-20 and relevant instructions for using the new Certificate of Eligibility, which is relevant to an F-1 student transferring schools.",
+      "rationale": "The passage provides relevant information for students transferring schools by explaining the start date of the new I-20 for F-1 students and instructions about the new COE and travel signatures. This directly relates to what a student should do with their I-20 when beginning a new program, which includes transferring schools.",
       "evidence": [
         {
           "path": "extending-begin-new-program-f-j-students",
@@ -251,7 +243,7 @@
       "confidence": 0.7328414260074013,
       "status": "classified",
       "label": 1,
-      "rationale": "This passage explains the recent SEVP advisories regarding CPT for F-1 students, the impact on eligibility for Columbia students, the university's response timeline, and support measures such as advising sessions and a hardship fund. It directly addresses the latest regulations and their effects on F-1 students, making it relevant to the student's question about latest OPT/CPT regulations and their impact.",
+      "rationale": "The passage directly addresses recent advisories from the U.S. Department of Homeland Security regarding CPT for F-1 students, explaining the impact on CPT eligibility for Columbia international students. It also details the university's response and support measures, which is relevant to the question about the latest OPT/CPT regulations and their effect on an F-1 student.",
       "evidence": [
         {
           "path": "f-1-cpt-curricular-practical-training",
@@ -267,8 +259,8 @@
       "severity": null,
       "confidence": 0.7171505974712222,
       "status": "classified",
-      "label": 1,
-      "rationale": "This passage acknowledges that federal immigration policy and guidance, including CPT guidance, can change and that the university is monitoring for updates. This information addresses the user's question about the latest OPT/CPT regulations and how those changes might affect them as an F-1 student by indicating ongoing developments and the university's response.",
+      "label": 0,
+      "rationale": "The passage states that federal immigration policy and guidance can change and that the University is monitoring for updates, but it does not provide any specific information about the latest OPT/CPT regulations or how they affect F-1 students. It does not answer the question about the current status or impact of the regulations.",
       "evidence": [
         {
           "path": "f-1-cpt-curricular-practical-training",
@@ -285,7 +277,7 @@
       "confidence": 0.7250587415276502,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage discusses the latest advisories from the U.S. Department of Homeland Security's SEVP on CPT for F-1 students, noting limits on CPT authorization and effects on eligibility, which directly addresses the question about the latest OPT/CPT regulations and their impact on F-1 students. It also advises students to consult ISSO for updates, which is relevant to the student's concerns.",
+      "rationale": "The passage directly addresses the latest CPT regulations by mentioning recent advisories from the U.S. Department of Homeland Security's SEVP that limit CPT authorization and affect eligibility for Columbia international students. It also advises students to consult the ISSO website for updates and guidance, which is relevant to the question about the latest OPT/CPT regulations and their impact on F-1 students.",
       "evidence": [
         {
           "path": "f-1-cpt-curricular-practical-training",
@@ -302,7 +294,7 @@
       "confidence": 0.5805479553557761,
       "status": "classified",
       "label": 0,
-      "rationale": "This passage only offers a general statement of support \"We're here to help!\" and does not provide any information about where to find pizza, nor does it address the question about the best pizza. It is unrelated to the food topic and does not answer the student question.",
+      "rationale": "The passage only says \"We're here to help!\" under a heading \"More Questions?\" and does not provide any information about pizza or where to find the best pizza. It is not relevant to the question about pizza.",
       "evidence": [
         {
           "path": "glass",
@@ -319,7 +311,7 @@
       "confidence": 0.6898197803588446,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage describes an information session about F-1/J-1 status as part of program orientation but does not mention any upcoming social events for F-1 students. It only addresses orientation and status information, which does not answer the question about social events.",
+      "rationale": "The passage mentions an information session about F-1/J-1 status as part of orientation but does not mention any upcoming social events for F-1 students. It only addresses orientation and status information, not social events.",
       "evidence": [
         {
           "path": "incoming-student-programs",
@@ -336,7 +328,7 @@
       "confidence": 0.6786451982557626,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage states that all incoming international students, which includes F-1 students, can participate in events on the calendar and in-person excursions organized by ISSO. This directly answers the question about upcoming social events for F-1 students, indicating their availability and inviting participation.",
+      "rationale": "The passage states that all incoming international students can participate in events on the calendar and in-person excursions organized by ISSO, which implies there are social events available for F-1 students. It directly addresses availability of events for incoming students, relevant to the question about upcoming social events for F-1 students.",
       "evidence": [
         {
           "path": "incoming-student-programs",
@@ -353,7 +345,7 @@
       "confidence": 0.7652192299823607,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage explains who needs to report their arrival to Columbia, directly answering why a student needs to report it (to comply with Columbia's requirements in certain enrollment and status circumstances). It also implies what students need to do (check the accuracy of their I-94 Arrival Record, confirm their admission status). This addresses both parts of the user's question about why and what steps are required to report arrival.",
+      "rationale": "The passage explains why a student needs to report their arrival to Columbia, listing specific situations when reporting is required (new student, transfer, returning from leave, re-entry). It also mentions checking the I-94 Arrival Record for dependents, which is part of what the student needs to do. Thus, it answers both parts of the question: why report and what to do.",
       "evidence": [
         {
           "path": "reporting-your-arrival-students",
@@ -370,7 +362,7 @@
       "confidence": 0.7577209808680575,
       "status": "classified",
       "label": 1,
-      "rationale": "This passage explains why reporting arrival is needed (it is a government requirement that activates the SEVIS record) and what to do (report arrival within a week online, no in-person needed). Thus it answers both parts of the student's question about why and how to report arrival.",
+      "rationale": "The passage explains why reporting arrival is necessary (government requirement to activate SEVIS record) and what to do (report online within a week of first-time arrival with Columbia I-20/DS-2019). This directly answers both parts of the student's question about why and how to report arrival.",
       "evidence": [
         {
           "path": "reporting-your-arrival-students",
@@ -387,7 +379,7 @@
       "confidence": 0.6743410821419814,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage only lists related information topics including 'Guidelines to Maintaining Status (Students)' but does not itself explain what status is or key points for maintaining student status. It points to where the answer can be found but does not answer the question directly.",
+      "rationale": "This chunk only lists related information topics such as 'Guidelines to Maintaining Status (Students)' but does not provide any actual information or key points about maintaining student status or what status means. It does not answer the question directly.",
       "evidence": [
         {
           "path": "reporting-your-arrival-students",
@@ -404,7 +396,7 @@
       "confidence": 0.6972867664236969,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage directly addresses housing challenges for scholars in New York City and points out the difficulty of getting a lease without a U.S. credit history or guarantor. It specifically refers to Columbia Residential Off-Campus Housing Resources, implying a good resource for housing or roommates. Thus, it partly answers the question by recommending a resource for housing and roommates.",
+      "rationale": "The passage directly addresses the challenge of finding housing in New York City for scholars and mentions Columbia Residential Off-Campus Housing Resources as a place to read more about housing options. This is relevant to the question about a good resource for finding housing or roommates in New York for scholars.",
       "evidence": [
         {
           "path": "resources-scholars",
@@ -421,7 +413,7 @@
       "confidence": 0.7149814933125218,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage directly addresses resources for housing and finding roommates specifically for scholars. It mentions Columbia's Off-Campus Housing Assistance (OCHA) for searching apartments, rooms, or roommates. It also lists the Office for Work/Life Rental Guide and 4Stay platform for furnished rentals, all relevant to the question about good resources for housing or roommates in New York for scholars.",
+      "rationale": "The passage directly answers the question by listing good resources for scholars to find housing or roommates in New York, including Columbia's Off-Campus Housing Assistance, the Office for Work/Life Rental Guide, and the 4Stay platform. It is specifically for scholars, matching the asker's audience.",
       "evidence": [
         {
           "path": "resources-scholars",
@@ -438,7 +430,7 @@
       "confidence": 0.702139783988131,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage directly provides resources for temporary housing options in New York for scholars, including specific suggestions such as Work | Life Temporary Housing Options, Columbia University's Travel Portal, Sara\u2019s Homestay, and Hostelling International NYC. This clearly helps answer the scholar's question about where to find housing or roommates in New York.",
+      "rationale": "The passage provides specific resources for temporary housing options in New York, including Work | Life Temporary Housing Options, Columbia University's Travel Portal, Sara\u2019s Homestay, and Hostelling International NYC. Since the question asks for good resources to find housing or roommates in New York and the passage is directed at scholars, it is relevant to the question.",
       "evidence": [
         {
           "path": "resources-scholars",
@@ -455,7 +447,7 @@
       "confidence": 0.5534862579567883,
       "status": "classified",
       "label": 0,
-      "rationale": "The passage discusses transportation options in NYC for students, including subway, buses, bike share, taxis, shuttles, and travel apps. It says nothing about pizza or where to find the best pizza. Therefore, it is not relevant to the question about the best pizza.",
+      "rationale": "The passage provides detailed information about transportation options in New York City, including subways, buses, taxis, bike shares, and ride-sharing services. However, it does not mention anything about pizza or where to find the best pizza, so it is not relevant to the question about the best pizza.",
       "evidence": [
         {
           "path": "resources-students",
@@ -472,7 +464,7 @@
       "confidence": 0.7131556207608559,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage explains what a travel signature is, who needs it, and that it is required to re-enter the U.S. in J-1 status. It also mentions the validity period of the travel signature and the process to obtain a new travel signature if needed, which partially addresses the question of what the travel signature is and how it affects re-entry into the U.S. if the signer is outside without one. The audience matches scholars.",
+      "rationale": "The passage explains what a travel signature is, specifically for J-1 scholars, stating it is needed to re-enter the U.S. in J status after traveling abroad. It also clarifies that you do not need a travel signature to leave the U.S. and that the travel signature must be unexpired on the date of re-entry. This directly answers both parts of the question about what a travel signature is and its necessity for re-entry if outside the U.S. without one. The audience matches the asker (scholars).",
       "evidence": [
         {
           "path": "travel-signatures-and-ds-2019-reprints-j-scholar",
@@ -489,7 +481,7 @@
       "confidence": 0.7077992753672081,
       "status": "classified",
       "label": 0,
-      "rationale": "This passage provides a list of related information topics but does not define what a travel signature is or address whether a scholar outside the US without one can return. It only points to related topics, not direct answers.",
+      "rationale": "This chunk only lists related topics and does not explain what a travel signature is or address whether a scholar outside the US without one can re-enter. It does not provide any direct information answering the question.",
       "evidence": [
         {
           "path": "travel-signatures-and-ds-2019-reprints-j-scholar",
@@ -506,7 +498,7 @@
       "confidence": 0.7676474255655297,
       "status": "classified",
       "label": 1,
-      "rationale": "This passage explains why students need to report their arrival\u2014it is a government requirement that activates their SEVIS record. It also states what students need to do, which is to fill out an online form within a week of arrival and that in-person reporting is not needed. Both parts of the question are addressed for students.",
+      "rationale": "The passage directly answers both parts of the question for students. It explains that reporting arrival is mandatory within a week because it is a government requirement that activates the SEVIS record. It also states what to do: complete the online form, with no need to report in person. This fully addresses why and how to report arrival for students.",
       "evidence": [
         {
           "path": "your-first-weeks-students",
@@ -523,7 +515,7 @@
       "confidence": 0.679478249922065,
       "status": "classified",
       "label": 1,
-      "rationale": "The passage explains what full-time status means for students, how it is defined by the Registrar, the usual credit or unit requirements, and the importance of registering full-time by the second week to maintain F-1 or J-1 student status. This directly answers the question about what status is and key points for maintaining it for students.",
+      "rationale": "The passage explains what full-time status means for students, how it is defined by the Registrar, and the importance of registering for a full-time course load to maintain F-1 or J-1 student status. It also mentions checking registration status and provides resources for more information. This directly addresses the question about key points to maintain student status and what status means.",
       "evidence": [
         {
           "path": "your-first-weeks-students",

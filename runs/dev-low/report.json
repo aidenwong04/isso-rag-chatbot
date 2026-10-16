@@ -1,0 +1,417 @@
+{
+  "target": {
+    "input": "agent/queries/dev"
+  },
+  "scan": {
+    "corpus_version": "f186563d6a1e",
+    "k": 3,
+    "alert_count": 30
+  },
+  "budget": {
+    "max_tokens": 20000,
+    "used_tokens": 20961,
+    "exhausted": true
+  },
+  "alerts": [
+    {
+      "alert_id": "dev-q07::about-your-visa::7",
+      "test_id": "dev-q07",
+      "path": "about-your-visa",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.7121398991339833,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q01::applying-your-i-20ds-2019::1",
+      "test_id": "dev-q01",
+      "path": "applying-your-i-20ds-2019",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.7449287996215666,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage clearly explains the difference between an I-20 and an F-1: the I-20 is a form issued to obtain F-1 student status, while the F-1 is the status itself. It also explains the purpose of the I-20 form in relation to obtaining and maintaining F-1 status, directly answering the student's question.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q01::applying-your-i-20ds-2019::3",
+      "test_id": "dev-q01",
+      "path": "applying-your-i-20ds-2019",
+      "line": 3,
+      "severity": null,
+      "confidence": 0.6902810169232053,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains the eligibility for F-1 or J-1 status and mentions the DS-2019 form but does not explain what an I-20 is or the difference between an I-20 and an F-1 visa/status. It does not answer the question about the difference between an I-20 and an F-1.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q04::applying-your-transfer-i-20::0",
+      "test_id": "dev-q04",
+      "path": "applying-your-transfer-i-20",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7287632743459691,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q05::campus-work-f-and-j-students::0",
+      "test_id": "dev-q05",
+      "path": "campus-work-f-and-j-students",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7735423053972479,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q05::campus-work-f-and-j-students::1",
+      "test_id": "dev-q05",
+      "path": "campus-work-f-and-j-students",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.717796853432133,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q05::campus-work-f-and-j-students::7",
+      "test_id": "dev-q05",
+      "path": "campus-work-f-and-j-students",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.7235453704600445,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q01::changing-f-1-student-status-us::1",
+      "test_id": "dev-q01",
+      "path": "changing-f-1-student-status-us",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.6982838673961389,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains options for changing to F-1 status but does not explain what an I-20 is or the difference between an I-20 and an F-1 visa. It does not answer the question about the difference between an I-20 and an F-1.",
+      "evidence": [
+        {
+          "path": "changing-f-1-student-status-us",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q06::documents-needed-travel-scholar::16",
+      "test_id": "dev-q06",
+      "path": "documents-needed-travel-scholar",
+      "line": 16,
+      "severity": null,
+      "confidence": 0.7313892825480671,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q03::entering-us-f-j-students::15",
+      "test_id": "dev-q03",
+      "path": "entering-us-f-j-students",
+      "line": 15,
+      "severity": null,
+      "confidence": 0.6770443613048996,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q09::entering-us-f-j-students::16",
+      "test_id": "dev-q09",
+      "path": "entering-us-f-j-students",
+      "line": 16,
+      "severity": null,
+      "confidence": 0.5578352753759921,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q04::extending-begin-new-program-f-j-students::0",
+      "test_id": "dev-q04",
+      "path": "extending-begin-new-program-f-j-students",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7050370996570922,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q04::extending-begin-new-program-f-j-students::6",
+      "test_id": "dev-q04",
+      "path": "extending-begin-new-program-f-j-students",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.7200835183375811,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::1",
+      "test_id": "dev-q02",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.7328414260074013,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses recent advisories from the U.S. Department of Homeland Security regarding CPT for F-1 students, explaining the impact on CPT eligibility for Columbia international students. It also describes the university's response and support measures, which is relevant to the question about the latest OPT/CPT regulations and their effect on an F-1 student.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::14",
+      "test_id": "dev-q02",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 14,
+      "severity": null,
+      "confidence": 0.7171505974712222,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage states that federal immigration policy and guidance can change and that the University is monitoring for updates, but it does not provide any specific information about the latest OPT/CPT regulations or how they affect an F-1 student. It does not answer the question asked.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::15",
+      "test_id": "dev-q02",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 15,
+      "severity": null,
+      "confidence": 0.7250587415276502,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the latest CPT regulations by mentioning recent advisories from the U.S. Department of Homeland Security's SEVP that limit CPT authorization and affect eligibility for Columbia international students. It also advises students to consult the ISSO website for updates and guidance, which is relevant to the question about the latest OPT/CPT regulations and their impact on F-1 students.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q09::glass::20",
+      "test_id": "dev-q09",
+      "path": "glass",
+      "line": 20,
+      "severity": null,
+      "confidence": 0.5805479553557761,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q03::incoming-student-programs::5",
+      "test_id": "dev-q03",
+      "path": "incoming-student-programs",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.6898197803588446,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage talks about an information session about F-1/J-1 status as part of program orientation, but it does not mention any upcoming social events for F-1 students. It only addresses orientation and status information, not social events.",
+      "evidence": [
+        {
+          "path": "incoming-student-programs",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q03::incoming-student-programs::9",
+      "test_id": "dev-q03",
+      "path": "incoming-student-programs",
+      "line": 9,
+      "severity": null,
+      "confidence": 0.6786451982557626,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage states that all incoming international students can participate in events on the calendar and in-person excursions organized by ISSO, which implies there are social events available for F-1 students. It directly addresses availability of events for incoming students, relevant to the question about upcoming social events for F-1 students.",
+      "evidence": [
+        {
+          "path": "incoming-student-programs",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "alert_id": "dev-q08::reporting-your-arrival-students::1",
+      "test_id": "dev-q08",
+      "path": "reporting-your-arrival-students",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.7652192299823607,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q08::reporting-your-arrival-students::2",
+      "test_id": "dev-q08",
+      "path": "reporting-your-arrival-students",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7577209808680575,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q07::reporting-your-arrival-students::6",
+      "test_id": "dev-q07",
+      "path": "reporting-your-arrival-students",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.6743410821419814,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q10::resources-scholars::1",
+      "test_id": "dev-q10",
+      "path": "resources-scholars",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.6972867664236969,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q10::resources-scholars::3",
+      "test_id": "dev-q10",
+      "path": "resources-scholars",
+      "line": 3,
+      "severity": null,
+      "confidence": 0.7149814933125218,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q10::resources-scholars::5",
+      "test_id": "dev-q10",
+      "path": "resources-scholars",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.702139783988131,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q09::resources-students::7",
+      "test_id": "dev-q09",
+      "path": "resources-students",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.5534862579567883,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q06::travel-signatures-and-ds-2019-reprints-j-scholar::2",
+      "test_id": "dev-q06",
+      "path": "travel-signatures-and-ds-2019-reprints-j-scholar",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7131556207608559,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q06::travel-signatures-and-ds-2019-reprints-j-scholar::7",
+      "test_id": "dev-q06",
+      "path": "travel-signatures-and-ds-2019-reprints-j-scholar",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.7077992753672081,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q08::your-first-weeks-students::1",
+      "test_id": "dev-q08",
+      "path": "your-first-weeks-students",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.7676474255655297,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "dev-q07::your-first-weeks-students::3",
+      "test_id": "dev-q07",
+      "path": "your-first-weeks-students",
+      "line": 3,
+      "severity": null,
+      "confidence": 0.679478249922065,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    }
+  ]
+}

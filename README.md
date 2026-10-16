@@ -7,6 +7,8 @@ If it works out, may reach out to ISSO about actual use.
 
 live at: https://isso-rag.vercel.app/#ask
 
+**COMS E6998 HW1 graders:** the agent's setup, run command and configs are in [`agent/README.md`](agent/README.md).
+
 ## Structure
 
 - `data/` - raw and processed ISSO source content, embeddings, and monitor state

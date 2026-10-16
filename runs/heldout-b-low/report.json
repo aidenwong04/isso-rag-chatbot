@@ -1,0 +1,349 @@
+{
+  "target": {
+    "input": "agent/queries/heldout-b"
+  },
+  "scan": {
+    "corpus_version": "f186563d6a1e",
+    "k": 3,
+    "alert_count": 24
+  },
+  "budget": {
+    "max_tokens": 20000,
+    "used_tokens": 21063,
+    "exhausted": true
+  },
+  "alerts": [
+    {
+      "alert_id": "heldout-b-q08::about-your-visa::0",
+      "test_id": "heldout-b-q08",
+      "path": "about-your-visa",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.6530700286958742,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::2",
+      "test_id": "heldout-b-q07",
+      "path": "applying-visa-scholars",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7093215309267047,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::6",
+      "test_id": "heldout-b-q07",
+      "path": "applying-visa-scholars",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.6875152781117404,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::7",
+      "test_id": "heldout-b-q07",
+      "path": "applying-visa-scholars",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.7002983925739568,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-visa-students::10",
+      "test_id": "heldout-b-q02",
+      "path": "applying-visa-students",
+      "line": 10,
+      "severity": null,
+      "confidence": 0.7280061450856568,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists the documents needed to apply for a visa as a student accepted to Columbia, directly addressing how to apply for the visa by specifying required paperwork such as passport, DS-160 confirmation, I-20, admission letter, SEVIS fee receipt, and financial documents. This is relevant to the student's question about how to apply for their visa.",
+      "evidence": [
+        {
+          "path": "applying-visa-students",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::8",
+      "test_id": "heldout-b-q02",
+      "path": "applying-your-i-20ds-2019",
+      "line": 8,
+      "severity": null,
+      "confidence": 0.7311320901476818,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides relevant information for a student who just got accepted to Columbia and wants to apply for a visa. It explains the steps to apply for the ALP I-20, use it to apply for the F-1 visa, and instructions on transferring the SEVIS record to apply for the program I-20. This directly addresses how to apply for the visa.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::17",
+      "test_id": "heldout-b-q02",
+      "path": "applying-your-i-20ds-2019",
+      "line": 17,
+      "severity": null,
+      "confidence": 0.7478973112486127,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains the initial steps for a student who has been accepted to Columbia to apply for their visa documents (I-20 or DS-2019). It details how to use the PID received from the admissions office to request a Limited Services PIN and log in to Compass, which is part of the visa application process. This directly answers how to apply for the visa after acceptance.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q01::campus-work-f-and-j-students::9",
+      "test_id": "heldout-b-q01",
+      "path": "campus-work-f-and-j-students",
+      "line": 9,
+      "severity": null,
+      "confidence": 0.7360231056508827,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the question by stating that international students must apply in person for a Social Security Number (SSN) and provides guidance on the application process. It is relevant because it answers whether an international student needs an SSN and what to do about it.",
+      "evidence": [
+        {
+          "path": "campus-work-f-and-j-students",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q08::cap-gap-opt-extension::5",
+      "test_id": "heldout-b-q08",
+      "path": "cap-gap-opt-extension",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.6678900622681182,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q08::cap-gap-opt-extension::7",
+      "test_id": "heldout-b-q08",
+      "path": "cap-gap-opt-extension",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.698989111913971,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q03::documents-needed-travel-scholar::0",
+      "test_id": "heldout-b-q03",
+      "path": "documents-needed-travel-scholar",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7219100662280431,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states that it will inform about the documents needed to bring and show immigration when returning, but it does not actually list or specify what those documents are. Therefore, it does not answer the question about what documents are needed to enter the US.",
+      "evidence": [
+        {
+          "path": "documents-needed-travel-scholar",
+          "line": 0
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q03::documents-needed-travel-scholar::12",
+      "test_id": "heldout-b-q03",
+      "path": "documents-needed-travel-scholar",
+      "line": 12,
+      "severity": null,
+      "confidence": 0.7102921983787628,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q03::entering-us-scholars::2",
+      "test_id": "heldout-b-q03",
+      "path": "entering-us-scholars",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7257301827547493,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage entering-us-scholars::2 introduces the list of documents scholars need to have in hand for the officer to review when entering the US. The following chunk entering-us-scholars::3 explicitly lists the required documents such as unexpired passport, valid visa, DS-2019, SEVIS fee receipt, letter of offer or invitation, and financial documentation. This directly answers the question about what documents are needed to enter the US for scholars.",
+      "evidence": [
+        {
+          "path": "entering-us-scholars",
+          "line": 2
+        },
+        {
+          "path": "entering-us-scholars",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::10",
+      "test_id": "heldout-b-q05",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 10,
+      "severity": null,
+      "confidence": 0.7522772982516822,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::26",
+      "test_id": "heldout-b-q05",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 26,
+      "severity": null,
+      "confidence": 0.7522772982516822,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::38",
+      "test_id": "heldout-b-q05",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 38,
+      "severity": null,
+      "confidence": 0.7476341318808815,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::9",
+      "test_id": "heldout-b-q04",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 9,
+      "severity": null,
+      "confidence": 0.7220202531285531,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::40",
+      "test_id": "heldout-b-q04",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 40,
+      "severity": null,
+      "confidence": 0.7167759235372868,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::49",
+      "test_id": "heldout-b-q04",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 49,
+      "severity": null,
+      "confidence": 0.7286772316495422,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::0",
+      "test_id": "heldout-b-q06",
+      "path": "glass",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.7578639906983863,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::1",
+      "test_id": "heldout-b-q06",
+      "path": "glass",
+      "line": 1,
+      "severity": null,
+      "confidence": 0.7596290955866037,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::5",
+      "test_id": "heldout-b-q06",
+      "path": "glass",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.7241554653403084,
+      "status": "budget_exhausted",
+      "label": null,
+      "rationale": "",
+      "evidence": []
+    },
+    {
+      "alert_id": "heldout-b-q01::j-1-academic-training::13",
+      "test_id": "heldout-b-q01",
+      "path": "j-1-academic-training",
+      "line": 13,
+      "severity": null,
+      "confidence": 0.7259578555414309,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explicitly mentions applying for a Social Security Number (SSN) as a step for students after their Academic Training has been approved and before their start date. This directly addresses the question about the need for an SSN as an international student, indicating that obtaining one is part of the process.",
+      "evidence": [
+        {
+          "path": "j-1-academic-training",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-b-q01::your-first-weeks-students::6",
+      "test_id": "heldout-b-q01",
+      "path": "your-first-weeks-students",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.7263125317180275,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the question about needing a Social Security Number (SSN) as an international student. It specifies conditions under which an international student should apply for an SSN, such as having authorized employment at Columbia, receiving a fellowship stipend with future research or teaching responsibilities, or being in J-1 student status. This information is relevant and partially answers the question about the necessity of an SSN for international students.",
+      "evidence": [
+        {
+          "path": "your-first-weeks-students",
+          "line": 6
+        }
+      ]
+    }
+  ]
+}

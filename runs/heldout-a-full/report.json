@@ -1,0 +1,429 @@
+{
+  "target": {
+    "input": "agent/queries/heldout-a"
+  },
+  "scan": {
+    "corpus_version": "f186563d6a1e",
+    "k": 3,
+    "alert_count": 24
+  },
+  "budget": {
+    "max_tokens": 600000,
+    "used_tokens": 59935,
+    "exhausted": false
+  },
+  "alerts": [
+    {
+      "alert_id": "heldout-a-q06::about-your-visa::7",
+      "test_id": "heldout-a-q06",
+      "path": "about-your-visa",
+      "line": 7,
+      "severity": null,
+      "confidence": 0.6893839340377433,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that the I-94 Arrival Record is an electronic record generated when a Customs and Border Protection Officer admits a person into the U.S. in a nonimmigrant status. This directly answers what an I-94 is, providing relevant information for a student asking about it.",
+      "evidence": [
+        {
+          "path": "about-your-visa",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q05::applying-your-i-20ds-2019::28",
+      "test_id": "heldout-a-q05",
+      "path": "applying-your-i-20ds-2019",
+      "line": 28,
+      "severity": null,
+      "confidence": 0.717845067430187,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides contact information for the ISSO office for students who have questions, including email addresses for different campuses and a pointer to check the campus school list if unsure. This directly answers the question about how to contact ISSO if a student has a question. Although it does not give a physical office location, it is relevant because it provides contact details for inquiries.",
+      "evidence": [
+        {
+          "path": "applying-your-i-20ds-2019",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q02::campus-work-f-and-j-students::0",
+      "test_id": "heldout-a-q02",
+      "path": "campus-work-f-and-j-students",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.6693863155798856,
+      "status": "classified",
+      "label": 0,
+      "rationale": "This chunk only provides an overview of the page contents and does not provide any information on how students can obtain work authorization. It lists topics but does not answer the question about obtaining work authorization.",
+      "evidence": [
+        {
+          "path": "campus-work-f-and-j-students",
+          "line": 0
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q03::documents-needed-travel-student::5",
+      "test_id": "heldout-a-q03",
+      "path": "documents-needed-travel-student",
+      "line": 5,
+      "severity": null,
+      "confidence": 0.6761535617854775,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage does not provide any specific information about the documents needed to go through immigration. Instead, it directs students to other pages for details depending on their situation (first time entering the U.S. or on OPT/STEM OPT). It does not answer the question directly or partially.",
+      "evidence": [
+        {
+          "path": "documents-needed-travel-student",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q03::entering-us-f-j-students::2",
+      "test_id": "heldout-a-q03",
+      "path": "entering-us-f-j-students",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7043124202125525,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage entering-us-f-j-students::2 explicitly states that students should have certain documents in hand for the Customs and Border Protection officer to review, directly answering the question about what documents are needed to go through immigration. The neighboring chunk entering-us-f-j-students::3 lists specific documents such as valid passport, visa, I-20, SEVIS fee receipt, and financial documents, confirming the relevance to the question for students.",
+      "evidence": [
+        {
+          "path": "entering-us-f-j-students",
+          "line": 2
+        },
+        {
+          "path": "entering-us-f-j-students",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q04::entering-us-f-j-students::15",
+      "test_id": "heldout-a-q04",
+      "path": "entering-us-f-j-students",
+      "line": 15,
+      "severity": null,
+      "confidence": 0.6781377955709607,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage talks about learning U.S. social customs and cultural differences but does not provide any information about how an international student can get involved on campus. It does not answer the question about campus involvement.",
+      "evidence": [
+        {
+          "path": "entering-us-f-j-students",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q01::f-1-cpt-curricular-practical-training::13",
+      "test_id": "heldout-a-q01",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 13,
+      "severity": null,
+      "confidence": 0.7058599901281152,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states that pre-completion OPT is rarely a viable alternative and advises seeking advice from an ISSO adviser. It does not explain the difference between post-completion OPT and pre-completion OPT, so it does not answer the question.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q08::f-1-cpt-curricular-practical-training::30",
+      "test_id": "heldout-a-q08",
+      "path": "f-1-cpt-curricular-practical-training",
+      "line": 30,
+      "severity": null,
+      "confidence": 0.7298782912982991,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage states that CPT can be used only during the academic program, which partially answers the question about when a student can start applying for CPT. It provides relevant timing information for CPT application.",
+      "evidence": [
+        {
+          "path": "f-1-cpt-curricular-practical-training",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q01::f-1-opt-optional-practical-training-after-your-degree-program::2",
+      "test_id": "heldout-a-q01",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.7255076919335663,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains what OPT is and mentions post-completion OPT as an extension of F-1 status after completing the academic program, but it does not mention or explain pre-completion OPT or the difference between post-completion and pre-completion OPT. Therefore, it does not answer the question about the difference between post-completion and pre-completion OPT.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q01::f-1-opt-optional-practical-training-after-your-degree-program::10",
+      "test_id": "heldout-a-q01",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 10,
+      "severity": null,
+      "confidence": 0.7053484129212789,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains the maximum amount of Post-Completion OPT (12 months) and mentions that any Pre-Completion OPT authorized at the same degree level is deducted from this total. This directly addresses the difference between Post-Completion OPT and Pre-Completion OPT by clarifying how the time for each is counted and related, which is relevant to the student's question.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q08::f-1-opt-optional-practical-training-after-your-degree-program::13",
+      "test_id": "heldout-a-q08",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 13,
+      "severity": null,
+      "confidence": 0.737728223040672,
+      "status": "classified",
+      "label": 1,
+      "rationale": "This passage directly answers the question about when a student can start applying for OPT. It states that the earliest a student can submit their OPT application to the ISSO is 90 days before their program end date. It also advises planning ahead due to processing times. This is relevant and helpful information for a student asking about the timing of OPT/CPT applications.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q02::f-1-opt-optional-practical-training-after-your-degree-program::22",
+      "test_id": "heldout-a-q02",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 22,
+      "severity": null,
+      "confidence": 0.6712073754521773,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides specific instructions on how students can obtain work authorization by submitting the OPT I-765 application online through their USCIS account. This directly answers the question about how students can obtain work authorization.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q02::f-1-opt-optional-practical-training-after-your-degree-program::31",
+      "test_id": "heldout-a-q02",
+      "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "line": 31,
+      "severity": null,
+      "confidence": 0.6585548848746715,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides information about submitting the OPT I-765 application online through the USCIS account, which is a key step in obtaining work authorization (OPT) for students. It also mentions documentation related to CPT and OPT, which are types of work authorization for students. Therefore, it partially answers how a student can obtain work authorization.",
+      "evidence": [
+        {
+          "path": "f-1-opt-optional-practical-training-after-your-degree-program",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q05::frequently-asked-questions-newly-admitted-students::0",
+      "test_id": "heldout-a-q05",
+      "path": "frequently-asked-questions-newly-admitted-students",
+      "line": 0,
+      "severity": null,
+      "confidence": 0.764411704376411,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage states that ISSO advisers are available to assist and that additional information is on the site, but it does not provide the location of the ISSO office or contact details. It only generally says ISSO is here to support and FAQs are listed, which does not answer the question directly.",
+      "evidence": [
+        {
+          "path": "frequently-asked-questions-newly-admitted-students",
+          "line": 0
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q03::frequently-asked-questions-newly-admitted-students::3",
+      "test_id": "heldout-a-q03",
+      "path": "frequently-asked-questions-newly-admitted-students",
+      "line": 3,
+      "severity": null,
+      "confidence": 0.7000103100393436,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers the question by listing the specific documents a student needs to have ready for review by the Customs and Border Protection officer upon arrival at the U.S. port of entry. It includes passport, visa, Columbia I-20 or DS-2019, SEVIS fee receipt, and funding documents, which are exactly the documents needed to go through immigration. The audience is students, matching the asker.",
+      "evidence": [
+        {
+          "path": "frequently-asked-questions-newly-admitted-students",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q08::frequently-asked-questions-newly-admitted-students::12",
+      "test_id": "heldout-a-q08",
+      "path": "frequently-asked-questions-newly-admitted-students",
+      "line": 12,
+      "severity": null,
+      "confidence": 0.7545833708770394,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers when a student can start applying for OPT/CPT by stating the eligibility requirements: being enrolled full-time in a degree or qualifying certificate program and maintaining active F-1 status for at least one academic year (two consecutive semesters). It also mentions the requirement to arrive within 30 days from the start of classes for the term to count toward practical training eligibility. This information is relevant to the student's question about when they can start applying for OPT/CPT.",
+      "evidence": [
+        {
+          "path": "frequently-asked-questions-newly-admitted-students",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q05::frequently-asked-questions-newly-admitted-students::14",
+      "test_id": "heldout-a-q05",
+      "path": "frequently-asked-questions-newly-admitted-students",
+      "line": 14,
+      "severity": null,
+      "confidence": 0.723943194428451,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides direct contact information for ISSO advisers including email addresses for two campuses, a phone number with office hours, and information about booking appointments for in-person or Zoom advising sessions. This fully answers the student's question about where the ISSO office is and how to contact them.",
+      "evidence": [
+        {
+          "path": "frequently-asked-questions-newly-admitted-students",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q04::incoming-student-programs::2",
+      "test_id": "heldout-a-q04",
+      "path": "incoming-student-programs",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.6815889301417692,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage is a general welcome message to incoming international students and does not provide any information on how to get involved in campus activities. It does not answer the question about involvement opportunities.",
+      "evidence": [
+        {
+          "path": "incoming-student-programs",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q07::incoming-student-programs::2",
+      "test_id": "heldout-a-q07",
+      "path": "incoming-student-programs",
+      "line": 2,
+      "severity": null,
+      "confidence": 0.6378021466585682,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage welcomes incoming international students and introduces the programming team but does not provide any information about international food options around Columbia. It does not answer the question about good international food nearby.",
+      "evidence": [
+        {
+          "path": "incoming-student-programs",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q04::incoming-student-programs::6",
+      "test_id": "heldout-a-q04",
+      "path": "incoming-student-programs",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.706839235752107,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses how an international student can get involved on campus by joining the ISSO Programming Team and connecting with other international students in a virtual community space. This is relevant to the question about involvement opportunities for international students.",
+      "evidence": [
+        {
+          "path": "incoming-student-programs",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q06::reporting-your-arrival-students::3",
+      "test_id": "heldout-a-q06",
+      "path": "reporting-your-arrival-students",
+      "line": 3,
+      "severity": null,
+      "confidence": 0.6716370504760424,
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that the I-94 is an electronic Arrival Record generated by Customs and Border Protection (CBP) when entering the U.S. It also mentions the admission status (F-1 or J-1 until D/S) associated with the I-94. This directly answers what an I-94 is for a student asking about it.",
+      "evidence": [
+        {
+          "path": "reporting-your-arrival-students",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q06::reporting-your-arrival-students::6",
+      "test_id": "heldout-a-q06",
+      "path": "reporting-your-arrival-students",
+      "line": 6,
+      "severity": null,
+      "confidence": 0.6715032035048265,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only lists related information topics including 'I-94 Arrival Record' but does not explain what an I-94 is. It does not provide any definition or description relevant to the question asked by the student.",
+      "evidence": [
+        {
+          "path": "reporting-your-arrival-students",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q07::resources-students::9",
+      "test_id": "heldout-a-q07",
+      "path": "resources-students",
+      "line": 9,
+      "severity": null,
+      "confidence": 0.6640816676395914,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage provides information about banking for non-resident students, including completing a W8-BEN form and bank locations near Columbia. It does not mention anything about international food or dining options around Columbia, so it is not relevant to the question about good international food.",
+      "evidence": [
+        {
+          "path": "resources-students",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "alert_id": "heldout-a-q07::resources-students::11",
+      "test_id": "heldout-a-q07",
+      "path": "resources-students",
+      "line": 11,
+      "severity": null,
+      "confidence": 0.6285754584165085,
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage discusses mobile phone service options and providers near Columbia University, which is unrelated to the question about good international food around Columbia. It does not provide any information about food or dining options.",
+      "evidence": [
+        {
+          "path": "resources-students",
+          "line": 11
+        }
+      ]
+    }
+  ]
+}
