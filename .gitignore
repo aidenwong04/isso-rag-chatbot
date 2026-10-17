@@ -21,3 +21,6 @@ firebase-debug.log
 
 # Pages fetched for review, not yet in the corpus
 data/staging/
+
+# The submitted report PDF carries the graders' Gemini key; never commit it.
+agent/REPORT.pdf
