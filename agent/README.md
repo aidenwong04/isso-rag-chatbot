@@ -22,6 +22,8 @@ Bandit is not used: discovery is retrieval over the corpus, which is committed i
 The command script expects a Python 3.13 environment named `env/` at the repository root.
 Create it with whichever tool provides Python 3.13 on your machine:
 
+From the submitted zip, unzip it and `cd isso-rag-chatbot` instead of the first two commands.
+
 ```bash
 git clone https://github.com/aidenwong04/isso-rag-chatbot.git
 cd isso-rag-chatbot
