@@ -26,10 +26,11 @@ Create it with whichever tool provides Python 3.13 on your machine:
 git clone https://github.com/aidenwong04/isso-rag-chatbot.git
 cd isso-rag-chatbot
 python3.13 -m venv env        # or: conda create -p ./env python=3.13
-env/bin/pip install -r agent/requirements.txt
+env/bin/pip install -r agent/requirements.lock
 ```
 
-`agent/requirements.txt` includes the root `requirements.txt`; every direct dependency in both is pinned to an exact version.
+`agent/requirements.lock` pins every package, dependencies of dependencies included, to the versions the recorded runs used.
+The direct dependencies are listed in `agent/requirements.txt` (which includes the root `requirements.txt`).
 
 The agent reads two environment variables, from the shell or from a `.env` file at the repository root:
 
@@ -131,6 +132,7 @@ Every run cited in the report is committed unedited under `agent/runs/`, with th
 ```
 agent/isso-agent        the command (shell script)
 agent/configs/          full.toml, low.toml
+agent/requirements.txt  the direct dependencies; agent/requirements.lock pins all of them
 agent/README.md         this file
 agent/REPORT.md         the design report (A1-A7, C2, C3)
 agent/DESIGN.md         design notes: behaviours, graph, state, tools, termination, withholding
