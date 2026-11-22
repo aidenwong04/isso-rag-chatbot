@@ -1,0 +1,42 @@
+[
+    { 
+        "id": "heldout-a-q01",
+        "text": "what is the difference between post-completion OPT and pre-completion OPT?", 
+        "audience": "students" 
+    },
+    { 
+        "id": "heldout-a-q02",
+        "text": "how can I obtain work auth?", 
+        "audience": "students" 
+    },
+    {
+        "id": "heldout-a-q03",
+        "text": "what documents do I need to go through immigration", 
+        "audience": "students" 
+    },
+    {
+        "id": "heldout-a-q04",
+        "text": "how can I get involved in campus as an international student", 
+        "audience": "students" 
+    },
+    {
+        "id": "heldout-a-q05",
+        "text": "where's the ISSO office, how can I contact if I have a question?", 
+        "audience": "students" 
+    },
+    {
+        "id": "heldout-a-q06",
+        "text": "what is a I-94?", 
+        "audience": "students" 
+    },
+    {
+        "id": "heldout-a-q07",
+        "text": "any good international food around columbia?", 
+        "audience": "students" 
+    },
+    {
+        "id": "heldout-a-q08",
+        "text": "when can I start applying for OPT/CPT", 
+        "audience": "students" 
+    }
+]

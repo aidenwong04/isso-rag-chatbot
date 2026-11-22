@@ -1,0 +1,122 @@
+[
+  {
+    "alert_id": "heldout-b-q08::about-your-visa::0",
+    "query_id": "heldout-b-q08",
+    "chunk_id": "about-your-visa::0"
+  },
+  {
+    "alert_id": "heldout-b-q07::applying-visa-scholars::2",
+    "query_id": "heldout-b-q07",
+    "chunk_id": "applying-visa-scholars::2"
+  },
+  {
+    "alert_id": "heldout-b-q07::applying-visa-scholars::6",
+    "query_id": "heldout-b-q07",
+    "chunk_id": "applying-visa-scholars::6"
+  },
+  {
+    "alert_id": "heldout-b-q07::applying-visa-scholars::7",
+    "query_id": "heldout-b-q07",
+    "chunk_id": "applying-visa-scholars::7"
+  },
+  {
+    "alert_id": "heldout-b-q02::applying-visa-students::10",
+    "query_id": "heldout-b-q02",
+    "chunk_id": "applying-visa-students::10"
+  },
+  {
+    "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::8",
+    "query_id": "heldout-b-q02",
+    "chunk_id": "applying-your-i-20ds-2019::8"
+  },
+  {
+    "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::17",
+    "query_id": "heldout-b-q02",
+    "chunk_id": "applying-your-i-20ds-2019::17"
+  },
+  {
+    "alert_id": "heldout-b-q01::campus-work-f-and-j-students::9",
+    "query_id": "heldout-b-q01",
+    "chunk_id": "campus-work-f-and-j-students::9"
+  },
+  {
+    "alert_id": "heldout-b-q08::cap-gap-opt-extension::5",
+    "query_id": "heldout-b-q08",
+    "chunk_id": "cap-gap-opt-extension::5"
+  },
+  {
+    "alert_id": "heldout-b-q08::cap-gap-opt-extension::7",
+    "query_id": "heldout-b-q08",
+    "chunk_id": "cap-gap-opt-extension::7"
+  },
+  {
+    "alert_id": "heldout-b-q03::documents-needed-travel-scholar::0",
+    "query_id": "heldout-b-q03",
+    "chunk_id": "documents-needed-travel-scholar::0"
+  },
+  {
+    "alert_id": "heldout-b-q03::documents-needed-travel-scholar::12",
+    "query_id": "heldout-b-q03",
+    "chunk_id": "documents-needed-travel-scholar::12"
+  },
+  {
+    "alert_id": "heldout-b-q03::entering-us-scholars::2",
+    "query_id": "heldout-b-q03",
+    "chunk_id": "entering-us-scholars::2"
+  },
+  {
+    "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::10",
+    "query_id": "heldout-b-q05",
+    "chunk_id": "f-1-cpt-curricular-practical-training::10"
+  },
+  {
+    "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::26",
+    "query_id": "heldout-b-q05",
+    "chunk_id": "f-1-cpt-curricular-practical-training::26"
+  },
+  {
+    "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::38",
+    "query_id": "heldout-b-q05",
+    "chunk_id": "f-1-cpt-curricular-practical-training::38"
+  },
+  {
+    "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::9",
+    "query_id": "heldout-b-q04",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::9"
+  },
+  {
+    "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::40",
+    "query_id": "heldout-b-q04",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::40"
+  },
+  {
+    "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::49",
+    "query_id": "heldout-b-q04",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::49"
+  },
+  {
+    "alert_id": "heldout-b-q06::glass::0",
+    "query_id": "heldout-b-q06",
+    "chunk_id": "glass::0"
+  },
+  {
+    "alert_id": "heldout-b-q06::glass::1",
+    "query_id": "heldout-b-q06",
+    "chunk_id": "glass::1"
+  },
+  {
+    "alert_id": "heldout-b-q06::glass::5",
+    "query_id": "heldout-b-q06",
+    "chunk_id": "glass::5"
+  },
+  {
+    "alert_id": "heldout-b-q01::j-1-academic-training::13",
+    "query_id": "heldout-b-q01",
+    "chunk_id": "j-1-academic-training::13"
+  },
+  {
+    "alert_id": "heldout-b-q01::your-first-weeks-students::6",
+    "query_id": "heldout-b-q01",
+    "chunk_id": "your-first-weeks-students::6"
+  }
+]

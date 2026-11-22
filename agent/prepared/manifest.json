@@ -1,0 +1,102 @@
+{
+  "corpus_version": "f186563d6a1e",
+  "k": 3,
+  "corpus": {
+    "source": {
+      "source_path": "data/embeddings/chunks.json",
+      "sha256": "f186563d6a1e702703386a25e5047e44eac3d666a7fe382d516c86dd47e5bf8e"
+    },
+    "source_record_count": 595,
+    "view": {
+      "prepared_path": "chunks.json",
+      "sha256": "062b78d43e7be89df33d3fc1d6d315e041dee2ce3dfee946040509c3f6822354",
+      "serialization": "UTF-8 json.dumps(obj, ensure_ascii=False, compact), no trailing newline; source record order; records with archived == false only"
+    },
+    "view_record_count": 595,
+    "view_fields": [
+      "id",
+      "source",
+      "url",
+      "heading",
+      "text",
+      "breadcrumb",
+      "audience"
+    ]
+  },
+  "query_sets": {
+    "dev": {
+      "query_count": 10,
+      "pair_count": 30,
+      "queries_source": {
+        "source_path": "agent/queries/dev/queries.json",
+        "sha256": "92172c01b2a570371d1949040d57b75247107609285b6e747d8adc03436d8e3a"
+      },
+      "queries": {
+        "prepared_path": "dev/queries.json",
+        "sha256": "92172c01b2a570371d1949040d57b75247107609285b6e747d8adc03436d8e3a",
+        "serialization": "byte-for-byte copy of the source"
+      },
+      "candidate_source": {
+        "source_path": "agent/runs/dev-full/report.json",
+        "sha256": "477365a8372d5e4e778a761048d8f3c35a720aee3516ab69ff82301766e71535"
+      },
+      "candidates": {
+        "prepared_path": "dev/candidates.json",
+        "sha256": "fce0c82c8e25958fbf1e32e1183a610f521efeaedaba6a42025b0333df0cbe15",
+        "serialization": "UTF-8 json.dumps(obj, ensure_ascii=False, indent=2), plus one LF; source report row order; alert_id, query_id, chunk_id only"
+      }
+    },
+    "heldout-a": {
+      "query_count": 8,
+      "pair_count": 24,
+      "queries_source": {
+        "source_path": "agent/queries/heldout-a/queries.json",
+        "sha256": "f1b43a8be81901eb85445a04a2f60b6777dd5b5b7e7c00f1de68584247f2fc7d"
+      },
+      "queries": {
+        "prepared_path": "heldout-a/queries.json",
+        "sha256": "f1b43a8be81901eb85445a04a2f60b6777dd5b5b7e7c00f1de68584247f2fc7d",
+        "serialization": "byte-for-byte copy of the source"
+      },
+      "candidate_source": {
+        "source_path": "agent/runs/heldout-a-full/report.json",
+        "sha256": "2440cd6eea8942e50729b93591662066dfbb8bdb843302003599437149c6cc9f"
+      },
+      "candidates": {
+        "prepared_path": "heldout-a/candidates.json",
+        "sha256": "218a190d73a7434037884a44ea9172ed038fa949a5fb84fa9d601b2773c5e8b1",
+        "serialization": "UTF-8 json.dumps(obj, ensure_ascii=False, indent=2), plus one LF; source report row order; alert_id, query_id, chunk_id only"
+      }
+    },
+    "heldout-b": {
+      "query_count": 8,
+      "pair_count": 24,
+      "queries_source": {
+        "source_path": "agent/queries/heldout-b/queries.json",
+        "sha256": "dec998d89a07eeb3a91622f02fac9ccfadd61697bd581ddcec1587fb73bc83c2"
+      },
+      "queries": {
+        "prepared_path": "heldout-b/queries.json",
+        "sha256": "dec998d89a07eeb3a91622f02fac9ccfadd61697bd581ddcec1587fb73bc83c2",
+        "serialization": "byte-for-byte copy of the source"
+      },
+      "candidate_source": {
+        "source_path": "agent/runs/heldout-b-full/report.json",
+        "sha256": "8014656e3b56629512f14d6c3f70bc8687f1e0deadfe1871344f66c6f9aac800"
+      },
+      "candidates": {
+        "prepared_path": "heldout-b/candidates.json",
+        "sha256": "cbc1e910975809e2e5fed022e4ab157c10fb862c2d7fab458c097ff228f44fab",
+        "serialization": "UTF-8 json.dumps(obj, ensure_ascii=False, indent=2), plus one LF; source report row order; alert_id, query_id, chunk_id only"
+      }
+    }
+  },
+  "neighbors": {
+    "record_count": 595,
+    "file": {
+      "prepared_path": "neighbors.json",
+      "sha256": "db31d15763dba6d4ac7ad5cc00d74231a92d1b18c2a480afaf83b29d6b568261",
+      "serialization": "UTF-8 json.dumps(obj, ensure_ascii=False, indent=2), plus one LF; each record holds chunk_id then neighbors (previous before next)"
+    }
+  }
+}

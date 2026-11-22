@@ -1,0 +1,42 @@
+[
+    { 
+        "id": "heldout-b-q01",
+        "text": "do i need a social security number as a international student?", 
+        "audience": "students" 
+    },
+    { 
+        "id": "heldout-b-q02",
+        "text": "i just got accepted to columbia, how do I apply for my visa", 
+        "audience": "students" 
+    },
+    { 
+        "id": "heldout-b-q03",
+        "text": "remind me what documents I need to enter the US?", 
+        "audience": "scholars" 
+    },
+    { 
+        "id": "heldout-b-q04",
+        "text": "can I leave the US if I'm currently on OPT but have yet to find a job", 
+        "audience": "students" 
+    },
+    { 
+        "id": "heldout-b-q05",
+        "text": "how can I apply for CPT", 
+        "audience": "students" 
+    },
+    { 
+        "id": "heldout-b-q06",
+        "text": "what is the ISSO's GLASS program?", 
+        "audience": "students" 
+    },
+    { 
+        "id": "heldout-b-q07",
+        "text": "if I have children and I got into Columbia, can I apply for their visa as well?", 
+        "audience": "scholars" 
+    },
+    { 
+        "id": "heldout-b-q08",
+        "text": "what is the process of obtaining a H1-B visa?", 
+        "audience": "students" 
+    }
+]

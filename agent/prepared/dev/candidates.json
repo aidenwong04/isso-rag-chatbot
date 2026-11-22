@@ -1,0 +1,152 @@
+[
+  {
+    "alert_id": "dev-q07::about-your-visa::7",
+    "query_id": "dev-q07",
+    "chunk_id": "about-your-visa::7"
+  },
+  {
+    "alert_id": "dev-q01::applying-your-i-20ds-2019::1",
+    "query_id": "dev-q01",
+    "chunk_id": "applying-your-i-20ds-2019::1"
+  },
+  {
+    "alert_id": "dev-q01::applying-your-i-20ds-2019::3",
+    "query_id": "dev-q01",
+    "chunk_id": "applying-your-i-20ds-2019::3"
+  },
+  {
+    "alert_id": "dev-q04::applying-your-transfer-i-20::0",
+    "query_id": "dev-q04",
+    "chunk_id": "applying-your-transfer-i-20::0"
+  },
+  {
+    "alert_id": "dev-q05::campus-work-f-and-j-students::0",
+    "query_id": "dev-q05",
+    "chunk_id": "campus-work-f-and-j-students::0"
+  },
+  {
+    "alert_id": "dev-q05::campus-work-f-and-j-students::1",
+    "query_id": "dev-q05",
+    "chunk_id": "campus-work-f-and-j-students::1"
+  },
+  {
+    "alert_id": "dev-q05::campus-work-f-and-j-students::7",
+    "query_id": "dev-q05",
+    "chunk_id": "campus-work-f-and-j-students::7"
+  },
+  {
+    "alert_id": "dev-q01::changing-f-1-student-status-us::1",
+    "query_id": "dev-q01",
+    "chunk_id": "changing-f-1-student-status-us::1"
+  },
+  {
+    "alert_id": "dev-q06::documents-needed-travel-scholar::16",
+    "query_id": "dev-q06",
+    "chunk_id": "documents-needed-travel-scholar::16"
+  },
+  {
+    "alert_id": "dev-q03::entering-us-f-j-students::15",
+    "query_id": "dev-q03",
+    "chunk_id": "entering-us-f-j-students::15"
+  },
+  {
+    "alert_id": "dev-q09::entering-us-f-j-students::16",
+    "query_id": "dev-q09",
+    "chunk_id": "entering-us-f-j-students::16"
+  },
+  {
+    "alert_id": "dev-q04::extending-begin-new-program-f-j-students::0",
+    "query_id": "dev-q04",
+    "chunk_id": "extending-begin-new-program-f-j-students::0"
+  },
+  {
+    "alert_id": "dev-q04::extending-begin-new-program-f-j-students::6",
+    "query_id": "dev-q04",
+    "chunk_id": "extending-begin-new-program-f-j-students::6"
+  },
+  {
+    "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::1",
+    "query_id": "dev-q02",
+    "chunk_id": "f-1-cpt-curricular-practical-training::1"
+  },
+  {
+    "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::14",
+    "query_id": "dev-q02",
+    "chunk_id": "f-1-cpt-curricular-practical-training::14"
+  },
+  {
+    "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::15",
+    "query_id": "dev-q02",
+    "chunk_id": "f-1-cpt-curricular-practical-training::15"
+  },
+  {
+    "alert_id": "dev-q09::glass::20",
+    "query_id": "dev-q09",
+    "chunk_id": "glass::20"
+  },
+  {
+    "alert_id": "dev-q03::incoming-student-programs::5",
+    "query_id": "dev-q03",
+    "chunk_id": "incoming-student-programs::5"
+  },
+  {
+    "alert_id": "dev-q03::incoming-student-programs::9",
+    "query_id": "dev-q03",
+    "chunk_id": "incoming-student-programs::9"
+  },
+  {
+    "alert_id": "dev-q08::reporting-your-arrival-students::1",
+    "query_id": "dev-q08",
+    "chunk_id": "reporting-your-arrival-students::1"
+  },
+  {
+    "alert_id": "dev-q08::reporting-your-arrival-students::2",
+    "query_id": "dev-q08",
+    "chunk_id": "reporting-your-arrival-students::2"
+  },
+  {
+    "alert_id": "dev-q07::reporting-your-arrival-students::6",
+    "query_id": "dev-q07",
+    "chunk_id": "reporting-your-arrival-students::6"
+  },
+  {
+    "alert_id": "dev-q10::resources-scholars::1",
+    "query_id": "dev-q10",
+    "chunk_id": "resources-scholars::1"
+  },
+  {
+    "alert_id": "dev-q10::resources-scholars::3",
+    "query_id": "dev-q10",
+    "chunk_id": "resources-scholars::3"
+  },
+  {
+    "alert_id": "dev-q10::resources-scholars::5",
+    "query_id": "dev-q10",
+    "chunk_id": "resources-scholars::5"
+  },
+  {
+    "alert_id": "dev-q09::resources-students::7",
+    "query_id": "dev-q09",
+    "chunk_id": "resources-students::7"
+  },
+  {
+    "alert_id": "dev-q06::travel-signatures-and-ds-2019-reprints-j-scholar::2",
+    "query_id": "dev-q06",
+    "chunk_id": "travel-signatures-and-ds-2019-reprints-j-scholar::2"
+  },
+  {
+    "alert_id": "dev-q06::travel-signatures-and-ds-2019-reprints-j-scholar::7",
+    "query_id": "dev-q06",
+    "chunk_id": "travel-signatures-and-ds-2019-reprints-j-scholar::7"
+  },
+  {
+    "alert_id": "dev-q08::your-first-weeks-students::1",
+    "query_id": "dev-q08",
+    "chunk_id": "your-first-weeks-students::1"
+  },
+  {
+    "alert_id": "dev-q07::your-first-weeks-students::3",
+    "query_id": "dev-q07",
+    "chunk_id": "your-first-weeks-students::3"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "alert_id": "heldout-a-q06::about-your-visa::7",
+    "query_id": "heldout-a-q06",
+    "chunk_id": "about-your-visa::7"
+  },
+  {
+    "alert_id": "heldout-a-q05::applying-your-i-20ds-2019::28",
+    "query_id": "heldout-a-q05",
+    "chunk_id": "applying-your-i-20ds-2019::28"
+  },
+  {
+    "alert_id": "heldout-a-q02::campus-work-f-and-j-students::0",
+    "query_id": "heldout-a-q02",
+    "chunk_id": "campus-work-f-and-j-students::0"
+  },
+  {
+    "alert_id": "heldout-a-q03::documents-needed-travel-student::5",
+    "query_id": "heldout-a-q03",
+    "chunk_id": "documents-needed-travel-student::5"
+  },
+  {
+    "alert_id": "heldout-a-q03::entering-us-f-j-students::2",
+    "query_id": "heldout-a-q03",
+    "chunk_id": "entering-us-f-j-students::2"
+  },
+  {
+    "alert_id": "heldout-a-q04::entering-us-f-j-students::15",
+    "query_id": "heldout-a-q04",
+    "chunk_id": "entering-us-f-j-students::15"
+  },
+  {
+    "alert_id": "heldout-a-q01::f-1-cpt-curricular-practical-training::13",
+    "query_id": "heldout-a-q01",
+    "chunk_id": "f-1-cpt-curricular-practical-training::13"
+  },
+  {
+    "alert_id": "heldout-a-q08::f-1-cpt-curricular-practical-training::30",
+    "query_id": "heldout-a-q08",
+    "chunk_id": "f-1-cpt-curricular-practical-training::30"
+  },
+  {
+    "alert_id": "heldout-a-q01::f-1-opt-optional-practical-training-after-your-degree-program::2",
+    "query_id": "heldout-a-q01",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::2"
+  },
+  {
+    "alert_id": "heldout-a-q01::f-1-opt-optional-practical-training-after-your-degree-program::10",
+    "query_id": "heldout-a-q01",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::10"
+  },
+  {
+    "alert_id": "heldout-a-q08::f-1-opt-optional-practical-training-after-your-degree-program::13",
+    "query_id": "heldout-a-q08",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::13"
+  },
+  {
+    "alert_id": "heldout-a-q02::f-1-opt-optional-practical-training-after-your-degree-program::22",
+    "query_id": "heldout-a-q02",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::22"
+  },
+  {
+    "alert_id": "heldout-a-q02::f-1-opt-optional-practical-training-after-your-degree-program::31",
+    "query_id": "heldout-a-q02",
+    "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::31"
+  },
+  {
+    "alert_id": "heldout-a-q05::frequently-asked-questions-newly-admitted-students::0",
+    "query_id": "heldout-a-q05",
+    "chunk_id": "frequently-asked-questions-newly-admitted-students::0"
+  },
+  {
+    "alert_id": "heldout-a-q03::frequently-asked-questions-newly-admitted-students::3",
+    "query_id": "heldout-a-q03",
+    "chunk_id": "frequently-asked-questions-newly-admitted-students::3"
+  },
+  {
+    "alert_id": "heldout-a-q08::frequently-asked-questions-newly-admitted-students::12",
+    "query_id": "heldout-a-q08",
+    "chunk_id": "frequently-asked-questions-newly-admitted-students::12"
+  },
+  {
+    "alert_id": "heldout-a-q05::frequently-asked-questions-newly-admitted-students::14",
+    "query_id": "heldout-a-q05",
+    "chunk_id": "frequently-asked-questions-newly-admitted-students::14"
+  },
+  {
+    "alert_id": "heldout-a-q04::incoming-student-programs::2",
+    "query_id": "heldout-a-q04",
+    "chunk_id": "incoming-student-programs::2"
+  },
+  {
+    "alert_id": "heldout-a-q07::incoming-student-programs::2",
+    "query_id": "heldout-a-q07",
+    "chunk_id": "incoming-student-programs::2"
+  },
+  {
+    "alert_id": "heldout-a-q04::incoming-student-programs::6",
+    "query_id": "heldout-a-q04",
+    "chunk_id": "incoming-student-programs::6"
+  },
+  {
+    "alert_id": "heldout-a-q06::reporting-your-arrival-students::3",
+    "query_id": "heldout-a-q06",
+    "chunk_id": "reporting-your-arrival-students::3"
+  },
+  {
+    "alert_id": "heldout-a-q06::reporting-your-arrival-students::6",
+    "query_id": "heldout-a-q06",
+    "chunk_id": "reporting-your-arrival-students::6"
+  },
+  {
+    "alert_id": "heldout-a-q07::resources-students::9",
+    "query_id": "heldout-a-q07",
+    "chunk_id": "resources-students::9"
+  },
+  {
+    "alert_id": "heldout-a-q07::resources-students::11",
+    "query_id": "heldout-a-q07",
+    "chunk_id": "resources-students::11"
+  }
+]
