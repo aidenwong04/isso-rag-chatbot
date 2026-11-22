@@ -47,7 +47,7 @@ The agent reads two environment variables, from the shell or from a `.env` file 
 agent/isso-agent --input <query set folder> --output <out dir> --config <config.toml>
 ```
 
-`agent/isso-agent` is a shell script that runs `agent/src/cli.py` with the `env/` virtualenv at the repository root.
+`agent/isso-agent` is a shell script that runs `agent/src/hw1/cli.py` with the `env/` virtualenv at the repository root.
 Run the commands below from the repository root: `--input`, `--output` and `--config` are paths relative to where you run it.
 It writes `report.json` and `trace.jsonl` into `<out dir>`, creating the folder if needed.
 `--output` may be left out: the run then goes to `agent/runs/<query set>-<config name>`, for example `agent/runs/dev-full` for `--input agent/queries/dev --config agent/configs/full.toml`.
@@ -99,7 +99,7 @@ Both configs share one `[scan]` block, because all three targets are query sets 
 ## Scoring a dev run
 
 ```bash
-env/bin/python agent/src/score.py agent/runs/dev-full/report.json agent/labels/dev.worksheet.json
+env/bin/python agent/src/hw1/score.py agent/runs/dev-full/report.json agent/labels/dev.worksheet.json
 ```
 
 It prints the counts of label 1, label 0 and null, then precision, recall and accuracy over the classified rows, and every miss with its rationale.
@@ -141,7 +141,7 @@ agent/DESIGN.md         design notes: behaviours, graph, state, tools, terminati
 agent/REFINEMENT.md     how the dev labels were used to refine the agent
 agent/queries/          the three targets (one folder each, holding queries.json)
 agent/labels/           the dev answer key, outside every target folder
-agent/src/
+agent/src/hw1/          the HW1 agent
   cli.py                reads and checks the config, builds the workspace, tracer and run context
   run.py                runs the graph once; finalize always runs, after a crash too
   graph.py              the LangGraph state machine

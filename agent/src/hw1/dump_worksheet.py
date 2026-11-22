@@ -4,7 +4,7 @@ dump_worksheet - write the labeling worksheet for one query set.
 Runs discovery on a query set and writes every alert to a JSON file with an
 empty label, for labeling by hand. No model is called.
 
-    env/bin/python agent/src/dump_worksheet.py agent/queries/dev agent/labels/dev.worksheet.json
+    env/bin/python agent/src/hw1/dump_worksheet.py agent/queries/dev agent/labels/dev.worksheet.json
 
 The cosine score is left out on purpose, and entries are ordered by page and
 chunk index rather than by rank: the labels are the ground truth the retriever

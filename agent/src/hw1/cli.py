@@ -31,7 +31,7 @@ from tracer import Tracer
 from workspace import write_copy
 
 # Where a run goes when --output is not given.
-RUNS_DIR = Path(__file__).resolve().parents[1] / "runs"
+RUNS_DIR = Path(__file__).resolve().parents[2] / "runs"
 
 # section -> key -> type. Every key is required; other keys are allowed (section 5).
 REQUIRED = {

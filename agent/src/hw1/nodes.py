@@ -32,7 +32,7 @@ def openai_client():
     global _client_cache
     if _client_cache is None:
         # The repo's .env, the same file src/query.py reads the Gemini key from.
-        load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+        load_dotenv(Path(__file__).resolve().parents[3] / ".env")
         api_key = os.environ.get("OPENAI_API_KEY")
         if not api_key:
             raise RuntimeError("OPENAI_API_KEY not set (shell env or .env file)")
