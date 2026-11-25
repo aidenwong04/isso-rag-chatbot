@@ -24,3 +24,6 @@ data/staging/
 
 # The submitted report PDF carries the graders' Gemini key; never commit it.
 agent/REPORT.pdf
+
+# HW2: local packets and scratch written during development runs
+agent/work/

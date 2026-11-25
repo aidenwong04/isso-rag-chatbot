@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "isso": {
+      "command": "env/bin/python",
+      "args": [
+        "agent/src/hw2/mcp_server.py",
+        "--prepared-dir", "agent/prepared",
+        "--evidence-dir", "agent/work/evidence"
+      ],
+      "env": {}
+    }
+  }
+}
