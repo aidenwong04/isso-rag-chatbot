@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/comse6998-019/hw2-isso/trace.schema.json",
+  "title": "ISSO HW2 trace.jsonl event",
+  "description": "Validates one JSONL line. Runtime checks: step starts at 1 and increments by 1; exactly one terminal event appears last; usage_total counters equal their model_call sums; report budget.used_tokens equals input plus output; each tool_request is immediately followed by its tool_result with matching tool, alert_id, and via; every report row has exactly one classification settlement carrying alert_status and label. A separate state_change with node evidence_update carries checks and never carries alert_status or label. Record MCP discovery once after tools/list. Both tool_request and tool_result require via. args is always an object; preserve malformed raw arguments inside an object such as {raw_args: ...}. A failed access/validation refusal uses error_kind refusal and refused_by; an ordinary execution exception uses error_kind execution without refused_by. Extra fields are allowed except inside usage, usage_total, and checks.",
+  "type": "object",
+  "required": ["step", "ts", "run_id", "alert_id", "kind"],
+  "properties": {
+    "step": {"type": "integer", "minimum": 1},
+    "ts": {"type": "number"},
+    "run_id": {"type": "string", "minLength": 1},
+    "alert_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+    "kind": {"enum": ["model_call", "tool_request", "tool_result", "routing", "state_change", "terminal", "discovery"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"kind": {"const": "model_call"}}},
+      "then": {
+        "required": ["role", "model", "usage"],
+        "properties": {
+          "role": {"type": "string", "minLength": 1},
+          "model": {"type": "string", "minLength": 1},
+          "usage": {"$ref": "#/$defs/usage"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "tool_request"}}},
+      "then": {
+        "required": ["tool", "args", "via"],
+        "properties": {
+          "tool": {"type": "string", "minLength": 1},
+          "args": {"type": "object"},
+          "via": {"enum": ["mcp", "codeact"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "tool_result"}}},
+      "then": {
+        "required": ["tool", "ok", "via"],
+        "properties": {
+          "tool": {"type": "string", "minLength": 1},
+          "ok": {"type": "boolean"},
+          "via": {"enum": ["mcp", "codeact"]},
+          "error": {"type": "string", "minLength": 1},
+          "error_kind": {"enum": ["refusal", "execution"]},
+          "refused_by": {"enum": ["dispatcher", "server", "kernel"]}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"ok": {"const": false}}},
+            "then": {"required": ["error", "error_kind"]},
+            "else": {"not": {"anyOf": [{"required": ["error_kind"]}, {"required": ["refused_by"]}]}}
+          },
+          {
+            "if": {"required": ["error_kind"], "properties": {"error_kind": {"const": "refusal"}}},
+            "then": {"required": ["refused_by"], "properties": {"ok": {"const": false}}}
+          },
+          {
+            "if": {"required": ["error_kind"], "properties": {"error_kind": {"const": "execution"}}},
+            "then": {"not": {"required": ["refused_by"]}}
+          },
+          {
+            "if": {"required": ["refused_by"]},
+            "then": {"required": ["error_kind"], "properties": {"ok": {"const": false}, "error_kind": {"const": "refusal"}}}
+          }
+        ]
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "routing"}}},
+      "then": {
+        "required": ["decision", "by"],
+        "properties": {
+          "decision": {"type": "string", "minLength": 1},
+          "by": {"enum": ["model", "runtime"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "state_change"}}},
+      "then": {
+        "required": ["node"],
+        "properties": {
+          "node": {"type": "string", "minLength": 1},
+          "alert_status": {"enum": ["classified", "budget_exhausted", "error"]},
+          "label": {"enum": [0, 1, null]},
+          "checks": {"$ref": "#/$defs/checks"}
+        },
+        "dependentRequired": {"alert_status": ["label"], "label": ["alert_status"]},
+        "allOf": [
+          {
+            "if": {"required": ["alert_status"]},
+            "then": {"properties": {"alert_id": {"$ref": "#/$defs/id"}}}
+          },
+          {
+            "if": {"required": ["alert_status"], "properties": {"alert_status": {"const": "classified"}}},
+            "then": {"properties": {"label": {"enum": [0, 1]}}}
+          },
+          {
+            "if": {"required": ["alert_status"], "properties": {"alert_status": {"enum": ["budget_exhausted", "error"]}}},
+            "then": {"properties": {"label": {"const": null}}}
+          },
+          {
+            "if": {"properties": {"node": {"const": "evidence_update"}}},
+            "then": {
+              "required": ["checks"],
+              "properties": {"alert_id": {"$ref": "#/$defs/id"}},
+              "not": {"anyOf": [{"required": ["alert_status"]}, {"required": ["label"]}]}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "terminal"}}},
+      "then": {
+        "required": ["status", "usage_total"],
+        "properties": {
+          "status": {"type": "string", "minLength": 1},
+          "usage_total": {"$ref": "#/$defs/usage"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"kind": {"const": "discovery"}}},
+      "then": {
+        "required": ["server", "tools"],
+        "properties": {
+          "server": {"type": "string", "minLength": 1},
+          "tools": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "usage": {
+      "description": "Provider-reported counters. input and output are required; cache counters are optional and recorded only when reported.",
+      "type": "object",
+      "required": ["input", "output"],
+      "properties": {
+        "input": {"type": "integer", "minimum": 0},
+        "output": {"type": "integer", "minimum": 0},
+        "cache_read": {"type": "integer", "minimum": 0},
+        "cache_write": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "object",
+      "required": ["applies", "current_item_only", "grounded"],
+      "properties": {
+        "applies": {"type": ["boolean", "null"]},
+        "current_item_only": {"type": ["boolean", "null"]},
+        "grounded": {"type": ["boolean", "null"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

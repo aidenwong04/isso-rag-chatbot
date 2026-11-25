@@ -1,0 +1,6 @@
+#!/bin/sh
+# The HW2 agent's command. Runs agent/src/hw2/cli.py with the repo's virtualenv
+# (env/ at the repository root), from wherever it is called.
+#   agent/isso-agent-hw2 --input agent/prepared/dev --output agent/runs/hw2-mcp-dev --config configs/mcp.toml
+here="$(cd "$(dirname "$0")" && pwd)"
+exec "$here/../env/bin/python" "$here/src/hw2/cli.py" "$@"

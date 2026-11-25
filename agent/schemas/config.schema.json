@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/comse6998-019/hw2-isso/config.schema.json",
+  "title": "ISSO HW2 config.toml",
+  "description": "Validates config.toml after parsing TOML as JSON. The scan block pins the submitted HW1 corpus and k. Retrieval candidates are prepared offline from the submitted full runs; the agents do not call an embedding service. Both agents use the same model, budget, inputs, and OpenShell policy. Extra settings are allowed. Never put secrets in this file.",
+  "type": "object",
+  "required": ["scan", "model", "budget", "agent", "mcp", "sandbox"],
+  "properties": {
+    "scan": {
+      "type": "object",
+      "required": ["corpus_version", "k"],
+      "properties": {
+        "corpus_version": {"const": "f186563d6a1e"},
+        "k": {"const": 3}
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": ["provider", "name"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "temperature": {"type": "number"}
+      }
+    },
+    "budget": {
+      "type": "object",
+      "required": ["max_tokens", "output_allowance", "max_steps", "no_progress_limit"],
+      "properties": {
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Run-wide charge: provider-reported input plus output tokens summed over every model_call."
+        },
+        "output_allowance": {"type": "integer", "minimum": 1},
+        "max_steps": {"type": "integer", "minimum": 1},
+        "no_progress_limit": {"type": "integer", "minimum": 1}
+      }
+    },
+    "agent": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {"kind": {"enum": ["mcp", "codeact"]}}
+    },
+    "mcp": {
+      "type": "object",
+      "required": ["config"],
+      "properties": {"config": {"const": "mcp.json"}}
+    },
+    "sandbox": {
+      "type": "object",
+      "required": ["policy"],
+      "properties": {"policy": {"const": "policy.yaml"}}
+    },
+    "experiment": {
+      "type": "object",
+      "properties": {
+        "injection_overlay": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional overlay file used only for the injection experiment. It has a separate hash and never changes the canonical corpus pin."
+        }
+      }
+    }
+  }
+}

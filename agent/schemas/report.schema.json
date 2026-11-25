@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/comse6998-019/hw2-isso/report.schema.json",
+  "title": "ISSO HW2 report.json",
+  "description": "One row per frozen (query_id, chunk_id) pair. Runtime checks: dev has 30 rows, heldout-a and heldout-b have 24 each; scan.alert_count equals len(alerts); rows use frozen manifest IDs and order; each classified row cites only shown chunks and includes its current chunk; exactly one classification settlement appears per row in the trace. budget.used_tokens equals the sum of provider-reported input plus output across all model_call events; record cache counters when reported without adding another cache charge. Evidence updates never change an accepted classification. Only classified label 1 enters the evidence phase. Runtime acceptance compares trusted snapshots: append exactly one current-chunk item to the current query packet, preserve every existing item and every other file, and ground quote/source/url in the canonical current chunk. Quote grounding excludes overlay text. Extra fields are allowed except inside checks.",
+  "type": "object",
+  "required": ["target", "scan", "agent_kind", "budget", "alerts"],
+  "properties": {
+    "target": {
+      "type": "object",
+      "required": ["corpus_sha256", "query_set", "prepared_manifest_sha256"],
+      "properties": {
+        "corpus_sha256": {"const": "f186563d6a1e702703386a25e5047e44eac3d666a7fe382d516c86dd47e5bf8e"},
+        "query_set": {"enum": ["dev", "heldout-a", "heldout-b"]},
+        "prepared_manifest_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "scan": {
+      "type": "object",
+      "required": ["k", "alert_count"],
+      "properties": {
+        "k": {"const": 3},
+        "alert_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "agent_kind": {"enum": ["mcp", "codeact"]},
+    "budget": {
+      "type": "object",
+      "required": ["max_tokens", "used_tokens", "exhausted"],
+      "properties": {
+        "max_tokens": {"type": "integer", "minimum": 0},
+        "used_tokens": {"type": "integer", "minimum": 0},
+        "exhausted": {"type": "boolean"}
+      }
+    },
+    "alerts": {"type": "array", "items": {"$ref": "#/$defs/alert"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "chunkId": {"type": "string", "pattern": "^[A-Za-z0-9._-]+::[0-9]+$"},
+    "checks": {
+      "type": "object",
+      "required": ["applies", "current_item_only", "grounded"],
+      "properties": {
+        "applies": {"type": ["boolean", "null"]},
+        "current_item_only": {"type": ["boolean", "null"]},
+        "grounded": {"type": ["boolean", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "evidenceItem": {
+      "description": "The one item appended after an accepted positive classification. The runtime verifies chunk_id is the current chunk, quote is a contiguous nonempty substring of canonical text, and source/url match canonical metadata.",
+      "type": "object",
+      "required": ["chunk_id", "quote", "source", "url"],
+      "properties": {
+        "chunk_id": {"$ref": "#/$defs/chunkId"},
+        "quote": {"type": "string", "minLength": 1, "maxLength": 600},
+        "source": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "minLength": 1}
+      }
+    },
+    "evidenceFile": {
+      "description": "Content of /sandbox/work/evidence/{query_id}.json. Initially items is empty. The filename, current query, append-only behavior, and item uniqueness are checked by the runtime.",
+      "type": "object",
+      "required": ["query_id", "items"],
+      "properties": {
+        "query_id": {"$ref": "#/$defs/id"},
+        "items": {"type": "array", "items": {"$ref": "#/$defs/evidenceItem"}}
+      }
+    },
+    "evidenceUpdate": {
+      "type": "object",
+      "required": ["status", "diff", "checks", "reason"],
+      "properties": {
+        "status": {"enum": ["accepted", "rejected", "skipped"]},
+        "diff": {"type": "string", "description": "Proposed unified diff against the pre-stage evidence packet; an empty string when no update was proposed."},
+        "checks": {"$ref": "#/$defs/checks"},
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "if": {"properties": {"status": {"const": "accepted"}}},
+      "then": {
+        "properties": {
+          "diff": {"minLength": 1},
+          "checks": {
+            "properties": {
+              "applies": {"const": true},
+              "current_item_only": {"const": true},
+              "grounded": {"const": true}
+            }
+          }
+        }
+      }
+    },
+    "alert": {
+      "type": "object",
+      "required": ["alert_id", "query_id", "chunk_id", "status", "label", "rationale", "evidence", "evidence_update"],
+      "properties": {
+        "alert_id": {"$ref": "#/$defs/id"},
+        "query_id": {"$ref": "#/$defs/id"},
+        "chunk_id": {"$ref": "#/$defs/chunkId"},
+        "status": {"enum": ["classified", "budget_exhausted", "error"]},
+        "label": {"enum": [0, 1, null]},
+        "rationale": {"type": "string", "maxLength": 600},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/chunkId"}},
+        "evidence_update": {"$ref": "#/$defs/evidenceUpdate"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "classified"}}},
+          "then": {
+            "properties": {
+              "label": {"enum": [0, 1]},
+              "rationale": {"minLength": 1},
+              "evidence": {"minItems": 1}
+            }
+          },
+          "else": {"properties": {"label": {"const": null}}}
+        },
+        {
+          "if": {"properties": {"label": {"enum": [0, null]}}},
+          "then": {"properties": {"evidence_update": {"properties": {"status": {"const": "skipped"}}}}}
+        }
+      ]
+    }
+  }
+}
