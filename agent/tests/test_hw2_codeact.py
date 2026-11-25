@@ -52,7 +52,7 @@ class ScriptedModel:
     @staticmethod
     def alert(messages):
         first_user = next(m for m in messages if m["role"] == "user")
-        return re.search(r"Alert: (\S+)", first_user["content"]).group(1)
+        return re.search(r"pass exactly this string to set_alert\): (\S+)", first_user["content"]).group(1)
 
     @staticmethod
     def shown_text(messages, chunk_id):

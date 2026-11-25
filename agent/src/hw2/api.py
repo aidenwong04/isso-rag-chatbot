@@ -172,7 +172,9 @@ class Backend:
         # its ID: any input that is not exactly a frozen alert_id (a typo, an
         # unknown set, a non-string, "garbage") is simply not found.
         if not isinstance(alert_id, str) or alert_id not in self.by_alert_id:
-            return {"set": None, "ok": False, "msg": "refused: unknown alert_id"}
+            return {"set": None, "ok": False,
+                    "msg": f"refused: unknown alert_id {alert_id!r}; an alert id is the full "
+                           "<question id>::<page>::<index> string, not the question id alone"}
 
         # query_id comes from the frozen row, never from splitting the input.
         query_id = self.by_alert_id[alert_id]["query_id"]
@@ -309,7 +311,9 @@ class Backend:
         if self.verification_error:
             return {"ok": False, "msg": self.verification_error, "chunks": []}
         if self.alert_id is None:
-            return {"ok": False, "msg": "refused: no current item", "chunks": []}
+            return {"ok": False, "chunks": [],
+                    "msg": "refused: no current item; set_alert must first select an item "
+                           "with its full alert id"}
         return None
 
     def _scope_refusal(self, chunk_id) -> dict | None:

@@ -83,7 +83,8 @@ TOOL_DEFS = [
 ]
 
 EVIDENCE_PHASE_MESSAGE = """\
-Your label 1 for {chunk_id} was accepted. The evidence phase has started for alert {alert_id}.
+Your label 1 for {chunk_id} was accepted. The evidence phase has started.
+In scripts, use backend.set_alert("{alert_id}", "evidence").
 Add one quote from {chunk_id} to this question's evidence with the write_evidence action, copying it exactly from the passage's text."""
 
 
@@ -138,8 +139,10 @@ class CodeActAgent:
             {"role": "user", "content": (
                 f"Question: {item['question']}\n"
                 f"Asked by: {item['audience']}\n\n"
-                f"Alert: {item['alert_id']}\n"
-                f"Passage to judge: {item['chunk_id']}")},
+                f"Passage to judge: {item['chunk_id']}\n"
+                # The full alert id, labeled unmistakably: in the first dev run,
+                # scripts often passed only the question id to set_alert.
+                f"Alert id (pass exactly this string to set_alert): {item['alert_id']}")},
         ]
 
     def evidence_message(self, chunk_id: str) -> dict:
