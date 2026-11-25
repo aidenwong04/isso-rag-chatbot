@@ -5,14 +5,15 @@ Line numbers refer to `briefs/hw2-isso.tex` in the hw2-isso repo.
 
 ## Harness (both agents)
 
-- [ ] Call `verify_prepared(agent/prepared/manifest.json)` at harness startup and refuse to run if it fails (line 86).
-- [ ] Before any model runs, create an empty packet `{"query_id": ..., "items": []}` for every question in the set, written with `serialize_packet` (lines 215, 518: packet reset on every launch).
+- [x] `Backend` verifies the prepared inputs against `manifest.json` when it is created (lazily, on the MCP server's first tool call; directly in the CodeAct parent), and every operation refuses if verification failed (line 86).
+- [x] Add `Backend.reset_packets(query_set)` and the host-only `reset_packets` server tool: write an empty packet `{"query_id": ..., "items": []}` for every question in that set with `serialize_packet` (lines 215, 518). The MCP host never opens packet files (line 151).
+- [ ] Call `reset_packets(<set>)` before the first item: the MCP host through the server tool, the CodeAct parent on its own `Backend`.
 - [ ] When `set_alert` returns `ok: False`, record that item as an error row with the refusal message and move on; never retry it (line 211).
 - [ ] Keep the authoritative record of accepted labels and packets in the parent harness, and publish the report and trace from it after workers stop (lines 305-307).
 
 ## MCP host
 
-- [ ] Filter `set_alert` out of the tools offered to the model, and make the dispatcher reject a model request that names it (line 183).
+- [ ] Filter the host-only tools (`set_alert`, `reset_packets`) out of the tools offered to the model, and make the dispatcher reject a model request that names either (line 183).
 - [ ] Classify tool errors for the trace: strip the SDK's `Error executing tool <name>: ` prefix, then `refused:` means `error_kind: refusal` (`refused_by: server`) and `error:` or a bare `Error executing tool <name>` means `error_kind: execution`.
 - [ ] Read 2.x client fields in snake_case: `input_schema`, `is_error`, `structured_content`.
 - [ ] Count SDK argument-validation failures (`Error executing tool <name>: ... validation error for <name>Arguments ...`) as refusals too: they carry no `refused:` text but are the server refusing invalid arguments (line 177).
@@ -32,7 +33,7 @@ Line numbers refer to `briefs/hw2-isso.tex` in the hw2-isso repo.
 ## Sandbox image
 
 - [ ] Put `agent/prepared/manifest.json` and the prepared files into the image, staged per section 2.2 (line 86).
-- [ ] Copy `agent/src/hw1/tools.py` and `agent/src/hw1/workspace.py` into `/app`: `api.py` imports them.
+- [ ] Copy `agent/src/hw1/tools.py`, `agent/src/hw1/workspace.py`, and `agent/src/hw2/prepare.py` into `/app`: `api.py` imports them.
 - [ ] Keep `agent/labels/` and the submitted `agent/REPORT.pdf` (it carries the graders' API key) out of every readable grant (line 112).
 
 ## README

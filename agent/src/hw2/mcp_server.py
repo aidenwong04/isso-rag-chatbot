@@ -19,10 +19,13 @@ Transport rules (brief line 155):
     the first tool call, not at startup.
 
 Model-facing tools: current_item, read, read_neighbors, classify,
-read_packet, write_evidence. Host-only: set_alert. The host filters set_alert
-out of what it offers the model, and its dispatcher rejects a model request
-naming it (line 183); the server itself still serves it, because the host and
-staff call it directly.
+read_packet, write_evidence. Host-only: set_alert, reset_packets. The host
+filters them out of what it offers the model, and its dispatcher rejects a
+model request naming either (line 183); the server itself still serves them,
+because the host and staff call them directly.
+
+The Backend verifies the prepared inputs against manifest.json when it is
+created, on the first tool call; if that fails, every tool refuses.
 
 Open design questions:
   - Which parts of a Backend result does the model see as tool content?
@@ -127,6 +130,13 @@ class EvidenceResult(TypedDict):
     checks: Checks
 
 
+class ResetResult(TypedDict):
+    """reset_packets, host-only."""
+    msg: str
+    query_set: str
+    query_ids: list[str]
+
+
 class AlertResult(TypedDict):
     """set_alert, host-only."""
     msg: str
@@ -170,6 +180,18 @@ def set_alert(alert_id: str, phase: str) -> AlertResult:
     b = backend()
     result = b.set_alert(alert_id, phase)
     return unwrap(result, AlertResult)
+
+
+@mcp.tool(description=(
+    "HOST-ONLY control, never offered to the model. Replaces every packet of a "
+    "query set ('dev', 'heldout-a', or 'heldout-b') with an empty one. Called "
+    "once before a run's first item. Clears the current item."
+))
+def reset_packets(query_set: str) -> ResetResult:
+    """Host-only: empties the query set's packets before a run."""
+    b = backend()
+    result = b.reset_packets(query_set)
+    return unwrap(result, ResetResult)
 
 
 # --- Model-facing tools ----------------------------------------------------------

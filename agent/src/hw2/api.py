@@ -43,6 +43,8 @@ if str(HW1_DIR) not in sys.path:
     sys.path.append(str(HW1_DIR))
 import tools as hw1_tools  # noqa: E402
 
+from prepare import verify_prepared  # the manifest check prepare.py writes and runs
+
 PHASES = ("classify", "evidence")
 
 
@@ -73,6 +75,21 @@ class Backend:
         self.prepared_dir = Path(prepared_dir)
         self.evidence_dir = Path(evidence_dir)
 
+        # Check the prepared inputs against the frozen manifest before using
+        # them (brief line 86). On failure nothing is loaded and every
+        # operation refuses with this message, so a changed input never
+        # reaches the model. Lazy in the MCP server: this runs on the first
+        # tool call, not at startup.
+        self.verification_error = None
+        try:
+            verify_prepared(self.prepared_dir / "manifest.json")
+        except (OSError, ValueError) as e:
+            self.verification_error = f"error: prepared inputs failed verification: {e}"
+            self.candidates, self.by_alert_id, self.neighbors = [], {}, {}
+            self.queries, self.query_ids_by_set = {}, {}
+            self._clear_item()
+            return
+
         # All three sets' candidates, each set in its frozen row order.
         self.candidates = []
         for query_set in QUERY_SETS:
@@ -85,12 +102,15 @@ class Backend:
             self.neighbors = {record["chunk_id"]: record["neighbors"] for record in json.load(f)}
 
         # query_id -> {"id", "text", "audience"}, from all three sets' frozen query files.
+        # query_ids_by_set: set name -> its query ids in file order (for reset_packets).
         self.queries = {}
+        self.query_ids_by_set = {}
         for query_set in QUERY_SETS:
             path = self.prepared_dir / query_set / "queries.json"
             with open(path, encoding="utf-8") as f:
                 for query in json.load(f):
                     self.queries[query["id"]] = query
+                    self.query_ids_by_set.setdefault(query_set, []).append(query["id"])
 
         # The current item, set only by set_alert. Empty until the first
         # successful set_alert(..., "classify"), so every field always exists.
@@ -162,6 +182,8 @@ class Backend:
         Derives the query, target chunk, allowed read set, and packet path from
         the frozen manifest. phase is "classify" or "evidence".
         """
+        if self.verification_error:
+            return self._refuse_item(self.verification_error)
         if phase not in PHASES:
             return self._refuse_item("refused: unknown phase")
         if phase == "evidence" and alert_id != self.alert_id:
@@ -205,6 +227,36 @@ class Backend:
             "phase": self.phase,
         }
 
+    def reset_packets(self, query_set: str) -> dict:
+        """
+        Host-only: writes an empty packet {"query_id": q, "items": []} for every
+        question in query_set, replacing whatever was there (brief lines 215,
+        518: every launch starts from empty packets). Called once before a
+        run's first item: by the MCP host through a host-only server tool, by
+        the CodeAct parent on its own Backend. Clears the current item, so no
+        stage survives a reset.
+
+        Destructive, so never offered to the model, like set_alert.
+        """
+        if self.verification_error:
+            return {"ok": False, "msg": self.verification_error}
+        if query_set not in self.query_ids_by_set:
+            return {"ok": False, "msg": f"refused: unknown query set {query_set!r}"}
+
+        self._clear_item()
+        query_ids = self.query_ids_by_set[query_set]
+        try:
+            self.evidence_dir.mkdir(parents=True, exist_ok=True)
+            for query_id in query_ids:
+                self._write_atomically(
+                    self.evidence_dir / f"{query_id}.json",
+                    serialize_packet({"query_id": query_id, "items": []}),
+                )
+        except OSError as e:
+            return {"ok": False, "msg": f"error: packets for {query_set} could not be reset ({e.strerror})"}
+
+        return {"ok": True, "msg": "success", "query_set": query_set, "query_ids": list(query_ids)}
+
     # --- Model-facing operations ---------------------------------------------
 
     def current_item(self) -> dict:
@@ -223,7 +275,12 @@ class Backend:
 
 
     def _no_item_refusal(self) -> dict | None:
-        """A refusal when no item is set (startup, or after a refused set_alert); else None."""
+        """
+        A refusal when the inputs failed verification, or no item is set
+        (startup, or after a refused set_alert); else None.
+        """
+        if self.verification_error:
+            return {"ok": False, "msg": self.verification_error, "chunks": []}
         if self.alert_id is None:
             return {"ok": False, "msg": "refused: no current item", "chunks": []}
         return None
