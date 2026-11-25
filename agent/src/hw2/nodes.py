@@ -1,20 +1,21 @@
 """
-nodes - the HW2 MCP host's graph nodes, adapted from src/hw1/nodes.py.
+nodes - the HW2 hosts' graph nodes, shared by the MCP and CodeAct agents.
+Adapted from src/hw1/nodes.py.
 
 Same loop as HW1 (next_alert -> guard -> model -> dispatcher), with:
-  - tools discovered from the server (tools/list) instead of hard-coded, and
-    every model tool request sent through the MCP session (brief line 148);
+  - an agent (agents.py, codeact.py) that supplies the model's tools, the
+    host's trusted operations (its controller), and how a model tool call
+    runs: through the MCP server, or as a script / harness action in CodeAct;
   - host-only controls (set_alert, reset_packets) never offered to the model
-    and refused by name in the dispatcher (line 183);
+    and refused by name in the dispatcher (brief line 183);
   - a phase per item: classify, then only after an accepted label 1, evidence,
     continuing the same conversation; label 0 and unclassified items skip
     evidence, traced as runtime decisions (lines 194-195);
-  - no-progress ending the item, not the run, and step limit and budget
-    ending the run;
-  - the host never opening target files: item text comes from current_item.
+  - no-progress ending the item, not the run; step limit and budget ending
+    the run.
 
 Progress, per phase (the counter resets on progress and on a phase change):
-  classify: a read returns a chunk not observed before this item, or a
+  classify: a call delivers a passage not delivered before this item, or a
             classify proposal differs from every earlier one this item;
   evidence: a quote is accepted, which also ends the item.
 A refused classify also counts toward classify_attempts, a hard cap per item.
@@ -27,7 +28,7 @@ from langgraph.graph import END
 from langgraph.runtime import Runtime
 from langgraph.types import Overwrite
 
-from prompt import evidence_phase_message, opening_messages
+from agents import HOST_ONLY, Outcome
 from report import (
     accepted_update,
     build_row,
@@ -39,38 +40,7 @@ from report import (
 )
 from state import AgentState, RunContext
 
-# Server controls the host calls itself. Filtered out of the model's tool list
-# in the CLI, and refused here if the model names one anyway.
-HOST_ONLY = frozenset({"set_alert", "reset_packets"})
-
-
-# --- Talking to the server as the host ---------------------------------------------
-
-async def host_call(context: RunContext, name: str, arguments: dict) -> tuple[bool, dict | str]:
-    """
-    A host-side tool call (never the model's). Returns (True, structured
-    result) or (False, the error text the server returned).
-    """
-    result = await context.session.call_tool(name, arguments)
-    if result.is_error:
-        return False, result.content[0].text if result.content else f"{name} failed"
-    return True, result.structured_content
-
-
-def error_kind(tool: str, text: str) -> tuple[str, str | None]:
-    """
-    (error_kind, refused_by) for a server error result. mcp 2.3.0 prefixes
-    every ToolError with "Error executing tool <name>: ", so the reason is
-    read after that prefix. A bare "Error executing tool <name>" is a crash
-    inside the tool, whose details stay in the server's log.
-    """
-    prefix = f"Error executing tool {tool}: "
-    if not text.startswith(prefix):
-        return "execution", None
-    detail = text[len(prefix):]
-    if detail.startswith("refused:") or "validation error for" in detail:
-        return "refusal", "server"
-    return "execution", None
+UNCLASSIFIED = "The item was not classified, so it skips evidence assembly."
 
 
 def proposal_key(arguments: dict) -> str:
@@ -100,22 +70,22 @@ def route(runtime: Runtime[RunContext], state: AgentState, decision: str, by: st
 
 async def discovery_node(state: AgentState, runtime: Runtime[RunContext]) -> dict:
     """
-    Runs once. Records the discovered model-facing tools, loads the frozen
-    candidate rows (IDs only), empties the set's packets through the server's
-    host-only reset_packets, and prefills every row as pending.
+    Runs once. Records the model-facing tools, loads the frozen candidate rows
+    (IDs only), empties the set's packets through the controller's host-only
+    reset_packets, and prefills every row as pending.
     """
     context = runtime.context
-    context.tracer.emit("discovery", server=context.server_name, tools=sorted(context.tool_names))
+    context.agent.discovery_event(context.tracer)
 
     with open(context.input_dir / "candidates.json", encoding="utf-8") as f:
         candidates = json.load(f)
 
-    ok, result = await host_call(context, "reset_packets", {"query_set": context.query_set})
-    if not ok:
+    reset = await context.agent.controller.reset_packets(context.query_set)
+    if not reset.ok:
         # Packets that may hold earlier evidence would make the run invalid.
-        raise RuntimeError(f"reset_packets({context.query_set!r}) failed: {result}")
+        raise RuntimeError(f"reset_packets({context.query_set!r}) failed: {reset.error}")
     context.tracer.emit("state_change", node="discovery", alert_count=len(candidates),
-                        packets_reset=result["query_ids"])
+                        packets_reset=reset.payload["query_ids"])
 
     return {
         "alert_list": candidates,
@@ -136,6 +106,7 @@ async def next_alert(state: AgentState, runtime: Runtime[RunContext]) -> dict:
     error with a skipped update, never retried, and the next one is tried.
     """
     context, tracer = runtime.context, runtime.context.tracer
+    controller = context.agent.controller
     done = state.get("evidence_updates", {})
     rows_out, updates_out = {}, {}
 
@@ -144,24 +115,25 @@ async def next_alert(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         if alert_id in done:
             continue
 
-        ok, result = await host_call(context, "set_alert", {"alert_id": alert_id, "phase": "classify"})
-        if ok:
-            ok, result = await host_call(context, "current_item", {})
-        if not ok:
-            row = error_row(state["report_rows"][alert_id], f"The server refused to start this item: {result}")
-            update = skipped_update("The item was not classified, so it skips evidence assembly.")
+        outcome = await controller.set_alert(alert_id, "classify")
+        if outcome.ok:
+            outcome = await controller.current_item()
+        if not outcome.ok:
+            row = error_row(state["report_rows"][alert_id], f"The host could not start this item: {outcome.error}")
+            update = skipped_update(UNCLASSIFIED)
             rows_out[alert_id], updates_out[alert_id] = row, update
             tracer.emit("state_change", alert_id=alert_id, node="next_alert",
                         alert_status=row["status"], label=row["label"])
             emit_update(tracer, alert_id, update)
             continue
 
+        await context.agent.start_item(alert_id)
         tracer.emit("state_change", alert_id=alert_id, node="next_alert", phase="classify")
         return {
             "current_alert_id": alert_id,
             "report_rows": rows_out,
             "evidence_updates": updates_out,
-            "message_history": Overwrite(opening_messages(result)),
+            "message_history": Overwrite(context.agent.opening_messages({**outcome.payload, "alert_id": alert_id})),
             "phase": "classify",
             "observed": set(),
             "no_progress_streak": 0,
@@ -202,7 +174,7 @@ def guard(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         if state["phase"] == "classify":
             row = error_row(state["report_rows"][alert_id],
                             f"No progress in {limit} consecutive turns of the classify phase.")
-            update = skipped_update("The item was not classified, so it skips evidence assembly.")
+            update = skipped_update(UNCLASSIFIED)
             tracer.emit("state_change", alert_id=alert_id, node="guard",
                         alert_status=row["status"], label=row["label"])
             emit_update(tracer, alert_id, update)
@@ -240,7 +212,7 @@ def guard_router(state: AgentState, runtime: Runtime[RunContext]) -> Literal["mo
 async def model_node(state: AgentState, runtime: Runtime[RunContext]) -> dict:
     """
     One step = one model call, with this item's whole conversation and the
-    discovered model-facing tools. A tool call is required, one at a time.
+    agent's model-facing tools. A tool call is required, one at a time.
     """
     context = runtime.context
     response = await context.model_client.chat.completions.create(
@@ -248,7 +220,7 @@ async def model_node(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         messages=state["message_history"],
         max_completion_tokens=context.output_allowance,
         temperature=context.temperature,
-        tools=context.tool_defs,
+        tools=context.agent.tool_defs,
         tool_choice="required",
         parallel_tool_calls=False,
     )
@@ -286,13 +258,14 @@ def tool_reply(call_id: str, content: str) -> dict:
 
 async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
     """
-    Handles the model's reply, which must be exactly one tool call to a
-    discovered model-facing tool with a JSON-object argument. Everything else
-    is refused here (refused_by: dispatcher). Valid calls go to the server
-    through the MCP session; its refusals come back as tool errors
-    (refused_by: server). Refusals are messages to the model, never crashes.
+    Handles the model's reply, which must be exactly one tool call to an
+    offered tool with a JSON-object argument. Everything else is refused here
+    (refused_by: dispatcher). Valid calls run through the agent: the MCP
+    server, or in CodeAct a script in the worker or a harness action. Their
+    refusals come back as errors with their source. Refusals are messages to
+    the model, never crashes.
     """
-    context, tracer = runtime.context, runtime.context.tracer
+    context, tracer, agent = runtime.context, runtime.context.tracer, runtime.context.agent
     alert_id = state["current_alert_id"]
     phase = state["phase"]
     streak = state["no_progress_streak"]
@@ -303,17 +276,24 @@ async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         except json.JSONDecodeError:
             args = None
         # The trace schema needs an object; unparsable arguments are kept raw.
-        tracer.emit("tool_request", alert_id=alert_id, tool=name, via="mcp",
+        tracer.emit("tool_request", alert_id=alert_id, tool=name, via=agent.via,
                     args=args if isinstance(args, dict) else {"raw": raw})
 
-    def dispatcher_refusal(call_id: str, name: str, reason: str) -> dict:
-        text = f"refused: {reason}"
-        tracer.emit("tool_result", alert_id=alert_id, tool=name, via="mcp", ok=False,
-                    error=text, error_kind="refusal", refused_by="dispatcher")
-        return tool_reply(call_id, text)
+    def result_event(name: str, outcome: Outcome):
+        fields = dict(outcome.trace)
+        if not outcome.ok:
+            fields.update(error=outcome.error, error_kind=outcome.error_kind)
+            if outcome.refused_by:
+                fields["refused_by"] = outcome.refused_by
+        tracer.emit("tool_result", alert_id=alert_id, tool=name, via=agent.via, ok=outcome.ok, **fields)
 
-    def no_progress(messages: list[dict], refusal: str | None = None) -> dict:
-        update = {"message_history": messages, "no_progress_streak": streak + 1}
+    def dispatcher_refusal(call_id: str, name: str, reason: str) -> dict:
+        outcome = Outcome(False, error=f"refused: {reason}", error_kind="refusal", refused_by="dispatcher")
+        result_event(name, outcome)
+        return tool_reply(call_id, outcome.error)
+
+    def no_progress(messages: list[dict], refusal: str | None = None, **extra) -> dict:
+        update = {"message_history": messages, "no_progress_streak": streak + 1, **extra}
         if refusal is not None:
             update["last_refusal"] = refusal
         return update
@@ -343,7 +323,7 @@ async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
     if name in HOST_ONLY:
         return no_progress([dispatcher_refusal(call_id, name, f"{name} is a host-only control, not a tool you can call")],
                            f"refused: {name} is host-only")
-    if name not in context.tool_names:
+    if name not in agent.tool_names:
         return no_progress([dispatcher_refusal(call_id, name, f"there is no tool named {name!r}")],
                            f"refused: no tool named {name!r}")
     try:
@@ -355,17 +335,11 @@ async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         return no_progress([dispatcher_refusal(call_id, name, "the arguments must be a JSON object")],
                            "refused: arguments must be a JSON object")
 
-    # Through the MCP client and server to the backend (brief line 148).
-    result = await context.session.call_tool(name, arguments)
+    outcome = await agent.execute(name, arguments, state)
+    result_event(name, outcome)
+    reply = tool_reply(call_id, outcome.reply())
 
-    if result.is_error:
-        text = result.content[0].text if result.content else f"Error executing tool {name}"
-        kind, refused_by = error_kind(name, text)
-        fields = {"refused_by": refused_by} if refused_by else {}
-        tracer.emit("tool_result", alert_id=alert_id, tool=name, via="mcp", ok=False,
-                    error=text, error_kind=kind, **fields)
-        reply = tool_reply(call_id, text)
-
+    if not outcome.ok:
         if name == "classify":
             attempts = state["classify_refusals"] + 1
             key = proposal_key(arguments)
@@ -375,12 +349,12 @@ async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
                 "classify_refusals": attempts,
                 "seen_proposals": state["seen_proposals"] + ([key] if new else []),
                 "no_progress_streak": 0 if new else streak + 1,
-                "last_refusal": text,
+                "last_refusal": outcome.error,
             }
             if attempts >= context.classify_attempts:
                 row = error_row(state["report_rows"][alert_id],
-                                f"classify was refused {attempts} times; last reason: {text}")
-                skipped = skipped_update("The item was not classified, so it skips evidence assembly.")
+                                f"classify was refused {attempts} times; last reason: {outcome.error}")
+                skipped = skipped_update(UNCLASSIFIED)
                 tracer.emit("state_change", alert_id=alert_id, node="dispatcher",
                             alert_status=row["status"], label=row["label"])
                 emit_update(tracer, alert_id, skipped)
@@ -388,29 +362,14 @@ async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
                 update["evidence_updates"] = {alert_id: skipped}
             return update
 
-        update = no_progress([reply], text)
-        if name == "write_evidence":
-            update["write_attempted"] = True
-        return update
-
-    payload = result.structured_content
-    if payload is None:
-        payload = {"text": "\n".join(getattr(c, "text", "") for c in result.content)}
-    tracer.emit("tool_result", alert_id=alert_id, tool=name, via="mcp", ok=True)
-    reply = tool_reply(call_id, json.dumps(payload, ensure_ascii=False))
-
-    if name in ("read", "read_neighbors"):
-        returned = {chunk["chunk_id"] for chunk in payload.get("chunks", [])}
-        grew = not returned <= state["observed"]
-        progressed = grew and phase == "classify"  # in the evidence phase, reading is not progress
-        return {
-            "message_history": [reply],
-            "observed": state["observed"] | returned,
-            "no_progress_streak": 0 if progressed else streak + 1,
-        }
+        extra = {"write_attempted": True} if name == "write_evidence" else {}
+        # A failed script can still have shown passages before it failed.
+        if outcome.delivered:
+            extra["observed"] = state["observed"] | outcome.delivered
+        return no_progress([reply], outcome.error, **extra)
 
     if name == "classify":
-        # The server checked the proposal; the host settles the model's own arguments.
+        # The check passed; the host settles the model's own arguments.
         label = arguments["label"]
         row = classified_row(state["report_rows"][alert_id], label,
                              arguments["rationale"].strip(), arguments["evidence"])
@@ -424,30 +383,37 @@ async def dispatcher(state: AgentState, runtime: Runtime[RunContext]) -> dict:
             return {"message_history": [reply], "report_rows": {alert_id: row},
                     "evidence_updates": {alert_id: skipped}}
 
-        ok, started = await host_call(context, "set_alert", {"alert_id": alert_id, "phase": "evidence"})
-        if not ok:
-            skipped = skipped_update(f"The server refused to start the evidence phase: {started}")
+        started = await agent.controller.set_alert(alert_id, "evidence")
+        if not started.ok:
+            skipped = skipped_update(f"The host could not start the evidence phase: {started.error}")
             emit_update(tracer, alert_id, skipped)
             return {"message_history": [reply], "report_rows": {alert_id: row},
                     "evidence_updates": {alert_id: skipped}}
 
         route(runtime, state, "assemble_evidence", "runtime", phase="evidence")
         return {
-            "message_history": [reply, evidence_phase_message(row["chunk_id"])],
+            "message_history": [reply, agent.evidence_message(row["chunk_id"])],
             "report_rows": {alert_id: row},
             "phase": "evidence",
             "no_progress_streak": 0,
         }
 
     if name == "write_evidence":
-        accepted = accepted_update(payload["diff"], payload["checks"],
+        accepted = accepted_update(outcome.payload["diff"], outcome.payload["checks"],
                                    "One item for the current chunk was appended to the current query packet.")
         emit_update(tracer, alert_id, accepted)
         return {"message_history": [reply], "write_attempted": True,
                 "evidence_updates": {alert_id: accepted}}
 
-    # current_item, read_packet: useful context, but not progress.
-    return no_progress([reply])
+    # Reads (MCP read/read_neighbors, CodeAct run_python): progress when a new
+    # passage was delivered, in the classify phase only.
+    grew = not outcome.delivered <= state["observed"]
+    progressed = grew and phase == "classify"
+    return {
+        "message_history": [reply],
+        "observed": state["observed"] | outcome.delivered,
+        "no_progress_streak": 0 if progressed else streak + 1,
+    }
 
 
 def dispatcher_router(state: AgentState, runtime: Runtime[RunContext]) -> Literal["next_alert", "guard"]:

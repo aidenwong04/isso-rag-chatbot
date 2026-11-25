@@ -25,10 +25,12 @@ Line numbers refer to `briefs/hw2-isso.tex` in the hw2-isso repo.
 
 ## CodeAct harness
 
-- [ ] Actions: `run_python(code)` runs in the worker; `classify` and `write_evidence` are separate actions the harness handles, never run as code.
-- [ ] Give the backend a marker format for printed passages, and build the delivered set from stdout: parsed ID, exact canonical text, and ID in the allowed set (line 137).
-- [ ] After every `run_python`, diff the packet files against the harness's trusted copy, reject and restore any change the harness did not make (line 280).
-- [ ] Wipe per-item scratch space (`/tmp` and any scratch folders) between items, keeping only what the harness accepted.
+- [x] Actions: `run_python(code)` runs in the worker; `classify` and `write_evidence` are separate actions the harness handles, never run as code.
+- [x] Give the backend a marker format for printed passages, and build the delivered set from stdout: parsed ID, exact canonical text, and ID in the allowed set (line 137).
+- [x] After every `run_python`, diff the packet files against the harness's trusted copy, reject and restore any change the harness did not make (line 280).
+- [x] Wipe per-item scratch space (`/tmp` and any scratch folders) between items, keeping only what the harness accepted.
+- [ ] Generate `agent/src/hw2/codeact_prompt.md` with Claude Code from `api.py` (brief 3.1): Aiden writes the generation prompt, saves it word for word as a separate file (rubric C5), reviews the generated prompt; it must state the read, write, and network rules (line 259).
+- [ ] Run CodeAct on dev with the real model once the prompt exists.
 
 ## Injection experiment
 

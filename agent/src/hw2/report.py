@@ -110,7 +110,7 @@ def write_report(alert_order, rows, updates, used_tokens, terminal_status, conte
             "prepared_manifest_sha256": context.manifest_sha256,
         },
         "scan": {"k": context.k, "alert_count": len(alerts)},
-        "agent_kind": "mcp",
+        "agent_kind": context.agent.kind,
         "budget": {
             "max_tokens": context.token_budget,
             "used_tokens": used_tokens,

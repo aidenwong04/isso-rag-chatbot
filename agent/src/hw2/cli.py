@@ -1,5 +1,5 @@
 """
-cli - the HW2 agent's command line (MCP agent; CodeAct is not built yet).
+cli - the HW2 agents' command line: [agent] kind selects "mcp" or "codeact".
 
     agent/isso-agent-hw2 --input agent/prepared/dev --output agent/runs/hw2-mcp-dev \
         --config configs/mcp.toml
@@ -34,7 +34,9 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 from graph import build_graph
-from nodes import HOST_ONLY
+from agents import HOST_ONLY, MCPAgent
+from api import Backend
+from codeact import DEFAULT_OUTPUT_CAP, DEFAULT_TIMEOUT, CodeActAgent
 from run import run
 from state import RunContext
 from tracer import Tracer
@@ -83,13 +85,6 @@ def server_params(config: dict, mcp_json: Path | None = None) -> tuple[str, Stdi
                                        env=entry.get("env") or None, cwd=REPO_ROOT)
 
 
-def openai_tool(tool) -> dict:
-    """A discovered MCP tool in the OpenAI Chat Completions tool format."""
-    return {"type": "function",
-            "function": {"name": tool.name, "description": tool.description or "",
-                         "parameters": tool.input_schema}}
-
-
 def default_model_client():
     """AsyncOpenAI with the key from the shell or the repository's .env."""
     from openai import AsyncOpenAI
@@ -103,8 +98,7 @@ def default_model_client():
 async def run_agent(input_dir: Path, output_dir: Path, config_path: Path,
                     model_client=None, mcp_json: Path | None = None) -> str:
     config = load_config(config_path)
-    if config["agent"]["kind"] != "mcp":
-        sys.exit(f'[agent] kind {config["agent"]["kind"]!r}: only "mcp" is implemented so far')
+    kind = config["agent"]["kind"]
 
     query_set = input_dir.name
     if query_set not in QUERY_SETS or not (input_dir / "candidates.json").is_file():
@@ -120,42 +114,69 @@ async def run_agent(input_dir: Path, output_dir: Path, config_path: Path,
                  f"manifest's {manifest_version}")
 
     model_client = model_client or default_model_client()
-    budget = config["budget"]
-    server_name, params = server_params(config, mcp_json)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    def context_for(agent) -> RunContext:
+        budget = config["budget"]
+        return RunContext(
+            input_dir=input_dir,
+            output_dir=output_dir,
+            query_set=query_set,
+            manifest_sha256=manifest_sha256,
+            k=config["scan"]["k"],
+            model=config["model"]["name"],
+            temperature=config["model"].get("temperature", 0),
+            token_budget=budget["max_tokens"],
+            output_allowance=budget["output_allowance"],
+            max_steps=budget["max_steps"],
+            no_progress_limit=budget["no_progress_limit"],
+            classify_attempts=budget.get("classify_attempts", DEFAULT_CLASSIFY_ATTEMPTS),
+            agent=agent,
+            model_client=model_client,
+            tracer=Tracer(output_dir / "trace.jsonl"),
+        )
+
+    if kind == "codeact":
+        agent = codeact_agent(config, input_dir.parent)
+        try:
+            return await run(build_graph(), context_for(agent))
+        finally:
+            await agent.close()
+
+    server_name, params = server_params(config, mcp_json)
     async with stdio_client(params) as (read_stream, write_stream):
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
             listed = (await session.list_tools()).tools
-            names = {t.name for t in listed}
-            missing = HOST_ONLY - names
+            missing = HOST_ONLY - {t.name for t in listed}
             if missing:
                 sys.exit(f"server {server_name!r} does not offer the host-only controls {sorted(missing)}")
             # The model sees every discovered tool except the host-only controls (brief line 147).
-            offered = [t for t in listed if t.name not in HOST_ONLY]
+            agent = MCPAgent(session, server_name, listed)
+            return await run(build_graph(), context_for(agent))
 
-            context = RunContext(
-                input_dir=input_dir,
-                output_dir=output_dir,
-                query_set=query_set,
-                manifest_sha256=manifest_sha256,
-                k=config["scan"]["k"],
-                model=config["model"]["name"],
-                temperature=config["model"].get("temperature", 0),
-                token_budget=budget["max_tokens"],
-                output_allowance=budget["output_allowance"],
-                max_steps=budget["max_steps"],
-                no_progress_limit=budget["no_progress_limit"],
-                classify_attempts=budget.get("classify_attempts", DEFAULT_CLASSIFY_ATTEMPTS),
-                server_name=server_name,
-                session=session,
-                tool_defs=[openai_tool(t) for t in offered],
-                tool_names=frozenset(t.name for t in offered),
-                model_client=model_client,
-                tracer=Tracer(output_dir / "trace.jsonl"),
-            )
-            return await run(build_graph(), context)
+
+def codeact_agent(config: dict, prepared_dir: Path) -> CodeActAgent:
+    """
+    The CodeAct agent from [codeact]: the reviewed prompt file (generated from
+    the backend API, brief section 3.1), the writable evidence and scratch
+    folders, and the worker's limits. Paths are relative to the repository root.
+    """
+    settings = config.get("codeact", {})
+    prompt_file = REPO_ROOT / settings.get("prompt", "agent/src/hw2/codeact_prompt.md")
+    if not prompt_file.is_file():
+        sys.exit(f"[codeact] prompt {prompt_file}: no such file (generate it from the backend API first)")
+    backend = Backend(prepared_dir, REPO_ROOT / settings.get("evidence_dir", "agent/work/evidence"))
+    if backend.verification_error:
+        sys.exit(backend.verification_error)
+    return CodeActAgent(
+        backend,
+        system_prompt=prompt_file.read_text(encoding="utf-8"),
+        python=settings.get("python", sys.executable),
+        scratch_root=REPO_ROOT / settings.get("scratch_dir", "agent/work/scratch"),
+        output_cap=settings.get("output_cap", DEFAULT_OUTPUT_CAP),
+        timeout=settings.get("timeout", DEFAULT_TIMEOUT),
+    )
 
 
 def main():

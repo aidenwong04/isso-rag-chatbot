@@ -2,9 +2,9 @@
 state - the LangGraph state schema and run context for the HW2 MCP host.
 
 Adapted from src/hw1/state.py. What changed for HW2:
-  - RunContext carries the MCP session and the discovered tool definitions
-    (fixed for the whole run, like the tracer), and no workspace: the MCP host
-    never opens target files (brief line 151).
+  - RunContext carries the agent (MCP or CodeAct), which holds the tools and
+    the host's trusted operations, and no workspace: the MCP host never opens
+    target files (brief line 151).
   - Items are the frozen candidate rows, read from <set>/candidates.json (IDs
     only, which the host treats as control metadata, brief line 152).
   - Each item has a phase, classify then (only after an accepted label 1)
@@ -30,8 +30,8 @@ class RunContext:
     """
     Settings fixed for the whole run, built by the CLI before the graph starts.
     Nodes read them as runtime.context; no node can replace them. The tracer,
-    the MCP session, and the model client are the mutable objects here: every
-    node uses the same instances for the whole run.
+    the agent, and the model client are the mutable objects here: every node
+    uses the same instances for the whole run.
     """
 
     input_dir: Path        # the prepared query set folder, <prepared>/<set>
@@ -46,10 +46,8 @@ class RunContext:
     max_steps: int         # run-wide model calls
     no_progress_limit: int  # per phase: turns without progress before the item ends
     classify_attempts: int  # refused classify proposals allowed per item
-    server_name: str       # the mcp.json server entry, recorded in the discovery event
-    session: Any           # the open mcp ClientSession
-    tool_defs: list[dict]  # discovered model-facing tools, in the provider's format
-    tool_names: frozenset[str]  # their names, for the dispatcher's name check
+    agent: Any             # MCPAgent or CodeActAgent (agents.py, codeact.py): the tools, the
+                           # host's trusted operations, and how a model tool call runs
     model_client: Any      # AsyncOpenAI, or a stand-in with the same interface in tests
     tracer: Tracer
 

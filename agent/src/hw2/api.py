@@ -59,11 +59,27 @@ def serialize_packet(packet: dict) -> str:
 
 QUERY_SETS = ("dev", "heldout-a", "heldout-b")
 
+# Defaults for Backend() with no arguments, set by the CodeAct harness in the
+# worker's environment, so generated code can write Backend() (brief line 126).
+PREPARED_DIR_ENV = "ISSO_PREPARED_DIR"
+EVIDENCE_DIR_ENV = "ISSO_EVIDENCE_DIR"
+
+# How show() prints a passage, and how the CodeAct harness finds passages in
+# a script's output (brief line 137). The text between the two lines is the
+# passage's canonical text exactly, so the harness can check it byte for byte.
+PASSAGE_START = "<<<chunk {chunk_id}>>>"
+PASSAGE_END = "<<<end {chunk_id}>>>"
+
+
+def passage_block(chunk_id: str, text: str) -> str:
+    """One passage as show() prints it: start line, exact text, end line."""
+    return f"{PASSAGE_START.format(chunk_id=chunk_id)}\n{text}\n{PASSAGE_END.format(chunk_id=chunk_id)}\n"
+
 
 class Backend:
     """One item's view of the frozen inputs and its question's packet."""
 
-    def __init__(self, prepared_dir: Path, evidence_dir: Path):
+    def __init__(self, prepared_dir: Path | None = None, evidence_dir: Path | None = None):
         """
         prepared_dir: the folder holding manifest.json, chunks.json,
             neighbors.json, and <set>/{queries,candidates}.json.
@@ -72,6 +88,13 @@ class Backend:
         The frozen candidate lists and neighbors are loaded once here, so the
         per-item methods only look things up.
         """
+        # With no arguments (generated CodeAct code), the folders come from
+        # the environment the harness sets for the worker.
+        prepared_dir = prepared_dir or os.environ.get(PREPARED_DIR_ENV)
+        evidence_dir = evidence_dir or os.environ.get(EVIDENCE_DIR_ENV)
+        if not prepared_dir or not evidence_dir:
+            raise ValueError(f"Backend needs prepared_dir and evidence_dir, or the "
+                             f"{PREPARED_DIR_ENV} and {EVIDENCE_DIR_ENV} environment variables")
         self.prepared_dir = Path(prepared_dir)
         self.evidence_dir = Path(evidence_dir)
 
@@ -186,8 +209,8 @@ class Backend:
             return self._refuse_item(self.verification_error)
         if phase not in PHASES:
             return self._refuse_item("refused: unknown phase")
-        if phase == "evidence" and alert_id != self.alert_id:
-            # trying to continue another alert that wasn't just classified
+        if phase == "evidence" and self.alert_id is not None and alert_id != self.alert_id:
+            # trying to jump from the current item to a different one
             return self._refuse_item("refused: attempting to enter evidence phase with a new alert.")
 
         aset = self.compute_allowed_set(alert_id)
@@ -195,7 +218,11 @@ class Backend:
             return self._refuse_item(aset["msg"])
         cand = self.by_alert_id[alert_id]
 
-        if phase == "classify":
+        # A new item, or the evidence phase on a fresh Backend (each CodeAct
+        # script starts one): load the item's context first. Whether evidence
+        # is allowed at all is the host's decision (brief line 182), not this
+        # object's.
+        if phase == "classify" or self.alert_id is None:
             self.alert_id = alert_id
             self.query_id = cand["query_id"]
             self.chunk_id = cand["chunk_id"]
@@ -208,7 +235,7 @@ class Backend:
             self.observed = set()
             self.pre_stage_packet = None
             self.evidence_written = False
-        else:
+        if phase == "evidence":
             self.phase = "evidence"
             # The packet as it stands when this item's evidence stage begins.
             # The report's diff is against this (report.schema.json), and the
@@ -352,6 +379,27 @@ class Backend:
         if omitted:
             msg += f"; {omitted} neighbor(s) outside this item's allowed set were omitted"
         return {"ok": True, "msg": msg, "chunks": chunks}
+
+    def show(self, chunk_id: str) -> dict:
+        """
+        read(chunk_id), and on success prints the passage in the marker format
+        (passage_block). For CodeAct: the harness counts a passage as delivered
+        to the model only when it finds this block in the script's output with
+        the exact canonical text (brief line 137). Returns read's result.
+        """
+        result = self.read(chunk_id)
+        if result["ok"]:
+            for chunk in result["chunks"]:
+                sys.stdout.write(passage_block(chunk["chunk_id"], chunk["text"]))
+        return result
+
+    def show_neighbors(self, chunk_id: str) -> dict:
+        """read_neighbors(chunk_id), printing each returned passage like show()."""
+        result = self.read_neighbors(chunk_id)
+        if result["ok"]:
+            for chunk in result["chunks"]:
+                sys.stdout.write(passage_block(chunk["chunk_id"], chunk["text"]))
+        return result
 
     def classify(self, label: int, rationale: str, evidence: list[str]) -> dict:
         """
