@@ -1,6 +1,8 @@
-# The HW1 agent's dependencies, on top of the API's.
+# The agent's dependencies (HW1 and HW2), on top of the API's.
 # Kept out of the root requirements.txt, which builds the deployed API image.
 #   env/bin/pip install -r requirements.txt -r agent/requirements.txt
 -r ../requirements.txt
 langgraph==1.2.15
 openai==3.31.0
+# HW2: the MCP server and host. The version staff used (HW2 handout).
+mcp==2.3.0
