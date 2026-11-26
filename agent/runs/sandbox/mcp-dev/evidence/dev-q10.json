@@ -1,0 +1,23 @@
+{
+  "query_id": "dev-q10",
+  "items": [
+    {
+      "chunk_id": "resources-scholars::1",
+      "quote": "Finding the housing that is right for you can be a challenge in New York City. Getting a lease without a U.S. credit history, employment, or a U.S.–based guarantor is very difficult. Read more at Columbia Residential Off-Campus Housing Resources.",
+      "source": "resources-scholars",
+      "url": "https://isso.columbia.edu/content/resources-scholars"
+    },
+    {
+      "chunk_id": "resources-scholars::3",
+      "quote": "Columbia’s Off-Campus Housing Assistance (OCHA) can be used by students, faculty, staff and alumni to search for an apartment, a room in an apartment, or roommates. The Office for Work/Life provides a useful Rental Guide. Another resource is 4Stay, a platform geared toward students, scholars and interns to search for medium to long-term furnished rentals.",
+      "source": "resources-scholars",
+      "url": "https://isso.columbia.edu/content/resources-scholars"
+    },
+    {
+      "chunk_id": "resources-scholars::5",
+      "quote": "You may need a place for a week or two while you find something more permanent. Check out Work | Life Temporary Housing Options, Columbia University's Travel Portal, and Sara’s Homestay. Hostelling International NYC is walking distance from Columbia’s Morningside campus.",
+      "source": "resources-scholars",
+      "url": "https://isso.columbia.edu/content/resources-scholars"
+    }
+  ]
+}

@@ -1,0 +1,523 @@
+{
+  "target": {
+    "corpus_sha256": "f186563d6a1e702703386a25e5047e44eac3d666a7fe382d516c86dd47e5bf8e",
+    "query_set": "heldout-b",
+    "prepared_manifest_sha256": "bd4a06db336003bda25d42ac92707db3ccb1709f4bbe3ebc6e99daea030c5bfd"
+  },
+  "scan": {
+    "k": 3,
+    "alert_count": 24
+  },
+  "agent_kind": "mcp",
+  "budget": {
+    "max_tokens": 600000,
+    "used_tokens": 129040,
+    "exhausted": false
+  },
+  "alerts": [
+    {
+      "alert_id": "heldout-b-q08::about-your-visa::0",
+      "query_id": "heldout-b-q08",
+      "chunk_id": "about-your-visa::0",
+      "status": "classified",
+      "label": 0,
+      "rationale": "This passage explains what a U.S. visa is and the general process of applying for an entry visa at a U.S. embassy or consulate, but it does not describe the specific process of obtaining an H1-B visa. It only mentions H-1B as an example of visa classification without detailing the steps to obtain it. Therefore, it does not answer the question about the H1-B visa process.",
+      "evidence": [
+        "about-your-visa::0"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::2",
+      "query_id": "heldout-b-q07",
+      "chunk_id": "applying-visa-scholars::2",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains general visa application requirements and exemptions for scholars but does not mention anything about applying for visas for children or dependents. It does not answer whether a scholar can apply for their children's visas.",
+      "evidence": [
+        "applying-visa-scholars::2"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::6",
+      "query_id": "heldout-b-q07",
+      "chunk_id": "applying-visa-scholars::6",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists additional documents required if a scholar's spouse or children will be applying for a J-2 dependent visa, indicating that scholars can apply for visas for their children.",
+      "evidence": [
+        "applying-visa-scholars::6"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q07.json\n+++ b/sandbox/work/evidence/heldout-b-q07.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q07\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"applying-visa-scholars::6\",\n+      \"quote\": \"Additional documents if your spouse or children will be applying for a J-2 dependent visa\\n- 8. | Dependent's COE (J-2 form DS-2019)\\n- 9. | Dependent's proof of relationship (marriage or child birth certificate)\\n- 10. | Copy of your visa page in passport, only if you're already in the U.S. before your dependent joins you\\n- 11. | Copy of your I-94 arrival/departure record, only if you're already in the U.S. before your dependent joins you\",\n+      \"source\": \"applying-visa-scholars\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-visa-scholars\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q07::applying-visa-scholars::7",
+      "query_id": "heldout-b-q07",
+      "chunk_id": "applying-visa-scholars::7",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists additional documents required if a scholar's spouse or children will be applying for dependent visas (H-4 / O-3), which directly relates to the question about applying for children's visas after admission to Columbia.",
+      "evidence": [
+        "applying-visa-scholars::7"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q07.json\n+++ b/sandbox/work/evidence/heldout-b-q07.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"Additional documents if your spouse or children will be applying for a J-2 dependent visa\\n- 8. | Dependent's COE (J-2 form DS-2019)\\n- 9. | Dependent's proof of relationship (marriage or child birth certificate)\\n- 10. | Copy of your visa page in passport, only if you're already in the U.S. before your dependent joins you\\n- 11. | Copy of your I-94 arrival/departure record, only if you're already in the U.S. before your dependent joins you\",\n       \"source\": \"applying-visa-scholars\",\n       \"url\": \"https://isso.columbia.edu/content/applying-visa-scholars\"\n+    },\n+    {\n+      \"chunk_id\": \"applying-visa-scholars::7\",\n+      \"quote\": \"Additional documents if your spouse or children will be applying for an H-4 / O-3 dependent visa\\n- 5. | Dependent's proof of relationship (marriage or child birth certificate)\\n- 6. | Copy of your visa page in passport (only if you're already in the U.S. before your dependent joins you)\\n- 7. | Copy of your I-94 arrival/departure record (only if you're already in the U.S. before your dependent joins you)\",\n+      \"source\": \"applying-visa-scholars\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-visa-scholars\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-visa-students::10",
+      "query_id": "heldout-b-q02",
+      "chunk_id": "applying-visa-students::10",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists the documents required to apply for a visa as a student accepted to Columbia, directly addressing how to apply for the visa by specifying what to prepare.",
+      "evidence": [
+        "applying-visa-students::10"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q02.json\n+++ b/sandbox/work/evidence/heldout-b-q02.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q02\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"applying-visa-students::10\",\n+      \"quote\": \"- 1. | Passport (valid for at least six months beyond the date of travel to the U.S.)\\n- 2. | DS-160 confirmation page\\n- 3. | Valid I-20/DS-2019\\n- 4. | Copy of Columbia admission letter/email\\n- 5. | SEVIS Fee Receipt\\n- 6. | Financial documents (issued within the previous 3 months)\\n- 7. | Any other documents listed on embassy/consulate website\",\n+      \"source\": \"applying-visa-students\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-visa-students\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::8",
+      "query_id": "heldout-b-q02",
+      "chunk_id": "applying-your-i-20ds-2019::8",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides relevant information on applying for a visa by explaining the steps to apply for an ALP I-20 and then use it to apply for an F-1 visa, which is directly related to the question about how to apply for a visa after being accepted to Columbia.",
+      "evidence": [
+        "applying-your-i-20ds-2019::8"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q02.json\n+++ b/sandbox/work/evidence/heldout-b-q02.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"- 1. | Passport (valid for at least six months beyond the date of travel to the U.S.)\\n- 2. | DS-160 confirmation page\\n- 3. | Valid I-20/DS-2019\\n- 4. | Copy of Columbia admission letter/email\\n- 5. | SEVIS Fee Receipt\\n- 6. | Financial documents (issued within the previous 3 months)\\n- 7. | Any other documents listed on embassy/consulate website\",\n       \"source\": \"applying-visa-students\",\n       \"url\": \"https://isso.columbia.edu/content/applying-visa-students\"\n+    },\n+    {\n+      \"chunk_id\": \"applying-your-i-20ds-2019::8\",\n+      \"quote\": \"- Apply for your ALP I-20.\\n- Use the I-20 from ALP to apply for your F-1 visa and to enter the U.S.\\n- Before you complete your ALP program, ALP will send you instructions on how to transfer your ALP SEVIS record to the ISSO and apply for an I-20 for your program. Review these FAQs.\",\n+      \"source\": \"applying-your-i-20ds-2019\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-your-i-20ds-2019\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q02::applying-your-i-20ds-2019::17",
+      "query_id": "heldout-b-q02",
+      "chunk_id": "applying-your-i-20ds-2019::17",
+      "status": "classified",
+      "label": 1,
+      "rationale": "This passage explains the initial steps for a student who has been accepted to Columbia to apply for their visa documents (I-20 or DS-2019). It details how to use the PID received from the admissions office to request a Limited Services PIN and log in to Compass to apply, which directly answers how to apply for the visa.",
+      "evidence": [
+        "applying-your-i-20ds-2019::17"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q02.json\n+++ b/sandbox/work/evidence/heldout-b-q02.json\n@@ -12,6 +12,12 @@\n       \"quote\": \"- Apply for your ALP I-20.\\n- Use the I-20 from ALP to apply for your F-1 visa and to enter the U.S.\\n- Before you complete your ALP program, ALP will send you instructions on how to transfer your ALP SEVIS record to the ISSO and apply for an I-20 for your program. Review these FAQs.\",\n       \"source\": \"applying-your-i-20ds-2019\",\n       \"url\": \"https://isso.columbia.edu/content/applying-your-i-20ds-2019\"\n+    },\n+    {\n+      \"chunk_id\": \"applying-your-i-20ds-2019::17\",\n+      \"quote\": \"Your PID is the 9-digit number beginning with “C” you receive from your admissions office (e.g. C123456789). If you don't have a PID, contact your admissions office.\\n- Use your PID to request a Limited Services PIN.\\n- Receive your Limited Services PIN at the e-mail address you used to apply to Columbia.\\n- Log in to Compass using your PID, Date of Birth and Limited Services PIN by clicking the appropriate link below:\",\n+      \"source\": \"applying-your-i-20ds-2019\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-your-i-20ds-2019\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q01::campus-work-f-and-j-students::9",
+      "query_id": "heldout-b-q01",
+      "chunk_id": "campus-work-f-and-j-students::9",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the need for a Social Security Number (SSN) for students by explaining that they must apply in person to the Social Security Administration for an SSN. This is relevant to the question about whether an international student needs an SSN.",
+      "evidence": [
+        "campus-work-f-and-j-students::9"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q01.json\n+++ b/sandbox/work/evidence/heldout-b-q01.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q01\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"campus-work-f-and-j-students::9\",\n+      \"quote\": \"You must apply in person to the Social Security Administration, a federal agency, for a Social Security Number (SSN). Learn exactly what you need to do for an SSN application.\",\n+      \"source\": \"campus-work-f-and-j-students\",\n+      \"url\": \"https://isso.columbia.edu/content/campus-work-f-and-j-students\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q08::cap-gap-opt-extension::5",
+      "query_id": "heldout-b-q08",
+      "chunk_id": "cap-gap-opt-extension::5",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states the earliest date an employer can file an H-1 petition and gives an example. It does not explain the process of obtaining an H1-B visa, so it does not answer the question.",
+      "evidence": [
+        "cap-gap-opt-extension::5"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q08::cap-gap-opt-extension::7",
+      "query_id": "heldout-b-q08",
+      "chunk_id": "cap-gap-opt-extension::7",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists specific documents involved in the H-1B visa process, such as selection in the H-1B electronic registration lottery, I-797C Notice of Action, and other related documents. This directly relates to the process of obtaining an H-1B visa for students.",
+      "evidence": [
+        "cap-gap-opt-extension::7"
+      ],
+      "evidence_update": {
+        "status": "rejected",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "No quote was accepted in 3 turns of the evidence phase; last refusal: Error executing tool write_evidence: refused: quote is 643 characters; the limit is 600"
+      }
+    },
+    {
+      "alert_id": "heldout-b-q03::documents-needed-travel-scholar::0",
+      "query_id": "heldout-b-q03",
+      "chunk_id": "documents-needed-travel-scholar::0",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states that it will inform about documents needed for travel but does not actually list or describe any documents required to enter the US. It does not answer the question.",
+      "evidence": [
+        "documents-needed-travel-scholar::0"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q03::documents-needed-travel-scholar::12",
+      "query_id": "heldout-b-q03",
+      "chunk_id": "documents-needed-travel-scholar::12",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage lists the documents scholars need to carry for domestic travel within the U.S., including Form DS-2019 or I-797 Approval Notice, passport ID page, and U.S. visa, which directly answers the question about what documents are needed to enter the U.S.",
+      "evidence": [
+        "documents-needed-travel-scholar::12"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q03.json\n+++ b/sandbox/work/evidence/heldout-b-q03.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q03\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"documents-needed-travel-scholar::12\",\n+      \"quote\": \"Carry a copy of your documents with you in case you need to show evidence of your legal immigration status.\\n- 2 | Form DS-2019 (J-1 status) or I-797 Approval Notice (H-1B or O-1 status)\\n- 3 | Passport ID page\\n- 4 | Visa issued by the U.S. consulate (Canadian citizens do not need a visa)\",\n+      \"source\": \"documents-needed-travel-scholar\",\n+      \"url\": \"https://isso.columbia.edu/content/documents-needed-travel-scholar\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q03::entering-us-scholars::2",
+      "query_id": "heldout-b-q03",
+      "chunk_id": "entering-us-scholars::2",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only instructs to have documents in hand for review but does not specify which documents are needed to enter the US. It does not answer the question about what documents are required.",
+      "evidence": [
+        "entering-us-scholars::2"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::10",
+      "query_id": "heldout-b-q05",
+      "chunk_id": "f-1-cpt-curricular-practical-training::10",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states a limitation about applying for CPT, saying you can apply only if your academic program meets the criteria. It does not explain how to apply for CPT, which is the question asked.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::10"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::26",
+      "query_id": "heldout-b-q05",
+      "chunk_id": "f-1-cpt-curricular-practical-training::26",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states a restriction about applying for CPT, saying you can apply only if your academic program meets the criteria. It does not explain how to apply for CPT, which is the question asked.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::26"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q05::f-1-cpt-curricular-practical-training::38",
+      "query_id": "heldout-b-q05",
+      "chunk_id": "f-1-cpt-curricular-practical-training::38",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides specific steps and documents required to apply for CPT, including registering for a course, obtaining a CPT Employer Letter, completing the CPT Request Form, Cooperative Agreement, and submitting the most recent I-94. This directly answers how a student can apply for CPT.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::38"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q05.json\n+++ b/sandbox/work/evidence/heldout-b-q05.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q05\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"f-1-cpt-curricular-practical-training::38\",\n+      \"quote\": \"- ✓ | Register for the course (if the internship is tied to a specific course)\\n- ✓ | CPT Employer Letter . This must include all 6 requirements as detailed in step 1 above or your application will be denied\\n- ✓ | The CPT Request Form must be completed by you and your department\\n- ✓ | The Cooperative Agreement must be completed and signed by you, your employer, and your academic department\\n- ✓ | Your \\\" Most Recent I-94 \\\" arrival record. You will need to upload your most recent I-94. Do NOT upload \\\"Your Travel History\\\".\\nBack to Application Process\",\n+      \"source\": \"f-1-cpt-curricular-practical-training\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::9",
+      "query_id": "heldout-b-q04",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::9",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains the rules about unemployment days during OPT, including the requirement to begin employment within 90 days from the OPT start date and the consequences of accruing more than 90 days of unemployment, which is relevant to whether a student on OPT without a job can leave the US.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::9"
+      ],
+      "evidence_update": {
+        "status": "rejected",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "No quote was accepted in 3 turns of the evidence phase; last refusal: Error executing tool write_evidence: refused: quote is not an exact substring of the target passage; copy it character for character, including spacing and punctuation"
+      }
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::40",
+      "query_id": "heldout-b-q04",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::40",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage addresses travel while OPT application is pending, which is relevant to the question about leaving the US while on OPT but without a job. It mentions travel before OPT approval is not recommended and points out risks and required documents, partially answering the question about leaving the US during OPT.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::40"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q04.json\n+++ b/sandbox/work/evidence/heldout-b-q04.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q04\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"f-1-opt-optional-practical-training-after-your-degree-program::40\",\n+      \"quote\": \"Travel before OPT approval is not recommended. If you decide you must travel, check here for the risks involved and the required documents.\",\n+      \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q04::f-1-opt-optional-practical-training-after-your-degree-program::49",
+      "query_id": "heldout-b-q04",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::49",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage addresses travel abroad during OPT and the need to have the correct F-1 documents to return to the U.S. It implies that travel is possible while on OPT but requires proper documentation, which partially answers the question about leaving the US while on OPT without a job.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::49"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q04.json\n+++ b/sandbox/work/evidence/heldout-b-q04.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"Travel before OPT approval is not recommended. If you decide you must travel, check here for the risks involved and the required documents.\",\n       \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n       \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n+    },\n+    {\n+      \"chunk_id\": \"f-1-opt-optional-practical-training-after-your-degree-program::49\",\n+      \"quote\": \"While you are on OPT, you remain in F-1 status. If you have plans to travel abroad during this period, you need to know in advance which F-1 documents you need to have with you to return to the U.S. so you won't jeopardize your OPT authorization.\",\n+      \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::0",
+      "query_id": "heldout-b-q06",
+      "chunk_id": "glass::0",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states the full name of the GLASS program (Global Leadership Advancing Student Success) but does not explain what the ISSO's GLASS program is or provide any details about it. It does not answer the question.",
+      "evidence": [
+        "glass::0"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::1",
+      "query_id": "heldout-b-q06",
+      "chunk_id": "glass::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly defines the ISSO's GLASS program as 'Global Leadership Advancing Student Success,' describing its purpose to advance international student professional development for U.S. and global work cultures, leadership, and success. It also mentions the program's methods and goals, which answers the question for students.",
+      "evidence": [
+        "glass::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q06.json\n+++ b/sandbox/work/evidence/heldout-b-q06.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-b-q06\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"glass::1\",\n+      \"quote\": \"Global Leadership Advancing Student Success (GLASS) is a program designed to advance international student professional development in preparation for U.S. and global work cultures, leadership, and success. Through interactive sessions, networking opportunities, and hands-on projects, ISSO GLASS empowers students to become global leaders ready to succeed in an interconnected world.\",\n+      \"source\": \"glass\",\n+      \"url\": \"https://isso.columbia.edu/glass\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q06::glass::5",
+      "query_id": "heldout-b-q06",
+      "chunk_id": "glass::5",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly mentions the ISSO GLASS workshops and the personalized professional development journey, which is relevant to explaining what the ISSO's GLASS program is for students.",
+      "evidence": [
+        "glass::5"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q06.json\n+++ b/sandbox/work/evidence/heldout-b-q06.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"Global Leadership Advancing Student Success (GLASS) is a program designed to advance international student professional development in preparation for U.S. and global work cultures, leadership, and success. Through interactive sessions, networking opportunities, and hands-on projects, ISSO GLASS empowers students to become global leaders ready to succeed in an interconnected world.\",\n       \"source\": \"glass\",\n       \"url\": \"https://isso.columbia.edu/glass\"\n+    },\n+    {\n+      \"chunk_id\": \"glass::5\",\n+      \"quote\": \"Explore the ISSO GLASS workshops and map out your personalized professional development journey.Get started with our Canvas course.\",\n+      \"source\": \"glass\",\n+      \"url\": \"https://isso.columbia.edu/glass\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q01::j-1-academic-training::13",
+      "query_id": "heldout-b-q01",
+      "chunk_id": "j-1-academic-training::13",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only instructs to apply for a Social Security Number if you don't have one, but it does not explain whether an international student needs one or under what conditions. It does not answer the question about the necessity of a Social Security Number for international students in general.",
+      "evidence": [
+        "j-1-academic-training::13"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-b-q01::your-first-weeks-students::6",
+      "query_id": "heldout-b-q01",
+      "chunk_id": "your-first-weeks-students::6",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses international students and explains when they should apply for a Social Security Number (SSN), including if they have authorized employment, receive a fellowship stipend with research or teaching responsibilities, or are in J-1 student status. This answers the question about the need for an SSN as an international student.",
+      "evidence": [
+        "your-first-weeks-students::6"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-b-q01.json\n+++ b/sandbox/work/evidence/heldout-b-q01.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"You must apply in person to the Social Security Administration, a federal agency, for a Social Security Number (SSN). Learn exactly what you need to do for an SSN application.\",\n       \"source\": \"campus-work-f-and-j-students\",\n       \"url\": \"https://isso.columbia.edu/content/campus-work-f-and-j-students\"\n+    },\n+    {\n+      \"chunk_id\": \"your-first-weeks-students::6\",\n+      \"quote\": \"You should apply for an SSN as soon as possible if:\\n- you have authorized employment at Columbia. An SSN is a required part of the paperwork to get paid.\\n- You are receiving a \\\"non-work\\\" fellowship stipend as a first-year doctoral student in F-1 status, and will later have research or teaching responsibilities under the terms of your fellowship.\\n- You are in J-1 student status.\",\n+      \"source\": \"your-first-weeks-students\",\n+      \"url\": \"https://isso.columbia.edu/content/your-first-weeks-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    }
+  ]
+}

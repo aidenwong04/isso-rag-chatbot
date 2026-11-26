@@ -1,0 +1,23 @@
+{
+  "query_id": "heldout-a-q08",
+  "items": [
+    {
+      "chunk_id": "f-1-cpt-curricular-practical-training::30",
+      "quote": "CPT can be used only during the academic program.",
+      "source": "f-1-cpt-curricular-practical-training",
+      "url": "https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training"
+    },
+    {
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::13",
+      "quote": "The earliest you can submit your application to the ISSO for your OPT I-20 is 90 days before your program end date.",
+      "source": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "url": "https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program"
+    },
+    {
+      "chunk_id": "frequently-asked-questions-newly-admitted-students::12",
+      "quote": "You must be enrolled in a full-time degree or qualifying certificate program, and in active F-1 status for at least one academic year (two consecutive semesters).\nYou must arrive in the U.S. within 30 days from the start of classes during your first semester for that term to count toward practical training eligibility.",
+      "source": "frequently-asked-questions-newly-admitted-students",
+      "url": "https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students"
+    }
+  ]
+}

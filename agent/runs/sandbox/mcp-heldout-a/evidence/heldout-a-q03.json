@@ -1,0 +1,17 @@
+{
+  "query_id": "heldout-a-q03",
+  "items": [
+    {
+      "chunk_id": "entering-us-f-j-students::2",
+      "quote": "Have these documents in your hand (and not packed in a suitcase) for the Customs and Border Protection (CBP) officer to review:",
+      "source": "entering-us-f-j-students",
+      "url": "https://isso.columbia.edu/content/entering-us-f-j-students"
+    },
+    {
+      "chunk_id": "frequently-asked-questions-newly-admitted-students::3",
+      "quote": "You should have the following documents in your hand (and not packed in a suitcase) for the Customs and Border Protection (CBP) officer to review:\n- Unexpired Passport\n- Valid and Unexpired Visa\n- Columbia I-20 or DS-2019\n- SEVIS I-901 fee receipt\n- Funding documents (used for your I-20/DS-2019 application, if requested)\nNote: Citizens of Canada or Bermuda are not required to obtain an entry visa, but are still required to present the Columbia I-20 or DS-2019, and the other documents listed above.",
+      "source": "frequently-asked-questions-newly-admitted-students",
+      "url": "https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students"
+    }
+  ]
+}

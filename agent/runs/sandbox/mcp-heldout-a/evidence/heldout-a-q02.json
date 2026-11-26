@@ -1,0 +1,17 @@
+{
+  "query_id": "heldout-a-q02",
+  "items": [
+    {
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::22",
+      "quote": "- Follow instructions for creating a USCIS Online Account or log in to your USCIS account if you already have one.\n- Select “File a Form Online” and choose “Application for Employment Authorization (I-765)”.\n- Follow the instructions and complete each step in the order they are presented to you.",
+      "source": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "url": "https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program"
+    },
+    {
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::31",
+      "quote": "- For CPT: Upload copy of your CPT I-20(s).\n- For OPT: Upload copy of your EAD card(s).\n- If you are missing I-20(s) or EAD card(s), upload a letter (template here).\nIf you have never been previously authorized for CPT or OPT, then uploading documentation is not applicable or required.",
+      "source": "f-1-opt-optional-practical-training-after-your-degree-program",
+      "url": "https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program"
+    }
+  ]
+}

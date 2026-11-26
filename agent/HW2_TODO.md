@@ -47,7 +47,8 @@ Line numbers refer to `briefs/hw2-isso.tex` in the hw2-isso repo.
 - [x] Keep `agent/labels/` and the submitted `agent/REPORT.pdf` (it carries the graders' API key) out of every readable grant (line 112).
 
 - [ ] Create the OpenAI provider (`openshell provider create --name openai --type openai --from-existing`, run by Aiden with the key in the shell) and attach it with `--provider openai`.
-- [ ] Copy each run's output (report, trace, evidence) out of the sandbox with `openshell sandbox download` and commit it.
+- [x] Copy each run's output (report, trace, evidence) out of the sandbox with `openshell sandbox download` and commit it (`sandbox/run.sh`).
+- [x] The four required clean runs in the sandbox (brief 6.1): `agent/runs/sandbox/{mcp-dev,mcp-heldout-a,mcp-heldout-b,codeact-dev}`.
 
 ## README
 

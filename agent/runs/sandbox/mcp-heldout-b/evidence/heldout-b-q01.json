@@ -1,0 +1,17 @@
+{
+  "query_id": "heldout-b-q01",
+  "items": [
+    {
+      "chunk_id": "campus-work-f-and-j-students::9",
+      "quote": "You must apply in person to the Social Security Administration, a federal agency, for a Social Security Number (SSN). Learn exactly what you need to do for an SSN application.",
+      "source": "campus-work-f-and-j-students",
+      "url": "https://isso.columbia.edu/content/campus-work-f-and-j-students"
+    },
+    {
+      "chunk_id": "your-first-weeks-students::6",
+      "quote": "You should apply for an SSN as soon as possible if:\n- you have authorized employment at Columbia. An SSN is a required part of the paperwork to get paid.\n- You are receiving a \"non-work\" fellowship stipend as a first-year doctoral student in F-1 status, and will later have research or teaching responsibilities under the terms of your fellowship.\n- You are in J-1 student status.",
+      "source": "your-first-weeks-students",
+      "url": "https://isso.columbia.edu/content/your-first-weeks-students"
+    }
+  ]
+}

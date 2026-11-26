@@ -1,0 +1,523 @@
+{
+  "target": {
+    "corpus_sha256": "f186563d6a1e702703386a25e5047e44eac3d666a7fe382d516c86dd47e5bf8e",
+    "query_set": "heldout-a",
+    "prepared_manifest_sha256": "bd4a06db336003bda25d42ac92707db3ccb1709f4bbe3ebc6e99daea030c5bfd"
+  },
+  "scan": {
+    "k": 3,
+    "alert_count": 24
+  },
+  "agent_kind": "mcp",
+  "budget": {
+    "max_tokens": 600000,
+    "used_tokens": 116083,
+    "exhausted": false
+  },
+  "alerts": [
+    {
+      "alert_id": "heldout-a-q06::about-your-visa::7",
+      "query_id": "heldout-a-q06",
+      "chunk_id": "about-your-visa::7",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that the I-94 Arrival Record is an electronic record generated when a Customs and Border Protection Officer admits a person in a nonimmigrant status. This directly answers what an I-94 is, relevant to the student's question.",
+      "evidence": [
+        "about-your-visa::7"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q06.json\n+++ b/sandbox/work/evidence/heldout-a-q06.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q06\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"about-your-visa::7\",\n+      \"quote\": \"The status in which you are admitted by a Customs and Border Protection (CBP) Officer is stamped in your passport and generates an electronic I-94 Arrival Record.\",\n+      \"source\": \"about-your-visa\",\n+      \"url\": \"https://isso.columbia.edu/content/about-your-visa\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q05::applying-your-i-20ds-2019::28",
+      "query_id": "heldout-a-q05",
+      "chunk_id": "applying-your-i-20ds-2019::28",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides contact information for the ISSO office for students who have questions, including email addresses for the correct ISSO campus and a pointer to check the campus school list if unsure. This directly answers how to contact ISSO if a student has a question.",
+      "evidence": [
+        "applying-your-i-20ds-2019::28"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q05.json\n+++ b/sandbox/work/evidence/heldout-a-q05.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q05\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"applying-your-i-20ds-2019::28\",\n+      \"quote\": \"If you have questions not addressed on this page, email the correct ISSO campus. Not sure of your campus? Check our Campus school list.\\n- newintlstudent@columbia.edu | cumc-intl-students@columbia.edu\",\n+      \"source\": \"applying-your-i-20ds-2019\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-your-i-20ds-2019\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q02::campus-work-f-and-j-students::0",
+      "query_id": "heldout-a-q02",
+      "chunk_id": "campus-work-f-and-j-students::0",
+      "status": "classified",
+      "label": 0,
+      "rationale": "This chunk only provides an overview of the page sections and does not contain any information on how students can obtain work authorization. It does not answer the question.",
+      "evidence": [
+        "campus-work-f-and-j-students::0"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q03::documents-needed-travel-student::5",
+      "query_id": "heldout-a-q03",
+      "chunk_id": "documents-needed-travel-student::5",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage does not provide specific information about the documents needed to go through immigration. It only directs students to other pages for entering the U.S. for the first time or for travel during OPT, without listing or explaining the required documents.",
+      "evidence": [
+        "documents-needed-travel-student::5"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q03::entering-us-f-j-students::2",
+      "query_id": "heldout-a-q03",
+      "chunk_id": "entering-us-f-j-students::2",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the documents needed for Customs and Border Protection (CBP) review when entering the U.S., which is relevant to the student's question about documents needed to go through immigration.",
+      "evidence": [
+        "entering-us-f-j-students::2"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q03.json\n+++ b/sandbox/work/evidence/heldout-a-q03.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q03\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"entering-us-f-j-students::2\",\n+      \"quote\": \"Have these documents in your hand (and not packed in a suitcase) for the Customs and Border Protection (CBP) officer to review:\",\n+      \"source\": \"entering-us-f-j-students\",\n+      \"url\": \"https://isso.columbia.edu/content/entering-us-f-j-students\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q04::entering-us-f-j-students::15",
+      "query_id": "heldout-a-q04",
+      "chunk_id": "entering-us-f-j-students::15",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only provides information about learning U.S. social customs and cultural differences, but it does not address how an international student can get involved in campus activities. It does not answer the question about campus involvement.",
+      "evidence": [
+        "entering-us-f-j-students::15"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q01::f-1-cpt-curricular-practical-training::13",
+      "query_id": "heldout-a-q01",
+      "chunk_id": "f-1-cpt-curricular-practical-training::13",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states that pre-completion OPT is rarely a viable alternative and advises seeking advice from an ISSO adviser. It does not explain the difference between post-completion OPT and pre-completion OPT, so it does not answer the question.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::13"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q08::f-1-cpt-curricular-practical-training::30",
+      "query_id": "heldout-a-q08",
+      "chunk_id": "f-1-cpt-curricular-practical-training::30",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage states that CPT can be used only during the academic program, which partially answers when a student can start applying for CPT, indicating it must be during their academic program.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::30"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q08.json\n+++ b/sandbox/work/evidence/heldout-a-q08.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q08\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"f-1-cpt-curricular-practical-training::30\",\n+      \"quote\": \"CPT can be used only during the academic program.\",\n+      \"source\": \"f-1-cpt-curricular-practical-training\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q01::f-1-opt-optional-practical-training-after-your-degree-program::2",
+      "query_id": "heldout-a-q01",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::2",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains what OPT is and mentions post-completion OPT but does not explain the difference between post-completion OPT and pre-completion OPT, which is the core of the question.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::2"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q01::f-1-opt-optional-practical-training-after-your-degree-program::10",
+      "query_id": "heldout-a-q01",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::10",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains the maximum amount of Post-Completion OPT and how Pre-Completion OPT time is deducted from this total, thus addressing the difference between Post-Completion and Pre-Completion OPT for students.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::10"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q01.json\n+++ b/sandbox/work/evidence/heldout-a-q01.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q01\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"f-1-opt-optional-practical-training-after-your-degree-program::10\",\n+      \"quote\": \"Your maximum amount of Post-Completion OPT is 12 months. If you had OPT previously authorized at the same degree level it will be deducted from the 12 month total. This includes:\\n- ✓ | Any OPT authorized during your current program (Pre-Completion OPT)\\n- ✓ | Any OPT authorized for another program at the same degree level\\nUse your previously-issued EAD cards to calculate the number of days to be deducted.\",\n+      \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q08::f-1-opt-optional-practical-training-after-your-degree-program::13",
+      "query_id": "heldout-a-q08",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::13",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers when a student can start applying for OPT by stating that the earliest application can be submitted is 90 days before the program end date. It also advises planning ahead due to processing times and provides additional resources like an OPT Calculator for timing and eligibility.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::13"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q08.json\n+++ b/sandbox/work/evidence/heldout-a-q08.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"CPT can be used only during the academic program.\",\n       \"source\": \"f-1-cpt-curricular-practical-training\",\n       \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n+    },\n+    {\n+      \"chunk_id\": \"f-1-opt-optional-practical-training-after-your-degree-program::13\",\n+      \"quote\": \"The earliest you can submit your application to the ISSO for your OPT I-20 is 90 days before your program end date.\",\n+      \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q02::f-1-opt-optional-practical-training-after-your-degree-program::22",
+      "query_id": "heldout-a-q02",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::22",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides specific instructions on how students can obtain work authorization by submitting the OPT I-765 application online through their USCIS account, which directly answers the question about obtaining work authorization.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::22"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q02.json\n+++ b/sandbox/work/evidence/heldout-a-q02.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q02\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"f-1-opt-optional-practical-training-after-your-degree-program::22\",\n+      \"quote\": \"- Follow instructions for creating a USCIS Online Account or log in to your USCIS account if you already have one.\\n- Select “File a Form Online” and choose “Application for Employment Authorization (I-765)”.\\n- Follow the instructions and complete each step in the order they are presented to you.\",\n+      \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q02::f-1-opt-optional-practical-training-after-your-degree-program::31",
+      "query_id": "heldout-a-q02",
+      "chunk_id": "f-1-opt-optional-practical-training-after-your-degree-program::31",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides information on how to submit work authorization documents for CPT and OPT, which are forms of work authorization for students. It explains what documents to upload for CPT and OPT, which directly relates to obtaining work authorization.",
+      "evidence": [
+        "f-1-opt-optional-practical-training-after-your-degree-program::31"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q02.json\n+++ b/sandbox/work/evidence/heldout-a-q02.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"- Follow instructions for creating a USCIS Online Account or log in to your USCIS account if you already have one.\\n- Select “File a Form Online” and choose “Application for Employment Authorization (I-765)”.\\n- Follow the instructions and complete each step in the order they are presented to you.\",\n       \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n       \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n+    },\n+    {\n+      \"chunk_id\": \"f-1-opt-optional-practical-training-after-your-degree-program::31\",\n+      \"quote\": \"- For CPT: Upload copy of your CPT I-20(s).\\n- For OPT: Upload copy of your EAD card(s).\\n- If you are missing I-20(s) or EAD card(s), upload a letter (template here).\\nIf you have never been previously authorized for CPT or OPT, then uploading documentation is not applicable or required.\",\n+      \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q05::frequently-asked-questions-newly-admitted-students::0",
+      "query_id": "heldout-a-q05",
+      "chunk_id": "frequently-asked-questions-newly-admitted-students::0",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only states that ISSO advisers are available to assist and that additional information is on the site. It does not provide the location of the ISSO office or contact details, so it does not answer the question.",
+      "evidence": [
+        "frequently-asked-questions-newly-admitted-students::0"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q03::frequently-asked-questions-newly-admitted-students::3",
+      "query_id": "heldout-a-q03",
+      "chunk_id": "frequently-asked-questions-newly-admitted-students::3",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers the question by listing the documents students need to have for Customs and Border Protection review when going through immigration, including passport, visa, Columbia I-20 or DS-2019, SEVIS fee receipt, and funding documents.",
+      "evidence": [
+        "frequently-asked-questions-newly-admitted-students::3"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q03.json\n+++ b/sandbox/work/evidence/heldout-a-q03.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"Have these documents in your hand (and not packed in a suitcase) for the Customs and Border Protection (CBP) officer to review:\",\n       \"source\": \"entering-us-f-j-students\",\n       \"url\": \"https://isso.columbia.edu/content/entering-us-f-j-students\"\n+    },\n+    {\n+      \"chunk_id\": \"frequently-asked-questions-newly-admitted-students::3\",\n+      \"quote\": \"You should have the following documents in your hand (and not packed in a suitcase) for the Customs and Border Protection (CBP) officer to review:\\n- Unexpired Passport\\n- Valid and Unexpired Visa\\n- Columbia I-20 or DS-2019\\n- SEVIS I-901 fee receipt\\n- Funding documents (used for your I-20/DS-2019 application, if requested)\\nNote: Citizens of Canada or Bermuda are not required to obtain an entry visa, but are still required to present the Columbia I-20 or DS-2019, and the other documents listed above.\",\n+      \"source\": \"frequently-asked-questions-newly-admitted-students\",\n+      \"url\": \"https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q08::frequently-asked-questions-newly-admitted-students::12",
+      "query_id": "heldout-a-q08",
+      "chunk_id": "frequently-asked-questions-newly-admitted-students::12",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers when a student can start applying for OPT/CPT by stating the eligibility requirements: being enrolled full-time in a degree or qualifying certificate program, maintaining active F-1 status for at least one academic year, and arriving in the U.S. within 30 days from the start of classes in the first semester. This information is relevant to the student's question.",
+      "evidence": [
+        "frequently-asked-questions-newly-admitted-students::12"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q08.json\n+++ b/sandbox/work/evidence/heldout-a-q08.json\n@@ -12,6 +12,12 @@\n       \"quote\": \"The earliest you can submit your application to the ISSO for your OPT I-20 is 90 days before your program end date.\",\n       \"source\": \"f-1-opt-optional-practical-training-after-your-degree-program\",\n       \"url\": \"https://isso.columbia.edu/content/f-1-opt-optional-practical-training-after-your-degree-program\"\n+    },\n+    {\n+      \"chunk_id\": \"frequently-asked-questions-newly-admitted-students::12\",\n+      \"quote\": \"You must be enrolled in a full-time degree or qualifying certificate program, and in active F-1 status for at least one academic year (two consecutive semesters).\\nYou must arrive in the U.S. within 30 days from the start of classes during your first semester for that term to count toward practical training eligibility.\",\n+      \"source\": \"frequently-asked-questions-newly-admitted-students\",\n+      \"url\": \"https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q05::frequently-asked-questions-newly-admitted-students::14",
+      "query_id": "heldout-a-q05",
+      "chunk_id": "frequently-asked-questions-newly-admitted-students::14",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides the contact information for the ISSO office including email addresses for Morningside and CUIMC, phone number with office hours, and information about booking appointments for in-person or Zoom advising sessions. This directly answers the student's question about where the ISSO office is and how to contact them.",
+      "evidence": [
+        "frequently-asked-questions-newly-admitted-students::14"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q05.json\n+++ b/sandbox/work/evidence/heldout-a-q05.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"If you have questions not addressed on this page, email the correct ISSO campus. Not sure of your campus? Check our Campus school list.\\n- newintlstudent@columbia.edu | cumc-intl-students@columbia.edu\",\n       \"source\": \"applying-your-i-20ds-2019\",\n       \"url\": \"https://isso.columbia.edu/content/applying-your-i-20ds-2019\"\n+    },\n+    {\n+      \"chunk_id\": \"frequently-asked-questions-newly-admitted-students::14\",\n+      \"quote\": \"ISSO advisers are here to help. You can email us at the email addresses below:\\n- Morningside: newintlstudent@columbia.edu\\n- CUIMC: cumc-intl-students@columbia.edu\\nIf you would like to speak to an ISSO adviser on the phone, call us during our office hours at 1-212-854-3587. Phones open seven days a week: Monday - Friday, 8 AM - 7 PM ET; Saturday and Sunday, 9 AM - 4 PM ET.\",\n+      \"source\": \"frequently-asked-questions-newly-admitted-students\",\n+      \"url\": \"https://isso.columbia.edu/content/frequently-asked-questions-newly-admitted-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q04::incoming-student-programs::2",
+      "query_id": "heldout-a-q04",
+      "chunk_id": "incoming-student-programs::2",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage welcomes incoming international students and introduces the programming team but does not provide any information on how to get involved in campus activities as an international student.",
+      "evidence": [
+        "incoming-student-programs::2"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q07::incoming-student-programs::2",
+      "query_id": "heldout-a-q07",
+      "chunk_id": "incoming-student-programs::2",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage is a general welcome message to incoming international students and does not mention anything about international food or dining options around Columbia. It does not answer the question about good international food.",
+      "evidence": [
+        "incoming-student-programs::2"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q04::incoming-student-programs::6",
+      "query_id": "heldout-a-q04",
+      "chunk_id": "incoming-student-programs::6",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses how an international student can get involved on campus by joining the ISSO Programming Team and connecting with other international students in a virtual community space, which is relevant to the question about involvement on campus.",
+      "evidence": [
+        "incoming-student-programs::6"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q04.json\n+++ b/sandbox/work/evidence/heldout-a-q04.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"heldout-a-q04\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"incoming-student-programs::6\",\n+      \"quote\": \"Join the ISSO Programming Team and other Columbia University incoming international students in our virtual community space. Create a profile, meet, and connect with other international students from all over the world who will also be starting their time at Columbia with you.\",\n+      \"source\": \"incoming-student-programs\",\n+      \"url\": \"https://isso.columbia.edu/content/incoming-student-programs\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q06::reporting-your-arrival-students::3",
+      "query_id": "heldout-a-q06",
+      "chunk_id": "reporting-your-arrival-students::3",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that the I-94 is an electronic Arrival Record generated by Customs and Border Protection (CBP) when entering the U.S. It also mentions the admission status (F-1 or J-1 until \"D/S\") which is relevant to students. This directly answers what an I-94 is for the student audience.",
+      "evidence": [
+        "reporting-your-arrival-students::3"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/heldout-a-q06.json\n+++ b/sandbox/work/evidence/heldout-a-q06.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"The status in which you are admitted by a Customs and Border Protection (CBP) Officer is stamped in your passport and generates an electronic I-94 Arrival Record.\",\n       \"source\": \"about-your-visa\",\n       \"url\": \"https://isso.columbia.edu/content/about-your-visa\"\n+    },\n+    {\n+      \"chunk_id\": \"reporting-your-arrival-students::3\",\n+      \"quote\": \"Your electronic I-94 Arrival Record , which was generated by CBP (Customs and Border Protection) when you entered the U.S. You should be admitted as F-1 or J-1 until \\\"D/S\\\". D/S refers to \\\"duration of status\\\".\",\n+      \"source\": \"reporting-your-arrival-students\",\n+      \"url\": \"https://isso.columbia.edu/content/reporting-your-arrival-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q06::reporting-your-arrival-students::6",
+      "query_id": "heldout-a-q06",
+      "chunk_id": "reporting-your-arrival-students::6",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only lists related information topics including 'I-94 Arrival Record' but does not explain what an I-94 is. It does not answer the question about what an I-94 is for students.",
+      "evidence": [
+        "reporting-your-arrival-students::6"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q07::resources-students::9",
+      "query_id": "heldout-a-q07",
+      "chunk_id": "resources-students::9",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage discusses banking tips and locations for students, including information about non-resident forms and common banks near Columbia. It does not mention anything about international food or dining options around Columbia, so it is not relevant to the question about good international food.",
+      "evidence": [
+        "resources-students::9"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "heldout-a-q07::resources-students::11",
+      "query_id": "heldout-a-q07",
+      "chunk_id": "resources-students::11",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage discusses mobile phone service providers and student discounts, which is unrelated to the question about good international food around Columbia. It does not provide any information about food or dining options.",
+      "evidence": [
+        "resources-students::11"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    }
+  ]
+}

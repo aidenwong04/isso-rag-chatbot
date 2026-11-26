@@ -1,0 +1,17 @@
+{
+  "query_id": "heldout-b-q06",
+  "items": [
+    {
+      "chunk_id": "glass::1",
+      "quote": "Global Leadership Advancing Student Success (GLASS) is a program designed to advance international student professional development in preparation for U.S. and global work cultures, leadership, and success. Through interactive sessions, networking opportunities, and hands-on projects, ISSO GLASS empowers students to become global leaders ready to succeed in an interconnected world.",
+      "source": "glass",
+      "url": "https://isso.columbia.edu/glass"
+    },
+    {
+      "chunk_id": "glass::5",
+      "quote": "Explore the ISSO GLASS workshops and map out your personalized professional development journey.Get started with our Canvas course.",
+      "source": "glass",
+      "url": "https://isso.columbia.edu/glass"
+    }
+  ]
+}

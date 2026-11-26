@@ -1,0 +1,23 @@
+{
+  "query_id": "heldout-b-q02",
+  "items": [
+    {
+      "chunk_id": "applying-visa-students::10",
+      "quote": "- 1. | Passport (valid for at least six months beyond the date of travel to the U.S.)\n- 2. | DS-160 confirmation page\n- 3. | Valid I-20/DS-2019\n- 4. | Copy of Columbia admission letter/email\n- 5. | SEVIS Fee Receipt\n- 6. | Financial documents (issued within the previous 3 months)\n- 7. | Any other documents listed on embassy/consulate website",
+      "source": "applying-visa-students",
+      "url": "https://isso.columbia.edu/content/applying-visa-students"
+    },
+    {
+      "chunk_id": "applying-your-i-20ds-2019::8",
+      "quote": "- Apply for your ALP I-20.\n- Use the I-20 from ALP to apply for your F-1 visa and to enter the U.S.\n- Before you complete your ALP program, ALP will send you instructions on how to transfer your ALP SEVIS record to the ISSO and apply for an I-20 for your program. Review these FAQs.",
+      "source": "applying-your-i-20ds-2019",
+      "url": "https://isso.columbia.edu/content/applying-your-i-20ds-2019"
+    },
+    {
+      "chunk_id": "applying-your-i-20ds-2019::17",
+      "quote": "Your PID is the 9-digit number beginning with “C” you receive from your admissions office (e.g. C123456789). If you don't have a PID, contact your admissions office.\n- Use your PID to request a Limited Services PIN.\n- Receive your Limited Services PIN at the e-mail address you used to apply to Columbia.\n- Log in to Compass using your PID, Date of Birth and Limited Services PIN by clicking the appropriate link below:",
+      "source": "applying-your-i-20ds-2019",
+      "url": "https://isso.columbia.edu/content/applying-your-i-20ds-2019"
+    }
+  ]
+}
