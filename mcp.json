@@ -1,11 +1,11 @@
 {
   "mcpServers": {
     "isso": {
-      "command": "env/bin/python",
+      "command": "/app/.venv/bin/python",
       "args": [
-        "agent/src/hw2/mcp_server.py",
-        "--prepared-dir", "agent/prepared",
-        "--evidence-dir", "agent/work/evidence"
+        "/app/agent/src/hw2/mcp_server.py",
+        "--prepared-dir", "/target/prepared",
+        "--evidence-dir", "/sandbox/work/evidence"
       ],
       "env": {}
     }

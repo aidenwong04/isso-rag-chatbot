@@ -22,7 +22,7 @@ classify_attempts = 3   # refused classify proposals allowed per item (extra set
 kind = "mcp"
 
 [mcp]
-config = "mcp.json"     # relative to the repository root
+config = "mcp.json"     # relative to the repository root; sandbox paths (local runs: --mcp-json mcp.local.json)
 
 [sandbox]
 policy = "policy.yaml"  # not written yet

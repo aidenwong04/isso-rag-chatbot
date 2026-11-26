@@ -1,0 +1,40 @@
+# The CodeAct agent's configuration for local runs outside the sandbox. Identical to
+# configs/codeact.toml except the writable folders. Keep [scan], [model], and [budget] identical
+# to configs/mcp.toml so the two agents are compared on equal terms.
+# The model is carried over from the submitted HW1 configuration.
+
+[scan]
+corpus_version = "f186563d6a1e"
+k = 3
+
+[model]
+provider = "openai"
+name = "gpt-4.1-mini-2025-04-14"
+temperature = 0
+
+[budget]
+max_tokens = 600000
+output_allowance = 1024
+max_steps = 300
+no_progress_limit = 3
+classify_attempts = 3   # refused classify proposals allowed per item (extra setting)
+
+[agent]
+kind = "codeact"
+
+[mcp]
+config = "mcp.json"     # relative to the repository root
+
+[sandbox]
+policy = "policy.yaml"  # not written yet
+
+# For injection experiments, use the same separately hashed overlay for both agents:
+# [experiment]
+# injection_overlay = "fixtures/injection.json"
+
+[codeact]
+prompt = "agent/src/hw2/codeact_prompt.md"   # generated from the backend API (brief 3.1, rubric C5)
+evidence_dir = "agent/work/evidence"          # writable packets (sandbox: /sandbox/work/evidence)
+scratch_dir = "agent/work/scratch"            # per-item worker folders, deleted between items
+output_cap = 20000                            # characters of script output shown to the model
+timeout = 60                                  # seconds per script

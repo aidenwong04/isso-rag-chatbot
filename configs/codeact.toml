@@ -1,4 +1,5 @@
-# The CodeAct agent's configuration. Keep [scan], [model], and [budget] identical
+# The CodeAct agent's configuration, with the sandbox's paths (configs/codeact.local.toml
+# has the same settings with local paths). Keep [scan], [model], and [budget] identical
 # to configs/mcp.toml so the two agents are compared on equal terms.
 # The model is carried over from the submitted HW1 configuration.
 
@@ -33,7 +34,7 @@ policy = "policy.yaml"  # not written yet
 
 [codeact]
 prompt = "agent/src/hw2/codeact_prompt.md"   # generated from the backend API (brief 3.1, rubric C5)
-evidence_dir = "agent/work/evidence"          # writable packets (sandbox: /sandbox/work/evidence)
-scratch_dir = "agent/work/scratch"            # per-item worker folders, deleted between items
+evidence_dir = "/sandbox/work/evidence"       # writable packets
+scratch_dir = "/sandbox/work/scratch"         # per-item worker folders, deleted between items
 output_cap = 20000                            # characters of script output shown to the model
 timeout = 60                                  # seconds per script

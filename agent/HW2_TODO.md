@@ -42,9 +42,12 @@ Line numbers refer to `briefs/hw2-isso.tex` in the hw2-isso repo.
 
 ## Sandbox image
 
-- [ ] Put `agent/prepared/manifest.json` and the prepared files into the image, staged per section 2.2 (line 86).
-- [ ] Copy `agent/src/hw1/tools.py`, `agent/src/hw1/workspace.py`, and `agent/src/hw2/prepare.py` into `/app`: `api.py` imports them.
-- [ ] Keep `agent/labels/` and the submitted `agent/REPORT.pdf` (it carries the graders' API key) out of every readable grant (line 112).
+- [x] Put `agent/prepared/manifest.json` and the prepared files into the image, staged per section 2.2 (line 86).
+- [x] Copy `agent/src/hw1/tools.py`, `agent/src/hw1/workspace.py`, and `agent/src/hw2/prepare.py` into `/app`: `api.py` imports them.
+- [x] Keep `agent/labels/` and the submitted `agent/REPORT.pdf` (it carries the graders' API key) out of every readable grant (line 112).
+
+- [ ] Create the OpenAI provider (`openshell provider create --name openai --type openai --from-existing`, run by Aiden with the key in the shell) and attach it with `--provider openai`.
+- [ ] Copy each run's output (report, trace, evidence) out of the sandbox with `openshell sandbox download` and commit it.
 
 ## README
 

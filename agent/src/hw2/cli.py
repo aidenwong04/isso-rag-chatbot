@@ -185,10 +185,13 @@ def main():
     parser.add_argument("--output", type=Path,
                         help="folder for report.json and trace.jsonl (default: agent/runs/hw2-<config>-<set>)")
     parser.add_argument("--config", type=Path, required=True, help="TOML config, e.g. configs/mcp.toml")
+    parser.add_argument("--mcp-json", type=Path,
+                        help="use this server file instead of [mcp] config: the repository-root mcp.json "
+                             "has the sandbox's paths, so local runs pass mcp.local.json")
     args = parser.parse_args()
     output = args.output or RUNS_DIR / f"hw2-{args.config.stem}-{args.input.name}"
 
-    status = asyncio.run(run_agent(args.input, output, args.config))
+    status = asyncio.run(run_agent(args.input, output, args.config, mcp_json=args.mcp_json))
     print(f"{status}: {output / 'report.json'}, {output / 'trace.jsonl'}")
 
 

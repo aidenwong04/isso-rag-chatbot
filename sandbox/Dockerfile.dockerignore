@@ -1,0 +1,14 @@
+# Allow-list for sandbox/Dockerfile: only what the image copies is sent to the builder.
+*
+!agent/requirements.lock
+!agent/src/hw1/
+!agent/src/hw2/
+!agent/schemas/
+!agent/isso-agent-hw2
+!configs/
+!mcp.json
+!agent/prepared/
+!agent/labels/
+!data/embeddings/chunks.json
+**/__pycache__
+**/*.pyc
