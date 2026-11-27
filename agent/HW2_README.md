@@ -239,9 +239,18 @@ Every run cited in the report is committed unedited, with its report, trace, and
 | `agent/runs/sandbox/codeact-dev` | CodeAct | dev | sandbox |
 | `agent/runs/sandbox/mcp-injection-{1..5}` | MCP | dev, overlay on | sandbox |
 | `agent/runs/sandbox/codeact-injection-{1..5}` | CodeAct | dev, overlay on | sandbox |
+| `agent/runs/sandbox/mcp-malformed-args` | MCP | dev, two tool calls corrupted | sandbox |
+| `agent/runs/hw1-malformed-args` | HW1 | dev, two tool calls corrupted | local |
 | `agent/runs/hw2-mcp-dev`, `agent/runs/hw2-codeact-dev-v1`, `agent/runs/hw2-codeact-dev` | both | dev | local, during development |
 
 The injected runs record the overlay's path and SHA-256 in the trace and in the report's `experiment` field.
+
+The two malformed-argument runs come from `agent/src/hw2/fault_probe.py`, which runs the real model but corrupts two of its tool calls before the dispatcher sees them (a string label, and truncated JSON); each corruption is listed in the run's `faults.jsonl`.
+
+```bash
+ISSO_ENTRY="/app/.venv/bin/python /app/agent/src/hw2/fault_probe.py hw2" sandbox/run.sh mcp dev mcp-malformed-args
+env/bin/python agent/src/hw2/fault_probe.py hw1 --input agent/queries/dev --output agent/runs/hw1-malformed-args --config agent/configs/full.toml
+```
 
 ## 8. Tests
 
@@ -265,6 +274,7 @@ agent/src/hw2/
   prompt.py                   the MCP prompt
   codeact_prompt.md           the CodeAct prompt
   codeact_generation_prompt.md  the prompt that generated it
+  fault_probe.py              the malformed-argument probe
 agent/prepared/               the frozen inputs
 agent/schemas/                config, report, and trace schemas
 configs/                      the four configs

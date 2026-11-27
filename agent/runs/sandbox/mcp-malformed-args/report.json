@@ -1,0 +1,654 @@
+{
+  "target": {
+    "corpus_sha256": "f186563d6a1e702703386a25e5047e44eac3d666a7fe382d516c86dd47e5bf8e",
+    "query_set": "dev",
+    "prepared_manifest_sha256": "bd4a06db336003bda25d42ac92707db3ccb1709f4bbe3ebc6e99daea030c5bfd"
+  },
+  "scan": {
+    "k": 3,
+    "alert_count": 30
+  },
+  "agent_kind": "mcp",
+  "budget": {
+    "max_tokens": 600000,
+    "used_tokens": 164960,
+    "exhausted": false
+  },
+  "alerts": [
+    {
+      "alert_id": "dev-q07::about-your-visa::7",
+      "query_id": "dev-q07",
+      "chunk_id": "about-your-visa::7",
+      "status": "classified",
+      "label": 1,
+      "rationale": "This passage explains what status is, distinguishing it from a visa, and mentions the importance of maintaining legal nonimmigrant status as a student, directly addressing the question about what status is and key points for maintaining student status.",
+      "evidence": [
+        "about-your-visa::7"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q07.json\n+++ b/sandbox/work/evidence/dev-q07.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q07\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"about-your-visa::7\",\n+      \"quote\": \"One of the most common sources of confusion is the difference between your visa and your status. Your visa is an entry document. When you present your passport, visa and supporting documents at a U.S. port of entry, you are admitted in a nonimmigrant status that matches the classification of the visa in your passport. This is also referred to as \\\"immigration status\\\" or “visa status”.\\nThe status in which you are admitted by a Customs and Border Protection (CBP) Officer is stamped in your passport and generates an electronic I-94 Arrival Record.\",\n+      \"source\": \"about-your-visa\",\n+      \"url\": \"https://isso.columbia.edu/content/about-your-visa\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q01::applying-your-i-20ds-2019::1",
+      "query_id": "dev-q01",
+      "chunk_id": "applying-your-i-20ds-2019::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that an I-20 is a form issued for students to obtain F-1 Student status, while a DS-2019 is for J-1 status. It also describes the purposes of the I-20, which directly answers the question about the difference between an I-20 and an F-1.",
+      "evidence": [
+        "applying-your-i-20ds-2019::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q01.json\n+++ b/sandbox/work/evidence/dev-q01.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q01\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"applying-your-i-20ds-2019::1\",\n+      \"quote\": \"An I-20 is a form issued by our office for students to obtain F-1 Student status. A DS-2019 is a form issued by our office for students to obtain J-1 Student status.\",\n+      \"source\": \"applying-your-i-20ds-2019\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-your-i-20ds-2019\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q01::applying-your-i-20ds-2019::3",
+      "query_id": "dev-q01",
+      "chunk_id": "applying-your-i-20ds-2019::3",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains the eligibility for F-1 or J-1 status and mentions DS-2019 but does not explain what an I-20 is or the difference between an I-20 and an F-1. It does not answer the question about the difference between an I-20 and an F-1.",
+      "evidence": [
+        "applying-your-i-20ds-2019::3"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q04::applying-your-transfer-i-20::0",
+      "query_id": "dev-q04",
+      "chunk_id": "applying-your-transfer-i-20::0",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains what to do with the I-20 when transferring schools: request the current school to transfer the electronic F-1 SEVIS record to Columbia so they can issue a transfer I-20. It also explains benefits of a SEVIS transfer, which is relevant to the student's question about handling the I-20 during a school transfer.",
+      "evidence": [
+        "applying-your-transfer-i-20::0"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q04.json\n+++ b/sandbox/work/evidence/dev-q04.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q04\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"applying-your-transfer-i-20::0\",\n+      \"quote\": \"If you are eligible for a transfer I-20 (as described below) and are admitted to a full-time program at Columbia, you must request that your school transfer your electronic F-1 SEVIS record to us so that we can issue a transfer I-20 for you.\",\n+      \"source\": \"applying-your-transfer-i-20\",\n+      \"url\": \"https://isso.columbia.edu/content/applying-your-transfer-i-20\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q05::campus-work-f-and-j-students::0",
+      "query_id": "dev-q05",
+      "chunk_id": "campus-work-f-and-j-students::0",
+      "status": "classified",
+      "label": 0,
+      "rationale": "This chunk only provides an overview of the sections on the page and does not contain any actual steps or information about work authorization for students employed on campus.",
+      "evidence": [
+        "campus-work-f-and-j-students::0"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q05::campus-work-f-and-j-students::1",
+      "query_id": "dev-q05",
+      "chunk_id": "campus-work-f-and-j-students::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains the eligibility and authorization process for on-campus employment for F-1 and J-1 students, including that F-1 students are eligible as soon as they have status without an application, and J-1 students must submit a request for authorization. This directly addresses the steps for work authorization for students employed on campus.",
+      "evidence": [
+        "campus-work-f-and-j-students::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q05.json\n+++ b/sandbox/work/evidence/dev-q05.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q05\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"campus-work-f-and-j-students::1\",\n+      \"quote\": \"On-campus employment is permitted \\\"incident to your status\\\" as an F-1 or J-1 student. This means you are eligible as soon as you have obtained F-1 or J-1 status and does not require an application. J-1 students, however, must submit a request for authorization of on-campus employment.\",\n+      \"source\": \"campus-work-f-and-j-students\",\n+      \"url\": \"https://isso.columbia.edu/content/campus-work-f-and-j-students\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q05::campus-work-f-and-j-students::7",
+      "query_id": "dev-q05",
+      "chunk_id": "campus-work-f-and-j-students::7",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that J-1 students must request ISSO authorization for on-campus employment, which is a step in the work authorization process for students employed on campus. This directly addresses part of the question about steps for work authorization for on-campus employment.",
+      "evidence": [
+        "campus-work-f-and-j-students::7"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q05.json\n+++ b/sandbox/work/evidence/dev-q05.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"On-campus employment is permitted \\\"incident to your status\\\" as an F-1 or J-1 student. This means you are eligible as soon as you have obtained F-1 or J-1 status and does not require an application. J-1 students, however, must submit a request for authorization of on-campus employment.\",\n       \"source\": \"campus-work-f-and-j-students\",\n       \"url\": \"https://isso.columbia.edu/content/campus-work-f-and-j-students\"\n+    },\n+    {\n+      \"chunk_id\": \"campus-work-f-and-j-students::7\",\n+      \"quote\": \"J-1 exchange visitor regulations require sponsor authorization of on-campus employment. If your Form DS-2019 was issued by Columbia University, make this request to the ISSO /ISSO-CUIMC by clicking on the appropriate link below.\",\n+      \"source\": \"campus-work-f-and-j-students\",\n+      \"url\": \"https://isso.columbia.edu/content/campus-work-f-and-j-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q01::changing-f-1-student-status-us::1",
+      "query_id": "dev-q01",
+      "chunk_id": "changing-f-1-student-status-us::1",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage explains options for changing to F-1 status but does not define or differentiate between an I-20 and an F-1 visa/status. It does not answer the question about the difference between an I-20 and an F-1.",
+      "evidence": [
+        "changing-f-1-student-status-us::1"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q06::documents-needed-travel-scholar::16",
+      "query_id": "dev-q06",
+      "chunk_id": "documents-needed-travel-scholar::16",
+      "status": "classified",
+      "label": 0,
+      "rationale": "This chunk only lists related topics including 'Travel Signatures and DS-2019 Reprints' but does not explain what a travel signature is or address reentry without one. It does not answer the question for scholars.",
+      "evidence": [
+        "documents-needed-travel-scholar::16"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q03::entering-us-f-j-students::15",
+      "query_id": "dev-q03",
+      "chunk_id": "entering-us-f-j-students::15",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage talks about differences between the U.S. and other countries and points to resources about social customs and cultural differences, but it does not mention any upcoming social events for F-1 students or any events at all. It does not answer the question about upcoming social events.",
+      "evidence": [
+        "entering-us-f-j-students::15"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q09::entering-us-f-j-students::16",
+      "query_id": "dev-q09",
+      "chunk_id": "entering-us-f-j-students::16",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage provides general information about U.S. social customs and etiquettes, including tipping and measurement systems, but does not answer the question about where to find the best pizza.",
+      "evidence": [
+        "entering-us-f-j-students::16"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q04::extending-begin-new-program-f-j-students::0",
+      "query_id": "dev-q04",
+      "chunk_id": "extending-begin-new-program-f-j-students::0",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains that if a student is moving from one program to another at Columbia University, they must apply for a new Certificate of Eligibility (COE) and obtain a new I-20, which updates their SEVIS record. This directly answers what to do with the I-20 when transferring schools.",
+      "evidence": [
+        "extending-begin-new-program-f-j-students::0"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q04.json\n+++ b/sandbox/work/evidence/dev-q04.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"If you are eligible for a transfer I-20 (as described below) and are admitted to a full-time program at Columbia, you must request that your school transfer your electronic F-1 SEVIS record to us so that we can issue a transfer I-20 for you.\",\n       \"source\": \"applying-your-transfer-i-20\",\n       \"url\": \"https://isso.columbia.edu/content/applying-your-transfer-i-20\"\n+    },\n+    {\n+      \"chunk_id\": \"extending-begin-new-program-f-j-students::0\",\n+      \"quote\": \"If you are moving from one program to another at Columbia University, you must apply for a new Certificate of Eligibility (COE) for the new program. Obtaining a new I-20 (F-1) or DS-2019 (J-1) will update your SEVIS record and extend your F or J \\\"duration of status\\\", which is the time you are permitted to stay in the United States as a student.\",\n+      \"source\": \"extending-begin-new-program-f-j-students\",\n+      \"url\": \"https://isso.columbia.edu/content/extending-begin-new-program-f-j-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q04::extending-begin-new-program-f-j-students::6",
+      "query_id": "dev-q04",
+      "chunk_id": "extending-begin-new-program-f-j-students::6",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides relevant information about the new I-20 start date for F-1 students when beginning a new program, which is applicable to students transferring schools. It also mentions handling the new COE and keeping previous forms, which relates to what to do with the I-20 during a transfer.",
+      "evidence": [
+        "extending-begin-new-program-f-j-students::6"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q04.json\n+++ b/sandbox/work/evidence/dev-q04.json\n@@ -12,6 +12,12 @@\n       \"quote\": \"If you are moving from one program to another at Columbia University, you must apply for a new Certificate of Eligibility (COE) for the new program. Obtaining a new I-20 (F-1) or DS-2019 (J-1) will update your SEVIS record and extend your F or J \\\"duration of status\\\", which is the time you are permitted to stay in the United States as a student.\",\n       \"source\": \"extending-begin-new-program-f-j-students\",\n       \"url\": \"https://isso.columbia.edu/content/extending-begin-new-program-f-j-students\"\n+    },\n+    {\n+      \"chunk_id\": \"extending-begin-new-program-f-j-students::6\",\n+      \"quote\": \"F-1 Students: Your new I-20 start date will be the first date of the new program.\\nJ-1 Students: Your new DS-2019 will begin the day after the current DS-2019 expires.\\nUse your new COE to travel, but keep all previous forms. The travel signature is valid for 12 months or until the end of your I-20/DS-2019, whichever is earlier.\",\n+      \"source\": \"extending-begin-new-program-f-j-students\",\n+      \"url\": \"https://isso.columbia.edu/content/extending-begin-new-program-f-j-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::1",
+      "query_id": "dev-q02",
+      "chunk_id": "f-1-cpt-curricular-practical-training::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides information about the latest advisories from the U.S. Department of Homeland Security's SEVP regarding CPT for F-1 students, including the impact on CPT eligibility for Columbia international students and the university's response. This directly addresses the question about the latest OPT/CPT regulations and their effect on F-1 students.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q02.json\n+++ b/sandbox/work/evidence/dev-q02.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q02\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"f-1-cpt-curricular-practical-training::1\",\n+      \"quote\": \"Earlier this month, the U.S. Department of Homeland Security’s Student and Exchange Visitor Program (SEVP) issued advisories regarding Curricular Practical Training (CPT) for F-1 students (message on August 12, and another message on August 24). The guidance limits the circumstances under which CPT may be authorized and affects current and future CPT eligibility for some Columbia international students.\",\n+      \"source\": \"f-1-cpt-curricular-practical-training\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::14",
+      "query_id": "dev-q02",
+      "chunk_id": "f-1-cpt-curricular-practical-training::14",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage addresses the latest OPT/CPT regulations by stating that federal immigration policy and guidance can change and that the University is monitoring for updates. This directly relates to the question about the latest regulations and their impact on an F-1 student, providing relevant information about ongoing changes and monitoring.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::14"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q02.json\n+++ b/sandbox/work/evidence/dev-q02.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"Earlier this month, the U.S. Department of Homeland Security’s Student and Exchange Visitor Program (SEVP) issued advisories regarding Curricular Practical Training (CPT) for F-1 students (message on August 12, and another message on August 24). The guidance limits the circumstances under which CPT may be authorized and affects current and future CPT eligibility for some Columbia international students.\",\n       \"source\": \"f-1-cpt-curricular-practical-training\",\n       \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n+    },\n+    {\n+      \"chunk_id\": \"f-1-cpt-curricular-practical-training::14\",\n+      \"quote\": \"Federal immigration policy and guidance can change, and the University is closely monitoring for additional information or clarification from the federal government.\",\n+      \"source\": \"f-1-cpt-curricular-practical-training\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q02::f-1-cpt-curricular-practical-training::15",
+      "query_id": "dev-q02",
+      "chunk_id": "f-1-cpt-curricular-practical-training::15",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly addresses the latest CPT regulations by mentioning recent advisories from the U.S. Department of Homeland Security's SEVP that limit CPT authorization and affect eligibility for Columbia international students. It also advises students to consult the ISSO website for updates and guidance, which relates to the question about the latest OPT/CPT regulations and their impact on F-1 students.",
+      "evidence": [
+        "f-1-cpt-curricular-practical-training::15"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q02.json\n+++ b/sandbox/work/evidence/dev-q02.json\n@@ -12,6 +12,12 @@\n       \"quote\": \"Federal immigration policy and guidance can change, and the University is closely monitoring for additional information or clarification from the federal government.\",\n       \"source\": \"f-1-cpt-curricular-practical-training\",\n       \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n+    },\n+    {\n+      \"chunk_id\": \"f-1-cpt-curricular-practical-training::15\",\n+      \"quote\": \"Earlier this month, the U.S. Department of Homeland Security’s Student and Exchange Visitor Program (SEVP) issued advisories regarding Curricular Practical Training (CPT) for F-1 students (message on August 12, and another message on August 24). The guidance limits the circumstances under which CPT may be authorized and affects current and future CPT eligibility for some Columbia international students.\",\n+      \"source\": \"f-1-cpt-curricular-practical-training\",\n+      \"url\": \"https://isso.columbia.edu/content/f-1-cpt-curricular-practical-training\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q09::glass::20",
+      "query_id": "dev-q09",
+      "chunk_id": "glass::20",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage only says 'We're here to help!' and does not provide any information about where to find the best pizza. It does not answer the student's question about pizza.",
+      "evidence": [
+        "glass::20"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q03::incoming-student-programs::5",
+      "query_id": "dev-q03",
+      "chunk_id": "incoming-student-programs::5",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage talks about an information session about F-1/J-1 status as part of program orientation, but it does not mention any upcoming social events for F-1 students. It only addresses orientation and information sessions, not social events.",
+      "evidence": [
+        "incoming-student-programs::5"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q03::incoming-student-programs::9",
+      "query_id": "dev-q03",
+      "chunk_id": "incoming-student-programs::9",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage states that all incoming international students can participate in events on the calendar and in-person excursions organized by ISSO, which implies there are upcoming social events available for F-1 students.",
+      "evidence": [
+        "incoming-student-programs::9"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q03.json\n+++ b/sandbox/work/evidence/dev-q03.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q03\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"incoming-student-programs::9\",\n+      \"quote\": \"All incoming international students, regardless of when your program begins, are able to take part in any of the events on the calendar, regardless of where you are. Additionally, once you are in NYC, you are invited to take part in any of the in-person excursions organized by ISSO.\",\n+      \"source\": \"incoming-student-programs\",\n+      \"url\": \"https://isso.columbia.edu/content/incoming-student-programs\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q08::reporting-your-arrival-students::1",
+      "query_id": "dev-q08",
+      "chunk_id": "reporting-your-arrival-students::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains who needs to report their arrival to Columbia, which partially answers why a student needs to report their arrival. It specifies the categories of students who must report, which is relevant to the question about why and what to do to report arrival.",
+      "evidence": [
+        "reporting-your-arrival-students::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q08.json\n+++ b/sandbox/work/evidence/dev-q08.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q08\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"reporting-your-arrival-students::1\",\n+      \"quote\": \"You need to report your arrival to Columbia if you are:\\n- ✔︎ | a new student with a Columbia I-20/DS-2019 who arrived in the U.S. in F-1/J-1 status.\\n- ✔︎ | a new student with a Columbia I-20 who transferred your SEVIS record from another U.S. school.\\n- ✔︎ | returning from a leave of absence with a new I-20/DS-2019.\\n- ✔︎ | re-entering the U.S. with a new Columbia I-20/DS-2019 to regain student status.\",\n+      \"source\": \"reporting-your-arrival-students\",\n+      \"url\": \"https://isso.columbia.edu/content/reporting-your-arrival-students\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q08::reporting-your-arrival-students::2",
+      "query_id": "dev-q08",
+      "chunk_id": "reporting-your-arrival-students::2",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains why reporting arrival is necessary (government requirement to activate SEVIS record) and what to do (report within a week using the online form, no in-person reporting needed). This directly answers both parts of the student's question.",
+      "evidence": [
+        "reporting-your-arrival-students::2"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q08.json\n+++ b/sandbox/work/evidence/dev-q08.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"You need to report your arrival to Columbia if you are:\\n- ✔︎ | a new student with a Columbia I-20/DS-2019 who arrived in the U.S. in F-1/J-1 status.\\n- ✔︎ | a new student with a Columbia I-20 who transferred your SEVIS record from another U.S. school.\\n- ✔︎ | returning from a leave of absence with a new I-20/DS-2019.\\n- ✔︎ | re-entering the U.S. with a new Columbia I-20/DS-2019 to regain student status.\",\n       \"source\": \"reporting-your-arrival-students\",\n       \"url\": \"https://isso.columbia.edu/content/reporting-your-arrival-students\"\n+    },\n+    {\n+      \"chunk_id\": \"reporting-your-arrival-students::2\",\n+      \"quote\": \"It's mandatory to report your arrival within a week of your first-time arrival with this Columbia I-20/DS-2019.\\nThis is a government requirement and will activate your SEVIS record. The online form meets the requirement—you do not need to report your arrival in person.\",\n+      \"source\": \"reporting-your-arrival-students\",\n+      \"url\": \"https://isso.columbia.edu/content/reporting-your-arrival-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q07::reporting-your-arrival-students::6",
+      "query_id": "dev-q07",
+      "chunk_id": "reporting-your-arrival-students::6",
+      "status": "classified",
+      "label": 0,
+      "rationale": "This chunk only lists related information topics without providing any actual information about maintaining student status or explaining what status is. It does not answer the question.",
+      "evidence": [
+        "reporting-your-arrival-students::6"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q10::resources-scholars::1",
+      "query_id": "dev-q10",
+      "chunk_id": "resources-scholars::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage addresses the challenge of finding housing in New York City for scholars and points to a resource, Columbia Residential Off-Campus Housing Resources, which is relevant for finding housing or roommates.",
+      "evidence": [
+        "resources-scholars::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q10.json\n+++ b/sandbox/work/evidence/dev-q10.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q10\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"resources-scholars::1\",\n+      \"quote\": \"Finding the housing that is right for you can be a challenge in New York City. Getting a lease without a U.S. credit history, employment, or a U.S.–based guarantor is very difficult. Read more at Columbia Residential Off-Campus Housing Resources.\",\n+      \"source\": \"resources-scholars\",\n+      \"url\": \"https://isso.columbia.edu/content/resources-scholars\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q10::resources-scholars::3",
+      "query_id": "dev-q10",
+      "chunk_id": "resources-scholars::3",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers the question by listing good resources for scholars to find housing or roommates in New York, including Columbia's Off-Campus Housing Assistance (OCHA), the Office for Work/Life Rental Guide, and the 4Stay platform.",
+      "evidence": [
+        "resources-scholars::3"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q10.json\n+++ b/sandbox/work/evidence/dev-q10.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"Finding the housing that is right for you can be a challenge in New York City. Getting a lease without a U.S. credit history, employment, or a U.S.–based guarantor is very difficult. Read more at Columbia Residential Off-Campus Housing Resources.\",\n       \"source\": \"resources-scholars\",\n       \"url\": \"https://isso.columbia.edu/content/resources-scholars\"\n+    },\n+    {\n+      \"chunk_id\": \"resources-scholars::3\",\n+      \"quote\": \"Columbia’s Off-Campus Housing Assistance (OCHA) can be used by students, faculty, staff and alumni to search for an apartment, a room in an apartment, or roommates. The Office for Work/Life provides a useful Rental Guide. Another resource is 4Stay, a platform geared toward students, scholars and interns to search for medium to long-term furnished rentals.\",\n+      \"source\": \"resources-scholars\",\n+      \"url\": \"https://isso.columbia.edu/content/resources-scholars\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q10::resources-scholars::5",
+      "query_id": "dev-q10",
+      "chunk_id": "resources-scholars::5",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage provides specific resources for temporary housing options in New York, including Work | Life Temporary Housing Options, Columbia University's Travel Portal, Sara’s Homestay, and Hostelling International NYC, which are relevant for scholars seeking housing or roommates.",
+      "evidence": [
+        "resources-scholars::5"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q10.json\n+++ b/sandbox/work/evidence/dev-q10.json\n@@ -12,6 +12,12 @@\n       \"quote\": \"Columbia’s Off-Campus Housing Assistance (OCHA) can be used by students, faculty, staff and alumni to search for an apartment, a room in an apartment, or roommates. The Office for Work/Life provides a useful Rental Guide. Another resource is 4Stay, a platform geared toward students, scholars and interns to search for medium to long-term furnished rentals.\",\n       \"source\": \"resources-scholars\",\n       \"url\": \"https://isso.columbia.edu/content/resources-scholars\"\n+    },\n+    {\n+      \"chunk_id\": \"resources-scholars::5\",\n+      \"quote\": \"Check out Work | Life Temporary Housing Options, Columbia University's Travel Portal, and Sara’s Homestay. Hostelling International NYC is walking distance from Columbia’s Morningside campus.\",\n+      \"source\": \"resources-scholars\",\n+      \"url\": \"https://isso.columbia.edu/content/resources-scholars\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q09::resources-students::7",
+      "query_id": "dev-q09",
+      "chunk_id": "resources-students::7",
+      "status": "classified",
+      "label": 0,
+      "rationale": "The passage is about transportation options in NYC for students, including subway, buses, taxis, bike share, and ride-sharing services. It does not mention pizza or where to find the best pizza, so it does not answer the question about the best pizza.",
+      "evidence": [
+        "resources-students::7"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q06::travel-signatures-and-ds-2019-reprints-j-scholar::2",
+      "query_id": "dev-q06",
+      "chunk_id": "travel-signatures-and-ds-2019-reprints-j-scholar::2",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains what a travel signature is, who needs it, and the validity period. It also states that you need an unexpired travel signature to re-enter the U.S. in J status, which directly answers the question about what a travel signature is and the implication of being outside the U.S. without one.",
+      "evidence": [
+        "travel-signatures-and-ds-2019-reprints-j-scholar::2"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q06.json\n+++ b/sandbox/work/evidence/dev-q06.json\n@@ -1,4 +1,11 @@\n {\n   \"query_id\": \"dev-q06\",\n-  \"items\": []\n+  \"items\": [\n+    {\n+      \"chunk_id\": \"travel-signatures-and-ds-2019-reprints-j-scholar::2\",\n+      \"quote\": \"A travel signature is relevant only to J-1 scholars (and their dependents) who are planning to travel abroad and return to the U.S. in J status. You do not need a travel signature to leave the U.S.\\nCheck to See if You Need a Travel Signature Now You will need an unexpired travel signature on the date you re-enter the U.S. You should use your most recently issued DS-2019 for travel.\\nSee below for how long your travel signature is valid:\\n- J-1 Scholar (DS-2019) | A travel signature on page one on your DS-2019 is valid for 12 months or until the end date on your DS-2019, whichever is earlier.\",\n+      \"source\": \"travel-signatures-and-ds-2019-reprints-j-scholar\",\n+      \"url\": \"https://isso.columbia.edu/content/travel-signatures-and-ds-2019-reprints-j-scholar\"\n+    }\n+  ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q06::travel-signatures-and-ds-2019-reprints-j-scholar::7",
+      "query_id": "dev-q06",
+      "chunk_id": "travel-signatures-and-ds-2019-reprints-j-scholar::7",
+      "status": "classified",
+      "label": 0,
+      "rationale": "This chunk only lists related topics and does not explain what a travel signature is or address the consequences of being outside the US without one. It does not answer the question for scholars.",
+      "evidence": [
+        "travel-signatures-and-ds-2019-reprints-j-scholar::7"
+      ],
+      "evidence_update": {
+        "status": "skipped",
+        "diff": "",
+        "checks": {
+          "applies": null,
+          "current_item_only": null,
+          "grounded": null
+        },
+        "reason": "Label 0 skips evidence assembly."
+      }
+    },
+    {
+      "alert_id": "dev-q08::your-first-weeks-students::1",
+      "query_id": "dev-q08",
+      "chunk_id": "your-first-weeks-students::1",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage directly answers both parts of the question for students: it explains why reporting arrival is necessary (government requirement to activate SEVIS record) and what to do (report arrival within a week using an online form, no in-person reporting needed).",
+      "evidence": [
+        "your-first-weeks-students::1"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q08.json\n+++ b/sandbox/work/evidence/dev-q08.json\n@@ -12,6 +12,12 @@\n       \"quote\": \"It's mandatory to report your arrival within a week of your first-time arrival with this Columbia I-20/DS-2019.\\nThis is a government requirement and will activate your SEVIS record. The online form meets the requirement—you do not need to report your arrival in person.\",\n       \"source\": \"reporting-your-arrival-students\",\n       \"url\": \"https://isso.columbia.edu/content/reporting-your-arrival-students\"\n+    },\n+    {\n+      \"chunk_id\": \"your-first-weeks-students::1\",\n+      \"quote\": \"It's mandatory to report your arrival within a week of your arrival. This is a government requirement and will activate your SEVIS record. The online form meets the requirement—you do not need to report your arrival in person.\",\n+      \"source\": \"your-first-weeks-students\",\n+      \"url\": \"https://isso.columbia.edu/content/your-first-weeks-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    },
+    {
+      "alert_id": "dev-q07::your-first-weeks-students::3",
+      "query_id": "dev-q07",
+      "chunk_id": "your-first-weeks-students::3",
+      "status": "classified",
+      "label": 1,
+      "rationale": "The passage explains what full-time status means for students, how it is defined, and why it is important to maintain F-1 or J-1 student status. It also gives instructions on registering for a full-time course load and checking registration status, which are key points for maintaining student status. This directly answers the question about key points to maintain student status and what status is.",
+      "evidence": [
+        "your-first-weeks-students::3"
+      ],
+      "evidence_update": {
+        "status": "accepted",
+        "diff": "--- a/sandbox/work/evidence/dev-q07.json\n+++ b/sandbox/work/evidence/dev-q07.json\n@@ -6,6 +6,12 @@\n       \"quote\": \"One of the most common sources of confusion is the difference between your visa and your status. Your visa is an entry document. When you present your passport, visa and supporting documents at a U.S. port of entry, you are admitted in a nonimmigrant status that matches the classification of the visa in your passport. This is also referred to as \\\"immigration status\\\" or “visa status”.\\nThe status in which you are admitted by a Customs and Border Protection (CBP) Officer is stamped in your passport and generates an electronic I-94 Arrival Record.\",\n       \"source\": \"about-your-visa\",\n       \"url\": \"https://isso.columbia.edu/content/about-your-visa\"\n+    },\n+    {\n+      \"chunk_id\": \"your-first-weeks-students::3\",\n+      \"quote\": \"Full-time status is defined by the Registrar and varies by campus (Morningside Registrar | CUIMC Registrar). Most often, it is either a minimum of 12 credit points or one resident unit. Check with your school if you’re not sure. Make sure you register for full-time course load as it is required to maintain your F-1 or J-1 student status and must be done by the end of the second week of classes.\",\n+      \"source\": \"your-first-weeks-students\",\n+      \"url\": \"https://isso.columbia.edu/content/your-first-weeks-students\"\n     }\n   ]\n }\n",
+        "checks": {
+          "applies": true,
+          "current_item_only": true,
+          "grounded": true
+        },
+        "reason": "One item for the current chunk was appended to the current query packet."
+      }
+    }
+  ],
+  "experiment": {
+    "injection_overlay": {
+      "enabled": false
+    }
+  }
+}

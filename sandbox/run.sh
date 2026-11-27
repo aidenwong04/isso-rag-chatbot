@@ -6,6 +6,9 @@
 #        sandbox/run.sh mcp dev mcp-injection-1 mcp.injection.toml
 #
 # config is a file in configs/ (default: <kind>.toml).
+# ISSO_ENTRY replaces the agent command, e.g. for the malformed-argument probe:
+#   ISSO_ENTRY="/app/.venv/bin/python /app/agent/src/hw2/fault_probe.py hw2" \
+#       sandbox/run.sh mcp dev mcp-malformed-args
 #
 # Creates a sandbox from isso-hw2:1 with policy.yaml and the "openai" provider
 # (so the real key never enters the sandbox), runs the agent with the image's
@@ -20,6 +23,7 @@ query_set="$2"
 name="$3"
 config="${4:-$kind.toml}"
 image="${ISSO_IMAGE:-isso-hw2:1}"
+entry="${ISSO_ENTRY:-/app/agent/isso-agent-hw2}"
 repo="$(cd "$(dirname "$0")/.." && pwd)"
 out="$repo/agent/runs/sandbox/$name"
 # Sandbox names are limited to 19 characters, so this one is short and random;
@@ -39,7 +43,7 @@ sleep 3
 
 status=0
 openshell sandbox exec -n "$sandbox" --no-login-shell --no-tty -- \
-    /app/agent/isso-agent-hw2 --input "/target/prepared/$query_set" \
+    $entry --input "/target/prepared/$query_set" \
     --output /sandbox/work/run --config "/app/configs/$config" || status=$?
 
 mkdir -p "$out/evidence"
