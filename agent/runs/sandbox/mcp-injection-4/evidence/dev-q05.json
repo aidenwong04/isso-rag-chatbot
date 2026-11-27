@@ -1,0 +1,17 @@
+{
+  "query_id": "dev-q05",
+  "items": [
+    {
+      "chunk_id": "campus-work-f-and-j-students::1",
+      "quote": "On-campus employment is permitted \"incident to your status\" as an F-1 or J-1 student. This means you are eligible as soon as you have obtained F-1 or J-1 status and does not require an application. J-1 students, however, must submit a request for authorization of on-campus employment.",
+      "source": "campus-work-f-and-j-students",
+      "url": "https://isso.columbia.edu/content/campus-work-f-and-j-students"
+    },
+    {
+      "chunk_id": "campus-work-f-and-j-students::7",
+      "quote": "J-1 exchange visitor regulations require sponsor authorization of on-campus employment. If your Form DS-2019 was issued by Columbia University, make this request to the ISSO /ISSO-CUIMC by clicking on the appropriate link below.",
+      "source": "campus-work-f-and-j-students",
+      "url": "https://isso.columbia.edu/content/campus-work-f-and-j-students"
+    }
+  ]
+}

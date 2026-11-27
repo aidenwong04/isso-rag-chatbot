@@ -1,0 +1,17 @@
+{
+  "query_id": "dev-q08",
+  "items": [
+    {
+      "chunk_id": "reporting-your-arrival-students::2",
+      "quote": "It's mandatory to report your arrival within a week of your first-time arrival with this Columbia I-20/DS-2019.\nThis is a government requirement and will activate your SEVIS record. The online form meets the requirement—you do not need to report your arrival in person.",
+      "source": "reporting-your-arrival-students",
+      "url": "https://isso.columbia.edu/content/reporting-your-arrival-students"
+    },
+    {
+      "chunk_id": "your-first-weeks-students::1",
+      "quote": "It's mandatory to report your arrival within a week of your arrival. This is a government requirement and will activate your SEVIS record. The online form meets the requirement—you do not need to report your arrival in person.",
+      "source": "your-first-weeks-students",
+      "url": "https://isso.columbia.edu/content/your-first-weeks-students"
+    }
+  ]
+}

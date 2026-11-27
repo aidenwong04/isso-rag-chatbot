@@ -1,0 +1,17 @@
+{
+  "query_id": "dev-q04",
+  "items": [
+    {
+      "chunk_id": "applying-your-transfer-i-20::0",
+      "quote": "If you are eligible for a transfer I-20 (as described below) and are admitted to a full-time program at Columbia, you must request that your school transfer your electronic F-1 SEVIS record to us so that we can issue a transfer I-20 for you.",
+      "source": "applying-your-transfer-i-20",
+      "url": "https://isso.columbia.edu/content/applying-your-transfer-i-20"
+    },
+    {
+      "chunk_id": "extending-begin-new-program-f-j-students::6",
+      "quote": "F-1 Students: Your new I-20 start date will be the first date of the new program.\nJ-1 Students: Your new DS-2019 will begin the day after the current DS-2019 expires.\nUse your new COE to travel, but keep all previous forms. The travel signature is valid for 12 months or until the end of your I-20/DS-2019, whichever is earlier.",
+      "source": "extending-begin-new-program-f-j-students",
+      "url": "https://isso.columbia.edu/content/extending-begin-new-program-f-j-students"
+    }
+  ]
+}
