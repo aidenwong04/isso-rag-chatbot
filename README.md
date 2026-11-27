@@ -7,7 +7,8 @@ If it works out, may reach out to ISSO about actual use.
 
 live at: https://isso-rag.vercel.app/#ask
 
-**FOR COMS E6998:** the agent's setup, run command and configs are in [`agent/README.md`](agent/README.md), and the design report is [`agent/REPORT.md`](agent/REPORT.md).
+**FOR COMS E6998:** HW2 (MCP and CodeAct agents in OpenShell) is documented in [`agent/HW2_README.md`](agent/HW2_README.md).
+The HW1 agent's setup, run command and configs are in [`agent/README.md`](agent/README.md).
 
 ## Structure
 
