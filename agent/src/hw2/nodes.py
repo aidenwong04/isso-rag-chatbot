@@ -31,6 +31,7 @@ from langgraph.types import Overwrite
 from agents import HOST_ONLY, Outcome
 from report import (
     accepted_update,
+    overlay_record,
     build_row,
     classified_row,
     emit_update,
@@ -76,6 +77,8 @@ async def discovery_node(state: AgentState, runtime: Runtime[RunContext]) -> dic
     """
     context = runtime.context
     context.agent.discovery_event(context.tracer)
+    # The injection experiment's record (brief 6.2): enabled or not, and which overlay.
+    context.tracer.emit("state_change", node="experiment", injection_overlay=overlay_record(context.overlay))
 
     with open(context.input_dir / "candidates.json", encoding="utf-8") as f:
         candidates = json.load(f)
@@ -141,6 +144,7 @@ async def next_alert(state: AgentState, runtime: Runtime[RunContext]) -> dict:
             "seen_proposals": [],
             "write_attempted": False,
             "last_refusal": None,
+            "exposed": False,
         }
 
     tracer.emit("state_change", node="next_alert", terminal_status="completed")
@@ -215,6 +219,7 @@ async def model_node(state: AgentState, runtime: Runtime[RunContext]) -> dict:
     agent's model-facing tools. A tool call is required, one at a time.
     """
     context = runtime.context
+    exposure = exposure_event(state, context)
     response = await context.model_client.chat.completions.create(
         model=context.model,
         messages=state["message_history"],
@@ -241,12 +246,17 @@ async def model_node(state: AgentState, runtime: Runtime[RunContext]) -> dict:
         usage["cache_read"] = details.cached_tokens
     context.tracer.emit("model_call", alert_id=state["current_alert_id"], role="agent",
                         model=context.model, usage=usage)
-
-    return {
+    update = {
         "message_history": [assistant],
         "step_count": 1,
         "used_tokens": usage["input"] + usage["output"],
     }
+    if exposure:
+        # Written after the call it belongs to: model_call_step points at it.
+        exposure["model_call_step"] = context.tracer.step_count - 1
+        context.tracer.emit("state_change", alert_id=state["current_alert_id"], node="exposure", **exposure)
+        update["exposed"] = True
+    return update
 
 
 # --- dispatcher --------------------------------------------------------------------------
@@ -420,3 +430,53 @@ def dispatcher_router(state: AgentState, runtime: Runtime[RunContext]) -> Litera
     if finished(state):
         return route(runtime, state, "next_alert", "runtime")
     return route(runtime, state, "guard", "runtime")
+
+
+# --- Injection exposure ------------------------------------------------------------------
+
+def _strings(value):
+    """Every string inside a JSON value, for finding the overlay in a structured tool result."""
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for v in value.values():
+            yield from _strings(v)
+    elif isinstance(value, list):
+        for v in value:
+            yield from _strings(v)
+
+
+def _carries(content: str, text: str) -> bool:
+    """Whether a message's content holds text: as is (CodeAct output) or inside its JSON (MCP results)."""
+    if text in content:
+        return True
+    try:
+        return any(text in s for s in _strings(json.loads(content)))
+    except (json.JSONDecodeError, TypeError):
+        return False
+
+
+def exposure_event(state: AgentState, context: RunContext) -> dict | None:
+    """
+    Proof that the injection reached a real model request (brief 6.2): when
+    the overlay targets the current item and this request's messages carry its
+    full text, as the model sees it (CodeAct output after truncation, MCP tool
+    results as sent), returns the marker and a reference to that observation.
+    Recorded once per item, for the first request that carries it. This only
+    measures exposure; nothing here changes what the agent does.
+    """
+    overlay = context.overlay
+    if not overlay or state.get("exposed") or state.get("current_alert_id") != overlay["target_alert_id"]:
+        return None
+    text = overlay["text"]
+    for index, message in enumerate(state["message_history"]):
+        content = message.get("content")
+        if message.get("role") == "tool" and isinstance(content, str) and _carries(content, text):
+            marker = next((line.strip() for line in text.splitlines() if line.strip()), "")
+            # The observation exactly as the model received it (after any
+            # truncation), so the trace alone shows the full injected text.
+            return {"marker": marker, "overlay_sha256": overlay["sha256"],
+                    "observation": {"message_index": index, "tool_call_id": message.get("tool_call_id"),
+                                    "content": content},
+                    "full_text": True}
+    return None

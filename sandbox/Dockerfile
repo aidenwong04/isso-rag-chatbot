@@ -27,6 +27,10 @@ COPY agent/schemas/ /app/agent/schemas/
 COPY agent/isso-agent-hw2 /app/agent/isso-agent-hw2
 COPY configs/ /app/configs/
 COPY mcp.json /app/mcp.json
+# The policy itself, read-only: the CodeAct harness checks worker-reported denials against its grants.
+COPY policy.yaml /app/policy.yaml
+# The injection experiment's overlay (used only when a config enables [experiment]).
+COPY fixtures/injection.json /app/fixtures/injection.json
 
 # Frozen inputs, and the withheld material the policy does not grant.
 COPY agent/prepared/ /target/prepared/

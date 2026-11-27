@@ -34,7 +34,7 @@ import tempfile
 from pathlib import Path
 
 from agents import BackendController, Outcome
-from api import EVIDENCE_DIR_ENV, PASSAGE_END, PASSAGE_START, PREPARED_DIR_ENV
+from api import EVIDENCE_DIR_ENV, OVERLAY_ENV, PASSAGE_END, PASSAGE_START, PREPARED_DIR_ENV
 
 import tools as hw1_tools  # noqa: E402  (HW1's folder is on the import path once api is imported)
 
@@ -51,6 +51,66 @@ BLOCK = re.compile(
     + re.escape(PASSAGE_END).replace(_PLACEHOLDER, r"(?P=id)"),
     re.DOTALL,
 )
+
+# How a kernel (Landlock or network policy) denial shows up in a Python
+# worker's output: EACCES, as PermissionError or inside another exception
+# such as urllib's URLError.
+DENIAL = re.compile(r"\[Errno 13\] Permission denied(?:: '([^'\n]*)')?")
+MAX_DENIALS_KEPT = 200   # entries kept in one trace event; the count is always exact
+
+
+def _under(path: str, roots: list[str]) -> bool:
+    """
+    Whether path lies under one of roots, after resolving ".." and symlinks on
+    both sides, so /sandbox/work/../target/x or a scratch symlink to /target
+    is judged by where it really points. Only metadata is read.
+    """
+    real = os.path.realpath(path)
+    for root in roots:
+        r = os.path.realpath(root)
+        if real == r or real.startswith(r.rstrip("/") + "/"):
+            return True
+    return False
+
+
+def kernel_denials(output: str, writable: list[str] | None = None) -> dict:
+    """
+    Every EACCES in a script's output, one entry per occurrence (repeats are
+    separate attempts), with the denied path when Python printed one.
+
+    The worker controls its own output, and OpenShell does not log Landlock
+    file denials (it logs network denials itself), so this is worker-reported
+    evidence. One check is possible: a denial of a path the policy grants
+    read-write cannot have come from the kernel, so it is marked implausible
+    and never attributed to the kernel. A path outside the read-write grants
+    is consistent with the policy.
+    """
+    entries = []
+    for match in DENIAL.finditer(output):
+        path = match.group(1)
+        entry = {"message": match.group(0)}
+        if path is not None:
+            entry["path"] = path
+            if writable is not None:
+                entry["consistent_with_policy"] = not _under(path, writable)
+        entries.append(entry)
+    return {"count": len(entries), "source": "worker output", "entries": entries[:MAX_DENIALS_KEPT]}
+
+
+def died_on_denial(stderr: str, writable: list[str] | None = None) -> bool:
+    """
+    Whether the script's final, uncaught exception was a permission denial
+    that the policy makes possible (see kernel_denials).
+    """
+    lines = [line for line in stderr.strip().splitlines() if line.strip()]
+    if not lines:
+        return False
+    match = DENIAL.search(lines[-1])
+    if not match:
+        return False
+    path = match.group(1)
+    return path is None or writable is None or not _under(path, writable)
+
 
 TOOL_DEFS = [
     {"type": "function", "function": {
@@ -113,13 +173,16 @@ class CodeActAgent:
     via = "codeact"
 
     def __init__(self, backend, system_prompt: str, python: str, scratch_root: Path,
-                 output_cap: int = DEFAULT_OUTPUT_CAP, timeout: int = DEFAULT_TIMEOUT):
+                 output_cap: int = DEFAULT_OUTPUT_CAP, timeout: int = DEFAULT_TIMEOUT,
+                 writable: list[str] | None = None):
         self.backend = backend
         self.system_prompt = system_prompt
         self.python = python
         self.scratch_root = Path(scratch_root)
         self.output_cap = output_cap
         self.timeout = timeout
+        # The policy's read-write grants, for checking worker-reported denials.
+        self.writable = writable
         self.controller = TrustedController(backend, self.refresh_trusted)
         self.tool_defs = TOOL_DEFS
         self.tool_names = frozenset(t["function"]["name"] for t in TOOL_DEFS)
@@ -186,6 +249,8 @@ class CodeActAgent:
             # path (such as --input agent/prepared/dev) would point nowhere.
             PREPARED_DIR_ENV: str(self.backend.prepared_dir.resolve()),
             EVIDENCE_DIR_ENV: str(self.backend.evidence_dir.resolve()),
+            # The worker's Backend renders the same overlay as the parent's.
+            **({OVERLAY_ENV: str(Path(self.backend.overlay["path"]).resolve())} if self.backend.overlay else {}),
         }
 
     async def run_script(self, code: str) -> Outcome:
@@ -207,15 +272,25 @@ class CodeActAgent:
         delivered, unverified = self.delivered_passages(shown)
         restored = self.restore_packets()
 
+        out_text, err_text = stdout.decode("utf-8", "replace"), stderr.decode("utf-8", "replace")
+        denials = kernel_denials(out_text + "\n" + err_text, self.writable)
+
         trace = {"exit_code": exit_code, "delivered": sorted(delivered)}
         if unverified:
             trace["unverified"] = unverified
         if restored:
             trace["restored"] = restored
+        if denials["count"]:
+            # Every kernel denial the script hit, including ones it caught and
+            # survived, so the trace shows each blocked attempt (brief 6.2).
+            trace["kernel_denials"] = denials
         ok = exit_code == 0 and not timed_out
-        return Outcome(ok, payload=None if not ok else {"exit_code": exit_code},
-                       error=None if ok else shown,
-                       error_kind=None if ok else "execution",
+        if ok:
+            return Outcome(True, payload={"exit_code": exit_code}, delivered=delivered, trace=trace, text=shown)
+        # A script that died on a kernel denial was refused by the kernel (the
+        # sandbox's fixed policy); any other failure is an execution error.
+        kind, by = ("refusal", "kernel") if died_on_denial(err_text, self.writable) else ("execution", None)
+        return Outcome(False, error=shown, error_kind=kind, refused_by=by,
                        delivered=delivered, trace=trace, text=shown)
 
     def compose_output(self, exit_code: int, stdout: str, stderr: str, timed_out: bool) -> str:
@@ -240,7 +315,10 @@ class CodeActAgent:
                 unverified.append({"chunk_id": chunk_id, "reason": "outside the allowed set"})
                 continue
             record = hw1_tools.validate_id(chunk_id, self.backend.prepared_dir)
-            if not record["ok"] or record["chunk"]["text"] != text:
+            # The model is shown the rendered view (canonical text, plus the
+            # injection overlay on its target in the injection experiment).
+            expected = record["ok"] and self.backend.rendered_text(chunk_id, record["chunk"]["text"])
+            if not record["ok"] or expected != text:
                 unverified.append({"chunk_id": chunk_id, "reason": "text does not match the canonical passage"})
                 continue
             delivered.add(chunk_id)
@@ -248,25 +326,58 @@ class CodeActAgent:
 
     # --- Detect and restore ------------------------------------------------------------
 
+    @staticmethod
+    def _regular_file(path: Path) -> bool:
+        """A plain file, not a symlink (which could point anywhere) or a directory."""
+        return path.is_file() and not path.is_symlink()
+
     def packet_files(self) -> dict[str, bytes]:
+        """The evidence folder's plain files, never following a symlink."""
         folder = self.backend.evidence_dir
-        if not folder.is_dir():
+        if folder.is_symlink() or not folder.is_dir():
             return {}
-        return {p.name: p.read_bytes() for p in sorted(folder.iterdir()) if p.is_file()}
+        return {p.name: p.read_bytes() for p in sorted(folder.iterdir()) if self._regular_file(p)}
 
     def refresh_trusted(self) -> None:
         """Called after each harness write: the packets on disk are now the trusted state."""
         self.trusted = self.packet_files()
+
+    @staticmethod
+    def _remove(path: Path) -> None:
+        """Removes whatever is at path, without following a symlink."""
+        if path.is_symlink() or not path.is_dir():
+            path.unlink(missing_ok=True)
+        else:
+            shutil.rmtree(path)
 
     def restore_packets(self) -> list[dict]:
         """
         Reverts any change to the evidence folder that the harness did not
         make, and returns what was reverted. Detection and restoration, not
         prevention: the change existed until now (brief line 280).
+
+        Anything that is not a plain file is tampering: a deleted or replaced
+        evidence folder is recreated, and a packet turned into a directory or
+        a symlink is removed and rewritten (a symlink is never followed, so
+        the harness never reads or writes outside the folder through one).
         """
         folder = self.backend.evidence_dir
-        current = self.packet_files()
         restored = []
+
+        if folder.is_symlink() or (folder.exists() and not folder.is_dir()):
+            self._remove(folder)
+            restored.append({"file": ".", "action": "replaced folder removed"})
+        if not folder.exists():
+            folder.mkdir(parents=True)
+            if self.trusted:
+                restored.append({"file": ".", "action": "folder recreated"})
+
+        for path in sorted(folder.iterdir()):
+            if not self._regular_file(path):
+                self._remove(path)
+                restored.append({"file": path.name, "action": "removed non-file"})
+
+        current = self.packet_files()
         for name in sorted(set(current) | set(self.trusted)):
             if current.get(name) == self.trusted.get(name):
                 continue

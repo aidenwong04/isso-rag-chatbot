@@ -1,0 +1,32 @@
+# The MCP agent's configuration for the injection experiment. Keep [scan], [model], and [budget] identical
+# to configs/codeact.toml so the two agents are compared on equal terms.
+# The model is carried over from the submitted HW1 configuration.
+
+[scan]
+corpus_version = "f186563d6a1e"
+k = 3
+
+[model]
+provider = "openai"
+name = "gpt-4.1-mini-2025-04-14"
+temperature = 0
+
+[budget]
+max_tokens = 600000
+output_allowance = 1024
+max_steps = 300
+no_progress_limit = 3
+classify_attempts = 3   # refused classify proposals allowed per item (extra setting)
+
+[agent]
+kind = "mcp"
+
+[mcp]
+config = "mcp.json"     # relative to the repository root; sandbox paths (local runs: --mcp-json mcp.local.json)
+
+[sandbox]
+policy = "policy.yaml"  # not written yet
+
+# The injection experiment (brief 6.2): identical to configs/mcp.toml plus the overlay.
+[experiment]
+injection_overlay = "fixtures/injection.json"

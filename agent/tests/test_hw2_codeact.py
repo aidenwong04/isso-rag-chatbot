@@ -253,6 +253,81 @@ class WorkerProbe(unittest.TestCase):
             self.assertTrue(outcome.ok)
             self.assertIn("[] None", outcome.text)
 
+    def test_restore_survives_deleted_folder_directories_and_symlinks(self):
+        """Scripts that delete the evidence folder or swap packets for a directory or symlink are reverted."""
+        import api
+        import codeact
+        with tempfile.TemporaryDirectory() as tmp:
+            outside = Path(tmp) / "outside.txt"
+            outside.write_text("outside")
+            backend = api.Backend(REPO_ROOT / "agent" / "prepared", Path(tmp) / "evidence")
+            agent = codeact.CodeActAgent(backend, "prompt", sys.executable, Path(tmp) / "scratch", timeout=10)
+            ev = "os.environ['ISSO_EVIDENCE_DIR']"
+
+            async def go():
+                await agent.controller.reset_packets("dev")
+                await agent.start_item("x")
+                results = []
+                for code in (f"import shutil, os; shutil.rmtree({ev})",
+                             f"import os; p = os.path.join({ev}, 'dev-q01.json'); os.remove(p); os.mkdir(p)",
+                             f"import os; p = os.path.join({ev}, 'dev-q02.json'); os.remove(p); os.symlink({str(outside)!r}, p)"):
+                    results.append(await agent.run_script(code))
+                return results
+
+            results = asyncio.run(go())
+            self.assertTrue(all(r.trace.get("restored") for r in results))
+            self.assertEqual(agent.packet_files(), agent.trusted)              # every packet back as trusted
+            self.assertFalse(any(p.is_symlink() for p in (Path(tmp) / "evidence").iterdir()))
+            self.assertEqual(outside.read_text(), "outside")                     # never written through the link
+
+    def test_permission_denials_are_traced_as_kernel_refusals(self):
+        """A script that dies on EACCES is a kernel refusal; a caught denial is still recorded."""
+        import api
+        import codeact
+        with tempfile.TemporaryDirectory() as tmp:
+            locked = Path(tmp) / "locked.txt"
+            locked.write_text("x")
+            locked.chmod(0)   # stands in for a Landlock denial outside the sandbox
+            backend = api.Backend(REPO_ROOT / "agent" / "prepared", Path(tmp) / "evidence")
+            # The policy grants the scratch folder read-write, so a "denial" there cannot be real.
+            agent = codeact.CodeActAgent(backend, "prompt", sys.executable, Path(tmp) / "scratch", timeout=10,
+                                         writable=[str(Path(tmp) / "scratch"), "/tmp"])
+
+            async def go():
+                await agent.controller.reset_packets("dev")
+                await agent.start_item("x")
+                died = await agent.run_script(f"open({str(locked)!r}).read()")
+                caught = await agent.run_script(
+                    f"try:\n    open({str(locked)!r}).read()\nexcept PermissionError as e:\n    print('blocked:', e)\n")
+                crashed = await agent.run_script("raise ValueError('ordinary bug')")
+                repeated = await agent.run_script(
+                    f"for _ in range(3):\n    try: open({str(locked)!r})\n    except PermissionError as e: print(e)\n")
+                forged = await agent.run_script(
+                    f"raise PermissionError(13, 'Permission denied', {str(Path(tmp) / 'scratch' / 'x')!r})")
+                # Spelled through the writable scratch folder, but really the locked file.
+                dotted = await agent.run_script(
+                    f"open({str(Path(tmp) / 'scratch' / '..' / 'locked.txt')!r}).read()")
+                return died, caught, crashed, repeated, forged, dotted
+
+            try:
+                died, caught, crashed, repeated, forged, dotted = asyncio.run(go())
+            finally:
+                locked.chmod(0o600)
+            if os.geteuid() == 0:
+                self.skipTest("root ignores file permissions")
+            self.assertEqual((died.ok, died.error_kind, died.refused_by), (False, "refusal", "kernel"))
+            self.assertTrue(died.trace["kernel_denials"])
+            self.assertTrue(caught.ok)
+            self.assertTrue(caught.trace["kernel_denials"])
+            self.assertEqual((crashed.error_kind, crashed.refused_by), ("execution", None))
+            self.assertEqual(repeated.trace["kernel_denials"]["count"], 3)          # repeats are separate attempts
+            self.assertTrue(died.trace["kernel_denials"]["entries"][0]["consistent_with_policy"])
+            # A "denial" of a read-write path is impossible under the policy: not attributed to the kernel.
+            self.assertEqual((forged.error_kind, forged.refused_by), ("execution", None))
+            self.assertFalse(forged.trace["kernel_denials"]["entries"][0]["consistent_with_policy"])
+            self.assertEqual((dotted.error_kind, dotted.refused_by), ("refusal", "kernel"))
+            self.assertTrue(dotted.trace["kernel_denials"]["entries"][0]["consistent_with_policy"])
+
     def test_relative_prepared_dir_still_delivers(self):
         """The worker runs in its scratch folder; a relative --input must still work there."""
         import api

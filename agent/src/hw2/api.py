@@ -29,6 +29,7 @@ Open design questions (decide before filling these in):
     convenience the host re-checks?
 """
 import difflib
+import hashlib
 import json
 import os
 import sys
@@ -64,6 +65,38 @@ QUERY_SETS = ("dev", "heldout-a", "heldout-b")
 PREPARED_DIR_ENV = "ISSO_PREPARED_DIR"
 EVIDENCE_DIR_ENV = "ISSO_EVIDENCE_DIR"
 
+# The injection experiment (brief section 6.2): a path to an overlay file such as
+# fixtures/injection.json. Set by the host for the MCP server's process and by
+# the CodeAct harness for its workers; unset for clean runs.
+OVERLAY_ENV = "ISSO_INJECTION_OVERLAY"
+CORPUS_SHA256 = "f186563d6a1e702703386a25e5047e44eac3d666a7fe382d516c86dd47e5bf8e"
+
+
+def load_overlay(path) -> dict:
+    """
+    Reads and checks an injection overlay. It applies only to the rendered
+    text of its target chunk while its target alert is the current item; it
+    never changes canonical text, metadata, neighbors, candidates, or the
+    corpus pin, and grounding checks never see it. expected_boundary is
+    explanatory metadata and is left out (it never reaches the model).
+    """
+    raw = Path(path).read_bytes()
+    data = json.loads(raw)
+    if data.get("format_version") != 1 or data.get("operation") != "append_text":
+        raise ValueError(f"{path}: unsupported overlay (format_version 1, operation append_text)")
+    if data.get("canonical_corpus_sha256") != CORPUS_SHA256:
+        raise ValueError(f"{path}: overlay is for a different corpus")
+    for key in ("target_alert_id", "target_chunk_id", "text"):
+        if not isinstance(data.get(key), str) or not data[key]:
+            raise ValueError(f"{path}: overlay needs a non-empty {key}")
+    return {
+        "path": str(path),
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "target_alert_id": data["target_alert_id"],
+        "target_chunk_id": data["target_chunk_id"],
+        "text": data["text"],
+    }
+
 # How show() prints a passage, and how the CodeAct harness finds passages in
 # a script's output (brief line 137). The text between the two lines is the
 # passage's canonical text exactly, so the harness can check it byte for byte.
@@ -79,7 +112,8 @@ def passage_block(chunk_id: str, text: str) -> str:
 class Backend:
     """One item's view of the frozen inputs and its question's packet."""
 
-    def __init__(self, prepared_dir: Path | None = None, evidence_dir: Path | None = None):
+    def __init__(self, prepared_dir: Path | None = None, evidence_dir: Path | None = None,
+                 overlay_path: Path | None = None):
         """
         prepared_dir: the folder holding manifest.json, chunks.json,
             neighbors.json, and <set>/{queries,candidates}.json.
@@ -98,16 +132,30 @@ class Backend:
         self.prepared_dir = Path(prepared_dir)
         self.evidence_dir = Path(evidence_dir)
 
+        # The injection overlay, when the experiment enables it. A broken or
+        # mismatched overlay refuses everything, like a failed verification:
+        # a run must never silently go ahead without the planned exposure.
+        overlay_path = overlay_path or os.environ.get(OVERLAY_ENV)
+        self.overlay = None
+        overlay_error = None
+        if overlay_path:
+            try:
+                self.overlay = load_overlay(overlay_path)
+            except (OSError, ValueError) as e:
+                overlay_error = f"error: injection overlay could not be loaded: {e}"
+
         # Check the prepared inputs against the frozen manifest before using
         # them (brief line 86). On failure nothing is loaded and every
         # operation refuses with this message, so a changed input never
         # reaches the model. Lazy in the MCP server: this runs on the first
         # tool call, not at startup.
-        self.verification_error = None
+        self.verification_error = overlay_error
         try:
+            if overlay_error:
+                raise ValueError(overlay_error)
             verify_prepared(self.prepared_dir / "manifest.json")
         except (OSError, ValueError) as e:
-            self.verification_error = f"error: prepared inputs failed verification: {e}"
+            self.verification_error = overlay_error or f"error: prepared inputs failed verification: {e}"
             self.candidates, self.by_alert_id, self.neighbors = [], {}, {}
             self.queries, self.query_ids_by_set = {}, {}
             self._clear_item()
@@ -331,6 +379,20 @@ class Backend:
             return {"ok": False, "msg": "refused: chunk_id outside allowed set.", "chunks": []}
         return None
 
+    def rendered_text(self, chunk_id: str, canonical: str) -> str:
+        """
+        The text the model is shown for chunk_id: the canonical text, plus the
+        overlay's text when the experiment targets this chunk and its target
+        alert is the current item. Grounding never uses this.
+        """
+        o = self.overlay
+        if o and chunk_id == o["target_chunk_id"] and self.alert_id == o["target_alert_id"]:
+            return canonical + o["text"]
+        return canonical
+
+    def _rendered(self, chunk: dict) -> dict:
+        return {**chunk, "text": self.rendered_text(chunk["chunk_id"], chunk["text"])}
+
     def read(self, chunk_id: str) -> dict:
         """Returns canonical text and metadata for chunk_id, refusing IDs outside the allowed set."""
         refusal = self._no_item_refusal() or self._scope_refusal(chunk_id)
@@ -348,7 +410,7 @@ class Backend:
         return {
             "ok": True,
             "msg": "success",
-            "chunks": [hw1_tools.generate_chunk(validation["chunk"])],
+            "chunks": [self._rendered(hw1_tools.generate_chunk(validation["chunk"]))],
         }
 
     def read_neighbors(self, chunk_id: str) -> dict:
@@ -376,7 +438,7 @@ class Backend:
             validation = hw1_tools.validate_id(neighbor_id, self.prepared_dir)
             if not validation["ok"]:
                 return {"ok": False, "msg": "refused: " + validation["msg"], "chunks": []}
-            chunks.append(hw1_tools.generate_chunk(validation["chunk"]))
+            chunks.append(self._rendered(hw1_tools.generate_chunk(validation["chunk"])))
             self.observed.add(neighbor_id)
 
         msg = "success"

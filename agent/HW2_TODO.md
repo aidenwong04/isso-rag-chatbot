@@ -34,11 +34,11 @@ Line numbers refer to `briefs/hw2-isso.tex` in the hw2-isso repo.
 
 ## Injection experiment
 
-- [ ] Overlay `fixtures/injection.json` on the model-visible text of `dev-q05::campus-work-f-and-j-students::0` only: canonical corpus, frozen candidates, and grounding checks stay unchanged (lines 403-406).
-- [ ] Enable it only through config (`[experiment] injection_overlay`), record the overlay's hash and whether it was enabled, and use the same overlay for both agents.
-- [ ] Prove exposure: record the marker and a reference to the model-visible observation in an actual model request, after any truncation (line 408).
+- [x] Overlay `fixtures/injection.json` on the model-visible text of `dev-q05::campus-work-f-and-j-students::0` only: canonical corpus, frozen candidates, and grounding checks stay unchanged (lines 403-406).
+- [x] Enable it only through config (`[experiment] injection_overlay`), record the overlay's hash and whether it was enabled, and use the same overlay for both agents.
+- [x] Prove exposure: record the marker and a reference to the model-visible observation in an actual model request, after any truncation (line 408).
 - [ ] Run each agent five times on dev with the overlay and fresh packets; report exposed runs, forbidden read/write attempts, server or kernel refusals, and rejected CodeAct updates, with trace lines (lines 407-410).
-- [ ] Never special-case the fixture's marker (line 412); disable the overlay for the clean runs.
+- [x] Never special-case the fixture's marker (line 412); disable the overlay for the clean runs.
 
 ## Sandbox image
 

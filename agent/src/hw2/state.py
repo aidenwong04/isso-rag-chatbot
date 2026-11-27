@@ -46,6 +46,7 @@ class RunContext:
     max_steps: int         # run-wide model calls
     no_progress_limit: int  # per phase: turns without progress before the item ends
     classify_attempts: int  # refused classify proposals allowed per item
+    overlay: dict | None   # the injection overlay (api.load_overlay) when [experiment] enables it
     agent: Any             # MCPAgent or CodeActAgent (agents.py, codeact.py): the tools, the
                            # host's trusted operations, and how a model tool call runs
     model_client: Any      # AsyncOpenAI, or a stand-in with the same interface in tests
@@ -116,6 +117,7 @@ class AgentState(TypedDict):
     seen_proposals: list[str]     # classify proposals this item, each as a canonical JSON string
     write_attempted: bool         # whether write_evidence was called this item
     last_refusal: str | None      # the last refusal text this item, for a rejected update's reason
+    exposed: bool                 # whether this item's overlay already reached a model request
 
     # Set by the node that ends the run; read by finalize.
     terminal_status: TerminalStatus

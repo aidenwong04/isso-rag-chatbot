@@ -35,7 +35,7 @@ from mcp.client.stdio import stdio_client
 
 from graph import build_graph
 from agents import HOST_ONLY, MCPAgent
-from api import Backend
+from api import OVERLAY_ENV, Backend, load_overlay
 from codeact import DEFAULT_OUTPUT_CAP, DEFAULT_TIMEOUT, CodeActAgent
 from run import run
 from state import RunContext
@@ -69,7 +69,8 @@ def load_config(path: Path) -> dict:
     return config
 
 
-def server_params(config: dict, mcp_json: Path | None = None) -> tuple[str, StdioServerParameters]:
+def server_params(config: dict, mcp_json: Path | None = None,
+                  extra_env: dict | None = None) -> tuple[str, StdioServerParameters]:
     """
     The single server entry of the mcp.json named by [mcp] config (relative to
     the repository root), as stdio parameters. mcp_json overrides that file:
@@ -81,8 +82,11 @@ def server_params(config: dict, mcp_json: Path | None = None) -> tuple[str, Stdi
         sys.exit(f"{mcp_json}: expected exactly one server, found {sorted(servers)}")
     name, entry = next(iter(servers.items()))
     # Relative paths in mcp.json are relative to the repository root.
+    # The SDK merges env into its default environment; extra_env carries the
+    # host's experiment settings (the injection overlay) to the server process.
+    env = {**(entry.get("env") or {}), **(extra_env or {})}
     return name, StdioServerParameters(command=entry["command"], args=entry.get("args", []),
-                                       env=entry.get("env") or None, cwd=REPO_ROOT)
+                                       env=env or None, cwd=REPO_ROOT)
 
 
 def default_model_client():
@@ -113,6 +117,16 @@ async def run_agent(input_dir: Path, output_dir: Path, config_path: Path,
         sys.exit(f"[scan] corpus_version {config['scan']['corpus_version']} does not match the "
                  f"manifest's {manifest_version}")
 
+    # The injection experiment (brief 6.2), enabled only by [experiment]
+    # injection_overlay; its hash is recorded in the trace and the report.
+    overlay_setting = config.get("experiment", {}).get("injection_overlay")
+    overlay = None
+    if overlay_setting:
+        try:
+            overlay = load_overlay(REPO_ROOT / overlay_setting)
+        except (OSError, ValueError) as e:
+            sys.exit(f"[experiment] injection_overlay: {e}")
+
     model_client = model_client or default_model_client()
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -131,19 +145,21 @@ async def run_agent(input_dir: Path, output_dir: Path, config_path: Path,
             max_steps=budget["max_steps"],
             no_progress_limit=budget["no_progress_limit"],
             classify_attempts=budget.get("classify_attempts", DEFAULT_CLASSIFY_ATTEMPTS),
+            overlay=overlay,
             agent=agent,
             model_client=model_client,
             tracer=Tracer(output_dir / "trace.jsonl"),
         )
 
     if kind == "codeact":
-        agent = codeact_agent(config, input_dir.parent)
+        agent = codeact_agent(config, input_dir.parent, overlay)
         try:
             return await run(build_graph(), context_for(agent))
         finally:
             await agent.close()
 
-    server_name, params = server_params(config, mcp_json)
+    server_name, params = server_params(config, mcp_json,
+                                        {OVERLAY_ENV: overlay["path"]} if overlay else None)
     async with stdio_client(params) as (read_stream, write_stream):
         async with ClientSession(read_stream, write_stream) as session:
             await session.initialize()
@@ -156,7 +172,21 @@ async def run_agent(input_dir: Path, output_dir: Path, config_path: Path,
             return await run(build_graph(), context_for(agent))
 
 
-def codeact_agent(config: dict, prepared_dir: Path) -> CodeActAgent:
+def policy_writable(config: dict) -> list[str] | None:
+    """
+    The read-write grants of the [sandbox] policy, used to rule out worker-
+    reported kernel denials that the policy makes impossible. None when the
+    policy file is not available (outside the image, a local run).
+    """
+    path = REPO_ROOT / config["sandbox"]["policy"]
+    if not path.is_file():
+        return None
+    import yaml
+    policy = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    return list(policy.get("filesystem_policy", {}).get("read_write", []))
+
+
+def codeact_agent(config: dict, prepared_dir: Path, overlay: dict | None = None) -> CodeActAgent:
     """
     The CodeAct agent from [codeact]: the reviewed prompt file (generated from
     the backend API, brief section 3.1), the writable evidence and scratch
@@ -166,11 +196,13 @@ def codeact_agent(config: dict, prepared_dir: Path) -> CodeActAgent:
     prompt_file = REPO_ROOT / settings.get("prompt", "agent/src/hw2/codeact_prompt.md")
     if not prompt_file.is_file():
         sys.exit(f"[codeact] prompt {prompt_file}: no such file (generate it from the backend API first)")
-    backend = Backend(prepared_dir, REPO_ROOT / settings.get("evidence_dir", "agent/work/evidence"))
+    backend = Backend(prepared_dir, REPO_ROOT / settings.get("evidence_dir", "agent/work/evidence"),
+                      overlay_path=Path(overlay["path"]) if overlay else None)
     if backend.verification_error:
         sys.exit(backend.verification_error)
     return CodeActAgent(
         backend,
+        writable=policy_writable(config),
         system_prompt=prompt_file.read_text(encoding="utf-8"),
         python=settings.get("python", sys.executable),
         scratch_root=REPO_ROOT / settings.get("scratch_dir", "agent/work/scratch"),

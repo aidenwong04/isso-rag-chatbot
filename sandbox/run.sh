@@ -1,8 +1,11 @@
 #!/bin/sh
 # One HW2 agent run in a fresh OpenShell sandbox, then its output copied out.
 #
-#   sandbox/run.sh <mcp|codeact> <dev|heldout-a|heldout-b> <run-name>
+#   sandbox/run.sh <mcp|codeact> <dev|heldout-a|heldout-b> <run-name> [config]
 #   e.g. sandbox/run.sh mcp dev mcp-dev
+#        sandbox/run.sh mcp dev mcp-injection-1 mcp.injection.toml
+#
+# config is a file in configs/ (default: <kind>.toml).
 #
 # Creates a sandbox from isso-hw2:1 with policy.yaml and the "openai" provider
 # (so the real key never enters the sandbox), runs the agent with the image's
@@ -15,6 +18,7 @@ set -eu
 kind="$1"
 query_set="$2"
 name="$3"
+config="${4:-$kind.toml}"
 image="${ISSO_IMAGE:-isso-hw2:1}"
 repo="$(cd "$(dirname "$0")/.." && pwd)"
 out="$repo/agent/runs/sandbox/$name"
@@ -36,10 +40,10 @@ sleep 3
 status=0
 openshell sandbox exec -n "$sandbox" --no-login-shell --no-tty -- \
     /app/agent/isso-agent-hw2 --input "/target/prepared/$query_set" \
-    --output /sandbox/work/run --config "/app/configs/$kind.toml" || status=$?
+    --output /sandbox/work/run --config "/app/configs/$config" || status=$?
 
 mkdir -p "$out/evidence"
 openshell sandbox download "$sandbox" /sandbox/work/run "$out"
 openshell sandbox download "$sandbox" /sandbox/work/evidence "$out/evidence"
-echo "run $name ($kind on $query_set) exit $status: $out"
+echo "run $name ($kind on $query_set, $config) exit $status: $out"
 exit "$status"

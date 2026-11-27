@@ -101,6 +101,14 @@ def leftover_update(row: dict, terminal_status: str) -> dict:
 
 # --- Writing ---------------------------------------------------------------------------
 
+def overlay_record(overlay: dict | None) -> dict:
+    """Whether the injection overlay was enabled, and which one (brief 6.2)."""
+    if not overlay:
+        return {"enabled": False}
+    return {"enabled": True, "sha256": overlay["sha256"], "path": overlay["path"],
+            "target_alert_id": overlay["target_alert_id"], "target_chunk_id": overlay["target_chunk_id"]}
+
+
 def write_report(alert_order, rows, updates, used_tokens, terminal_status, context):
     alerts = [{**rows[alert_id], "evidence_update": updates[alert_id]} for alert_id in alert_order]
     report = {
@@ -117,6 +125,8 @@ def write_report(alert_order, rows, updates, used_tokens, terminal_status, conte
             "exhausted": terminal_status == "budget_exhausted",
         },
         "alerts": alerts,
+        # Extra field (the schema allows them): the injection experiment's record.
+        "experiment": {"injection_overlay": overlay_record(context.overlay)},
     }
     with open(context.output_dir / "report.json", "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, ensure_ascii=False)

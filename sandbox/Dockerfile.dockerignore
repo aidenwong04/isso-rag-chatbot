@@ -7,6 +7,8 @@
 !agent/isso-agent-hw2
 !configs/
 !mcp.json
+!policy.yaml
+!fixtures/injection.json
 !agent/prepared/
 !agent/labels/
 !data/embeddings/chunks.json
